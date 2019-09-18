@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:36:34 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 12:12:25 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 12:39:10 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,17 @@ typedef union	u_bldouble
 		t_ulong		bit_es:	1;
 	}				s_bitd;
 }				t_bldouble;
+
+typedef union  u_ldouble
+{
+    long double	val;
+    struct b_double
+    {
+        t_ulong	man:64;
+        t_ulong	exp:15;
+        t_ulong	sign:1;
+    }			bldbl;
+}               t_ldouble;
 
 typedef struct	s_print
 {

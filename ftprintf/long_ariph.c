@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 20:19:22 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 12:11:10 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 12:43:21 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,85 +48,14 @@ int		add_longb(t_longb *a, t_longb *b)
 				(count < b->size ? b->val[count] : (size_t)0) + add;
 		if (count >= a->size)
 			a->size++;
-		if (val < a->base)
-		{
+		if (val < a->base && !(add = 0))
 			a->val[count] = val;
-			add = 0;
-		}
-		else
-		{
+		else if ((add = 1))
 			a->val[count] = val - a->base;
-			add = 1;
-		}
 		count++;
 	}
 	if (add)
 		a->val[a->size++] = 1;
-	return (1);
-}
-
-int		mult_longb(t_longb *a, t_longb *b)
-{
-	size_t		countb;
-	size_t		counta;
-	t_ullong	val;
-	size_t		add;
-	t_longb		res;
-
-	memset(&res.val, 0, sizeof(res.val));
-	res.size = b->size + a->size - 1;
-	init_longb(&res, 0);
-	counta = -1;
-	add = 0;
-	while (++counta < b->size)
-	{
-		countb = -1;
-		while (++countb < a->size)
-		{
-			val = res.val[counta + countb] + a->val[counta] * b->val[countb] + add;
-			if (val < a->base)
-			{
-				res.val[counta + countb] = val;
-				add = 0;
-			}
-			else
-			{
-				res.val[counta + countb] = val % res.base;
-				add = val / res.base;
-			}
-		}
-	}
-	if (add)
-		res.val[res.size++] = add;
-	memcpy(a, &res, sizeof(res));
-	return (1);
-}
-
-int		mult_longb_uint(t_longb *a, unsigned int b)
-{
-	size_t		counta;
-	t_ullong	val;
-	size_t		add;
-
-	counta = 0;
-	add = 0;
-	while (counta < a->size)
-	{
-		val = (t_ullong)a->val[counta] * (t_ullong)b + (t_ullong)add;
-		if (val < a->base)
-		{
-			a->val[counta] = val;
-			add = 0;
-		}
-		else
-		{
-			a->val[counta] = val % a->base;
-			add = val / a->base;
-		}
-		counta++;
-	}
-	if (add)
-		a->val[a->size++] = add;
 	return (1);
 }
 
