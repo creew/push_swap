@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 20:19:22 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 12:43:21 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 18:14:52 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,8 @@ int 	init_longb(t_longb *longb, t_ulong val)
 
 int		add_longb(t_longb *a, t_longb *b)
 {
-	size_t		max;
-	size_t		count;
+	int			max;
+	int			count;
 	t_ullong	val;
 	size_t		add;
 
@@ -79,114 +79,22 @@ int		div2_longb_uint(t_longb *longb)
 	return (0);
 }
 
-void	print_longb(t_longb *longb)
+int		div_longb_uint(t_longb *longb, t_uint a)
 {
-	size_t		count;
-	size_t		base;
-	t_ullong	val;
+	int			counta;
+	t_ullong	mod;
+	t_ullong	rem;
 
-	count = longb->size;
-	if (count--)
+	mod = 0;
+	counta = longb->size - 1;
+	while (counta >= 0)
 	{
-		val = longb->val[count];
-		base = longb->base / 10;
-		while (base >= 10 && val/base == 0)
-		{
-			val %= base;
-			base /= 10;
-		}
-		while (base >= 10)
-		{
-			ft_putchar(val / base + '0');
-			val %= base;
-			base /= 10;
-		}
-		ft_putchar(val + '0');
-		while(count--)
-		{
-			val = longb->val[count];
-			base = longb->base / 10;
-			while (base >= 10)
-			{
-				ft_putchar(val / base + '0');
-				val %= base;
-				base /= 10;
-			}
-			ft_putchar(val + '0');
-		}
+		rem = longb->val[counta] % a;
+		longb->val[counta] = (longb->val[counta] + mod * longb->base) / a;
+		if (!longb->val[counta] && counta == longb->size - 1)
+			longb->size--;
+		mod = rem;
+		counta--;
 	}
-	else
-	{
-		ft_putchar('0');
-	}
-}
-
-int 	get_longb_len(t_longb *longb)
-{
-	int len;
-	t_uint val;
-
-	len = 0;
-	if (longb->size)
-	{
-		if (longb->size != 1)
-			len += ((longb->size - 1) * 9);
-		val = longb->val[longb->size - 1];
-		while (val)
-		{
-			len++;
-			val/=10;
-		}
-	}
-	return (len);
-}
-
-int		calc_big_double(t_longb *longb, t_ullong val, t_ullong bits)
-{
-	t_longb 	help;
-	t_ullong	size;
-
-	size = 0;
-	init_longb(longb, 0);
-	init_longb(&help, 1);
-	while (size < bits && size < 64)
-	{
-		if (val & (1ull << size))
-			add_longb(longb, &help);
-		add_longb(&help, &help);
-		size++;
-	}
-	while (size < bits)
-	{
-		add_longb(longb, longb);
-		size++;
-	}
-	return (0);
-}
-
-int		calc_big_double1(t_longb *longb, t_ullong val, long bits)
-{
-	t_longb		bignum;
-	int			size;
-
-	size = -1;
-	memset(&bignum, 0, sizeof(bignum));
-	init_longb(&bignum, 0);
-	bignum.val[bignum.max_size - 1] = 5 * 1000 * 1000 * 100;
-	bignum.size = bignum.max_size;
-	init_longb(longb, 0);
-	while (bits < 0)
-	{
-		div2_longb_uint(&bignum);
-		bits++;
-	}
-	while (bits < 64)
-	{
-		if (val & (1ull << (63 - bits)))
-			add_longb(longb, &bignum);
-		div2_longb_uint(&bignum);
-		bits++;
-	}
-	printf("len: %d\n", get_longb_len(&bignum));
 	return (0);
 }

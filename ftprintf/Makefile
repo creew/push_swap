@@ -6,7 +6,7 @@
 #    By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/03 09:49:46 by eklompus          #+#    #+#              #
-#    Updated: 2019/09/13 18:48:15 by eklompus         ###   ########.fr        #
+#    Updated: 2019/09/18 17:49:45 by eklompus         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,11 @@ SRCS = 	ft_printf.c \
 		add_unsigned.c \
 		parse_unsigned.c \
 		parse_signed.c \
-		parse_double.c
+		parse_double.c \
+		add_double.c \
+		calc_double.c \
+		long_ariph.c
+
 
 OBJ = $(SRCS:.c=.o)
 
@@ -37,7 +41,7 @@ INC = ./ \
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -Werror $(addprefix -I, $(INC))
+CC_FLAGS = -Wall -Wextra -Werror -g $(addprefix -I, $(INC))
 
 all: $(NAME)
 

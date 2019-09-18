@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/14 10:48:33 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/17 00:51:32 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 17:12:11 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void test_longa(t_ullong val, t_ullong bits)
 void test_longb(t_ullong val, t_ullong bits)
 {
 	t_longb longb;
-	
+
 	calc_big_double1(&longb, val, bits);
 	print_longb(&longb);
 	printf("\n");
@@ -54,32 +54,32 @@ void test_double(long double va)
 	long		exp;
 	long		shift;
 	t_ldouble	a;
-	
+
 	a.val = va;
 	print_bits(a.bldbl.sign);
 	print_bits(a.bldbl.exp);
 	print_bits(a.bldbl.man);
-	exp = a.bldbl.exp - 16383;
+	exp = a.bldbl.exp - 16382;
 	if (exp < 0)
 		lval = 0;
 	else if (exp < 64)
-		lval = a.bldbl.man >> (63 - exp);
+		lval = a.bldbl.man >> (64 - exp);
 	else
 		lval = a.bldbl.man;
 	if (exp < 0)
 		rval = a.bldbl.man;
-	else if (exp < 63)
-		rval = a.bldbl.man << (exp + 1);
+	else if (exp < 64)
+		rval = a.bldbl.man << (exp);
 	else
-		rval = 0;		
+		rval = 0;
 	printf("lval: %lu\n", lval);
 	print_bits(lval);
 	printf("rval: %lu\n", rval);
 	print_bits(rval);
 	printf("exp: %ld\n", exp);
 	printf("%.20Lf\n", va);
-	test_longa(lval, lval ? exp + 1 : 0);
-	test_longb(rval, exp < 0 ? exp + 1: 0);
+	test_longa(lval, exp < 0 ? 0 : exp);
+	test_longb(rval, exp < 0 ? exp: 0);
 }
 
 int main(int ac, char *av[])

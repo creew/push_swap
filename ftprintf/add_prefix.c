@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 10:37:24 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/13 19:19:36 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 14:19:27 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,20 +68,12 @@ static int	add_dec_prefix(t_print *print)
 	int		writed;
 
 	writed = 0;
-	if (print->is_val)
-	{
-		if (print->is_neg)
-			writed += add_to_out(print, '-');
-		else if (print->flags & FLAG_SPACE)
-			writed += add_to_out(print, ' ');
-		else if (print->flags & FLAG_PLUS)
-			writed += add_to_out(print, '+');
-	}
-	else
-	{
-		if (print->flags & FLAG_PLUS)
-			writed += add_to_out(print, '+');
-	}
+	if (print->is_neg)
+		writed += add_to_out(print, '-');
+	else if (print->flags & FLAG_SPACE)
+		writed += add_to_out(print, ' ');
+	else if (print->flags & FLAG_PLUS)
+		writed += add_to_out(print, '+');
 	return (writed);
 }
 
@@ -98,6 +90,8 @@ int			add_prefix(t_print *print)
 		writed += add_dec_prefix(print);
 	if (print->type == 'b')
 		writed += add_bin_prefix(print);
+	if (print->type == 'f' || print->type == 'F')
+		writed += add_dec_prefix(print);
 	print->pre_len = writed;
 	return (writed);
 }

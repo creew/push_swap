@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 16:50:30 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/13 19:03:27 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 16:50:19 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,19 @@ int				ft_printf(const char *format, ...)
 	return (out);
 }
 
-int				main(void)
+#include <stdlib.h>
+
+int				main(int ac, char *av[])
 {
 	int				len;
 	//unsigned int	xren;
 
 	//xren = 0x0001AA00;
 	//char *str = "hello";
-	unsigned long long dr = 0x0f;
-	len = ft_printf("%b str:%s\n", dr, "sad");
+	long double dr = 3.324233;
+	if (ac > 1)
+		dr = atof(av[1]);
+	len = ft_printf("%Lf str:%s\n", dr, "sad");
 	printf("len: %d\n", len);
 	return (0);
 }

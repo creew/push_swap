@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:36:34 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 12:39:10 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 18:18:21 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@
 # include <string.h>
 # include <wchar.h>
 # include "libft.h"
+
+# define BUF_SIZE	1024
 
 # define FLAGS_STR "+- #0"
 # define FLAG_PLUS	1
@@ -52,30 +54,20 @@ typedef long double			t_ldouble;
 
 typedef unsigned int		t_uint;
 
-typedef union	u_bldouble
+typedef union  u_bldouble
 {
-	t_ldouble		n;
-	struct		s_bit_ldouble {
-		t_ulong		bit_m:	64;
-		t_ulong		bit_e:	15;
-		t_ulong		bit_es:	1;
-	}				s_bitd;
-}				t_bldouble;
-
-typedef union  u_ldouble
-{
-    long double	val;
+    t_ldouble	val;
     struct b_double
     {
         t_ulong	man:64;
         t_ulong	exp:15;
         t_ulong	sign:1;
     }			bldbl;
-}               t_ldouble;
+}               t_bldouble;
 
 typedef struct	s_print
 {
-	char		buf[1024];
+	char		buf[BUF_SIZE];
 	size_t		buf_len;
 
 	int			type;
@@ -87,6 +79,7 @@ typedef struct	s_print
 	int			pre_len;
 	int			pad_len;
 	int			str_len;
+	int			point_len;
 	int			is_val;
 	int			is_neg;
 }				t_print;
@@ -95,15 +88,17 @@ typedef struct	s_fpoint
 {
 	t_ulong		is_neg;
 	long		shift;
-	t_ulong		exp;
+	long		exp;
 	t_ulong		mant;
+	t_llong		lval;
+	t_llong		rval;
 }				t_fpoint;
 
 typedef struct  s_longb
 {
     t_uint      val[65];
-    size_t      max_size;
-    size_t      size;
+    int			max_size;
+    int			size;
     size_t      base;
 }               t_longb;
 
@@ -137,4 +132,14 @@ int				parse_signed_base(t_print *print, va_list *ptr, int base);
 int				parse_double(t_print *print, va_list *ptr);
 
 t_ullong		reverse_bits(t_ullong data, int bits);
+
+int				calc_lval(t_fpoint *fdata, t_longb *lval);
+int				calc_rval(t_fpoint *fdata, t_longb *rval, int *maxlen);
+int				add_double(t_print *print, t_fpoint *fdata, t_longb *lval);
+
+int				init_longb(t_longb *longb, t_ulong val);
+int				add_longb(t_longb *a, t_longb *b);
+int				div2_longb_uint(t_longb *longb);
+int				div_longb_uint(t_longb *longb, t_uint a);
+
 #endif

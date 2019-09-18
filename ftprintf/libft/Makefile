@@ -6,13 +6,13 @@
 #    By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/03 09:49:46 by eklompus          #+#    #+#              #
-#    Updated: 2019/09/13 18:38:01 by eklompus         ###   ########.fr        #
+#    Updated: 2019/09/18 17:50:31 by eklompus         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = libft.a
 CC = gcc
-CC_FLAGS = -Wall -Wextra -Werror
+CC_FLAGS = -Wall -Wextra -Werror -g
 OBJ = $(SRCS:.c=.o)
 SRCS = $(wildcard ft_*.c)
 
