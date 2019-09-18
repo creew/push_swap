@@ -6,13 +6,13 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:24:24 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 18:11:02 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 23:40:13 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-static int		get_longb_len(t_longb *longb)
+int		get_longb_len(t_longb *longb)
 {
 	int			len;
 	t_uint		val;

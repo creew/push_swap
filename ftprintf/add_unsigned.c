@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 15:56:05 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/13 19:31:51 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 22:57:04 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int		add_unsigned_base(t_print *print, t_ullong val, size_t base)
 	int			writed;
 	t_ullong	pow;
 	int			len;
-	int			last;
 	int			count;
 
 	count = -1;
@@ -57,7 +56,6 @@ int		add_unsigned_base(t_print *print, t_ullong val, size_t base)
 	while (--len > 0)
 	{
 		writed += add_to_out(print, get_char_base(print, val / pow));
-		last = (val %= pow);
 		pow /= base;
 	}
 	writed += add_to_out(print, get_char_base(print, val % base));

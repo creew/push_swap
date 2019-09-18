@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:36:34 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 18:23:53 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 23:40:28 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ int				parse_character(char type, t_print *print, va_list *ptr);
 int				parse_string(char type, t_print *print, va_list *ptr);
 
 int				add_c_with_flag(t_print *print, char *c, int len);
-int				add_wc_with_flag(t_print *print, wint_t *wc, int len);
+int				add_wc_with_flag(t_print *print, wchar_t *wc, int len);
 int				add_pre_paddings(t_print *print);
 int				add_post_paddings(t_print *print);
 int				add_prefix(t_print *print);
@@ -142,4 +142,5 @@ int				add_longb(t_longb *a, t_longb *b);
 int				div2_longb_uint(t_longb *longb);
 int				div_longb_uint(t_longb *longb, t_uint a);
 int				init_max_val(t_longb *val);
+int				get_longb_len(t_longb *longb);
 #endif
