@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:36:34 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 18:18:21 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/18 18:23:53 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,5 +141,5 @@ int				init_longb(t_longb *longb, t_ulong val);
 int				add_longb(t_longb *a, t_longb *b);
 int				div2_longb_uint(t_longb *longb);
 int				div_longb_uint(t_longb *longb, t_uint a);
-
+int				init_max_val(t_longb *val);
 #endif
