@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:36:34 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 18:21:59 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 18:48:40 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -135,8 +135,6 @@ int				add_unsigned_base(t_print *print, unsigned long long val,
 int				parse_unsigned_base(t_print *print, va_list *ptr, int base);
 int				parse_signed_base(t_print *print, va_list *ptr, int base);
 int				parse_double(t_print *print, va_list *ptr);
-
-t_ullong		reverse_bits(t_ullong data, int bits);
 
 int				calc_lval(t_fpoint *fdata, t_longb *lval);
 int				calc_rval(t_fpoint *fdata, t_longb *rval);

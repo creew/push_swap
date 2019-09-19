@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 17:17:51 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 18:19:09 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 18:46:18 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ unsigned long long	get_ullong_val(t_print *print, va_list *ptr)
 	if (print->type == 'p')
 		val = (unsigned long long)va_arg(*ptr, void *);
 	else if (print->lenmod == LENMOD_HH)
-		val = va_arg(*ptr, unsigned int);
+		val = va_arg(*ptr, unsigned int) & UCHAR_MASK;
 	else if (print->lenmod == LENMOD_H)
 		val = va_arg(*ptr, unsigned int);
 	else if (print->lenmod == LENMOD_L)
