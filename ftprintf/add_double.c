@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 14:23:40 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 11:36:40 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 19:41:21 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int		print_longb(t_print *print, t_longb *longb, int len)
 	{
 		val = longb->val[count];
 		base = longb->base / 10;
-		while (base >= 10 && val/base == 0)
+		while (base >= 10 && val / base == 0)
 		{
 			val %= base;
 			base /= 10;
@@ -41,7 +41,7 @@ int		print_longb(t_print *print, t_longb *longb, int len)
 		writed += add_to_out(print, val + '0');
 		if (writed == len)
 			return (writed);
-		while(count--)
+		while (count--)
 		{
 			val = longb->val[count];
 			base = longb->base / 10;
@@ -66,6 +66,7 @@ int		print_longb(t_print *print, t_longb *longb, int len)
 	}
 	return (writed);
 }
+
 int		round_double(t_print *print, t_fpoint *fdata,
 						t_longb *lval, t_longb *rval)
 {

@@ -6,13 +6,13 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 20:19:22 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 11:24:35 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 19:46:28 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-int 	init_longb(t_longb *longb, t_ulong val)
+int		init_longb(t_longb *longb, t_ulong val)
 {
 	longb->size = 0;
 	longb->max_size = (sizeof(longb->val) / sizeof(longb->val[0])) - 1;
@@ -21,7 +21,7 @@ int 	init_longb(t_longb *longb, t_ulong val)
 		longb->val[longb->size++] = 0;
 	else
 	{
-		while(val)
+		while (val)
 		{
 			longb->val[longb->size++] = val % longb->base;
 			val /= longb->base;

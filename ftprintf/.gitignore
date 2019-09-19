@@ -1,5 +1,7 @@
 *.o
 *.out
-.vscode
+.vscode/
+.idea/
 printf
 *.a
+pft/

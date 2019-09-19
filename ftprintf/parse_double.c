@@ -6,16 +6,17 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 10:19:14 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 11:34:49 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 19:50:00 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "float.h"
 
-int print_bits(t_ullong a)
+int			print_bits(t_ullong a)
 {
 	int count;
+
 	count = 0;
 	while (count < 64)
 	{
@@ -28,7 +29,7 @@ int print_bits(t_ullong a)
 	return (0);
 }
 
-void	get_double_val(t_print *print, va_list *ptr, t_fpoint *fdata)
+void		get_double_val(t_print *print, va_list *ptr, t_fpoint *fdata)
 {
 	t_bldouble	ld;
 	long		exp;
@@ -63,9 +64,6 @@ void	get_double_val(t_print *print, va_list *ptr, t_fpoint *fdata)
 	print_bits(fdata->rval);
 }
 
-
-
-
 static int	calc_dpre_len(t_print *print, t_fpoint *fdata)
 {
 	int		pre_len;
@@ -77,13 +75,12 @@ static int	calc_dpre_len(t_print *print, t_fpoint *fdata)
 	return (pre_len);
 }
 
-int	parse_double(t_print *print, va_list *ptr)
+int			parse_double(t_print *print, va_list *ptr)
 {
 	int				writed;
 	t_fpoint		val;
 	t_longb			lval;
 	t_longb			rval;
-
 
 	writed = 0;
 	print->point_len = print->is_precision ? print->precision : 6;

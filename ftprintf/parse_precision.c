@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 21:12:40 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/13 19:10:11 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 19:12:12 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,11 @@ int		parse_precision(t_print *print, const char *format, va_list *ptr)
 		{
 			c = format[count];
 			if (c == '*' && (f = 1))
+			{
 				print->precision = va_arg(*ptr, int);
+				if (print->precision < 0)
+					print->precision = 0;
+			}
 			else
 			{
 				if (f && !(f = 0))
