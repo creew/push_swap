@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:36:34 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 23:40:28 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 18:21:59 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,11 @@
 # define LENMOD_Z	7
 # define LENMOD_BL	8
 
-typedef unsigned long long t_ullong;
+# define UCHAR_MASK		((1ull << (sizeof(unsigned char) * 8)) - 1)
+# define USHORT_MASK	((1ull << (sizeof(unsigned short) * 8)) - 1)
+# define UINT_MASK		((1ull << (sizeof(unsigned int) * 8)) - 1)
+
+typedef unsigned long long	t_ullong;
 
 typedef unsigned long		t_ulong;
 
@@ -54,16 +58,16 @@ typedef long double			t_ldouble;
 
 typedef unsigned int		t_uint;
 
-typedef union  u_bldouble
+typedef union	u_bldouble
 {
-    t_ldouble	val;
-    struct b_double
-    {
-        t_ulong	man:64;
-        t_ulong	exp:15;
-        t_ulong	sign:1;
-    }			bldbl;
-}               t_bldouble;
+	t_ldouble	val;
+	struct		s_double
+	{
+		t_ulong	man:64;
+		t_ulong	exp:15;
+		t_ulong	sign:1;
+	}			bldbl;
+}				t_bldouble;
 
 typedef struct	s_print
 {
@@ -82,6 +86,7 @@ typedef struct	s_print
 	int			point_len;
 	int			is_val;
 	int			is_neg;
+	int			max_rlen;
 }				t_print;
 
 typedef struct	s_fpoint
@@ -94,13 +99,13 @@ typedef struct	s_fpoint
 	t_llong		rval;
 }				t_fpoint;
 
-typedef struct  s_longb
+typedef struct	s_longb
 {
-    t_uint      val[65];
-    int			max_size;
-    int			size;
-    size_t      base;
-}               t_longb;
+	t_uint		val[66];
+	int			max_size;
+	int			size;
+	size_t		base;
+}				t_longb;
 
 int				add_to_out(t_print *print, char c);
 int				addw_to_out(t_print *print, wint_t wc);
@@ -134,13 +139,18 @@ int				parse_double(t_print *print, va_list *ptr);
 t_ullong		reverse_bits(t_ullong data, int bits);
 
 int				calc_lval(t_fpoint *fdata, t_longb *lval);
-int				calc_rval(t_fpoint *fdata, t_longb *rval, int *maxlen);
-int				add_double(t_print *print, t_fpoint *fdata, t_longb *lval);
+int				calc_rval(t_fpoint *fdata, t_longb *rval);
+int				add_double(t_print *print, t_longb *lval, t_longb *rval);
+int				round_double(t_print *print, t_fpoint *fdata,
+						t_longb *lval, t_longb *rval);
 
 int				init_longb(t_longb *longb, t_ulong val);
 int				add_longb(t_longb *a, t_longb *b);
 int				div2_longb_uint(t_longb *longb);
 int				div_longb_uint(t_longb *longb, t_uint a);
+int				add_longb_uint(t_longb *a, t_uint b);
+
 int				init_max_val(t_longb *val);
 int				get_longb_len(t_longb *longb);
+void			add_precision(t_print *print);
 #endif

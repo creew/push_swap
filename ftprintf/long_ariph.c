@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 20:19:22 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 18:14:52 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 11:24:35 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 int 	init_longb(t_longb *longb, t_ulong val)
 {
 	longb->size = 0;
-	longb->max_size = sizeof(longb->val) / sizeof(longb->val[0]);
+	longb->max_size = (sizeof(longb->val) / sizeof(longb->val[0])) - 1;
 	longb->base = 1 * 1000 * 1000 * 1000;
 	if (!val)
 		longb->val[longb->size++] = 0;
@@ -37,12 +37,12 @@ int		add_longb(t_longb *a, t_longb *b)
 	t_ullong	val;
 	size_t		add;
 
-	count = 0;
+	count = -1;
 	add = 0;
 	max = a->size;
 	if (b->size > max)
 		max = b->size;
-	while (count < max)
+	while (++count < max)
 	{
 		val = (count < a->size ? a->val[count] : (size_t)0) +
 				(count < b->size ? b->val[count] : (size_t)0) + add;
@@ -52,10 +52,34 @@ int		add_longb(t_longb *a, t_longb *b)
 			a->val[count] = val;
 		else if ((add = 1))
 			a->val[count] = val - a->base;
-		count++;
 	}
 	if (add)
 		a->val[a->size++] = 1;
+	if (a->size > a->max_size)
+		return (0);
+	return (1);
+}
+
+int		add_longb_uint(t_longb *a, t_uint b)
+{
+	int			count;
+	t_ullong	val;
+	t_uint		add;
+
+	count = -1;
+	add = b;
+	while (++count < a->size)
+	{
+		val = a->val[count] + add;
+		if (val < a->base && !(add = 0))
+			a->val[count] = val;
+		else if ((add = 1))
+			a->val[count] = val - a->base;
+	}
+	if (add)
+		a->val[a->size++] = 1;
+	if (a->size > a->max_size)
+		return (0);
 	return (1);
 }
 
@@ -76,7 +100,7 @@ int		div2_longb_uint(t_longb *longb)
 		mod = rem;
 		counta--;
 	}
-	return (0);
+	return (1);
 }
 
 int		div_longb_uint(t_longb *longb, t_uint a)
@@ -96,5 +120,5 @@ int		div_longb_uint(t_longb *longb, t_uint a)
 		mod = rem;
 		counta--;
 	}
-	return (0);
+	return (1);
 }

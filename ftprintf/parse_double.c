@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 10:19:14 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 18:12:31 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 11:34:49 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,17 +82,20 @@ int	parse_double(t_print *print, va_list *ptr)
 	int				writed;
 	t_fpoint		val;
 	t_longb			lval;
-	writed = 0;
+	t_longb			rval;
 
-	get_double_val(print, ptr, &val);
-	print->str_len = calc_lval(&val, &lval);
-	print->pre_len = calc_dpre_len(print, &val);
+
+	writed = 0;
 	print->point_len = print->is_precision ? print->precision : 6;
 	if (print->point_len)
 		print->point_len++;
+	get_double_val(print, ptr, &val);
+	round_double(print, &val, &lval, &rval);
+	print->str_len = get_longb_len(&lval);
+	print->pre_len = calc_dpre_len(print, &val);
 	print->str_len += print->point_len;
 	writed += add_pre_paddings(print);
-	writed += add_double(print, &val, &lval);
+	writed += add_double(print, &lval, &rval);
 	writed += add_post_paddings(print);
 	return (writed);
 }

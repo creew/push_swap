@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 14:23:40 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 23:41:53 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 11:36:40 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,34 +66,40 @@ int		print_longb(t_print *print, t_longb *longb, int len)
 	}
 	return (writed);
 }
-
-
-
-int		add_double(t_print *print, t_fpoint *fdata, t_longb *lval)
+int		round_double(t_print *print, t_fpoint *fdata,
+						t_longb *lval, t_longb *rval)
 {
-	t_longb		rval;
 	t_longb		round;
+	int			order;
+
+	calc_lval(fdata, lval);
+	calc_rval(fdata, rval);
+	init_max_val(&round);
+	print->max_rlen = get_longb_len(&round);
+	order = 1;
+	while (order++ < print->point_len)
+		div_longb_uint(&round, 10);
+	if (!add_longb(rval, &round))
+		add_longb_uint(lval, 1);
+	return (0);
+}
+
+int		add_double(t_print *print, t_longb *lval, t_longb *rval)
+{
 	int			writed;
 	int			r_len;
-	int			r_maxlen;
+	int			lpoint;
 
 	writed = print_longb(print, lval, -1);
 	if (print->point_len)
 	{
+		lpoint = print->point_len - 1;
 		writed += add_to_out(print, '.');
-		calc_rval(fdata, &rval, &r_maxlen);
-		init_max_val(&round);
-		r_len = 1;
-		while (r_len++ < print->point_len)
-			div_longb_uint(&round, 10);
-		add_longb(&rval, &round);
-		r_len = get_longb_len(&rval);
-		while (r_len < r_maxlen)
-		{
+		r_len = get_longb_len(rval);
+		while (r_len++ < print->max_rlen && lpoint-- > 0)
 			writed += add_to_out(print, '0');
-			r_len++;
-		}
-		writed += print_longb(print, &rval, print->point_len - 1);
+		if (lpoint > 0)
+			writed += print_longb(print, rval, lpoint);
 	}
 	return (writed);
 }

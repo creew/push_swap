@@ -6,7 +6,7 @@
 #    By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/03 09:49:46 by eklompus          #+#    #+#              #
-#    Updated: 2019/09/18 23:04:38 by eklompus         ###   ########.fr        #
+#    Updated: 2019/09/19 16:13:13 by eklompus         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -46,8 +46,8 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	make -C ./libft
-	$(CC) $(CC_FLAGS) -o $@ $^ -Llibft -lft
-#	ar rc $@ $^ libft/*.o
+#	$(CC) $(CC_FLAGS) -o $@ $^ -Llibft -lft
+	ar rc $@ $^ libft/*.o
 
 %.o: %.c ./ft_printf.h
 	$(CC) $(CC_FLAGS) -c $< -o $@

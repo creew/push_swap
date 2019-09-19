@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:24:24 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 23:40:13 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 11:12:53 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,16 @@ int			init_max_val(t_longb *val)
 	init_longb(val, 0);
 	val->val[val->max_size - 1] = 5 * 1000 * 1000 * 100;
 	val->size = val->max_size;
-	return (get_longb_len(val));
+	return (0);
 }
 
-int			calc_rval(t_fpoint *fdata,	t_longb *rval, int *maxlen)
+int			calc_rval(t_fpoint *fdata,	t_longb *rval)
 {
 	t_longb		bignum;
 	long		bits;
 
 	bits = fdata->exp > 0 ? 0 : fdata->exp;
-	*maxlen = init_max_val(&bignum);
+	init_max_val(&bignum);
 	init_longb(rval, 0);
 	while (bits < 0)
 	{
@@ -92,5 +92,5 @@ int			calc_rval(t_fpoint *fdata,	t_longb *rval, int *maxlen)
 		div2_longb_uint(&bignum);
 		bits++;
 	}
-	return (get_longb_len(rval));
+	return (0);
 }

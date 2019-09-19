@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 20:30:49 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/18 22:58:00 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 18:25:08 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,10 +57,10 @@ int				parse_signed_base(t_print *print, va_list *ptr, int base)
 		print->is_val = 1;
 	print->str_len = get_unsigned_length(val, base, NULL);
 	print->pre_len = calc_pre_len(print);
-	if (print->is_precision && print->precision > print->str_len)
-		print->str_len = print->precision;
+	add_precision(print);
 	writed += add_pre_paddings(print);
-	writed += add_unsigned_base(print, val, base);
+	if (print->str_len)
+		writed += add_unsigned_base(print, val, base);
 	writed += add_post_paddings(print);
 	return (writed);
 }

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 17:17:51 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/13 19:14:43 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/19 18:19:09 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,19 @@ static int			calc_pre_len(t_print *print)
 	return (pre_len);
 }
 
+void				add_precision(t_print *print)
+{
+	if (print->is_precision)
+	{
+		if (print->precision > print->str_len || !print->is_val)
+			print->str_len = print->precision;
+		if (print->type != 'p')
+		{
+			print->flags &= ~FLAG_NULL;
+		}
+	}
+}
+
 int					parse_unsigned_base(t_print *print, va_list *ptr, int base)
 {
 	t_ullong	val;
@@ -61,10 +74,10 @@ int					parse_unsigned_base(t_print *print, va_list *ptr, int base)
 		print->is_val = 1;
 	print->str_len = get_unsigned_length(val, base, NULL);
 	print->pre_len = calc_pre_len(print);
-	if (print->is_precision && print->precision > print->str_len)
-		print->str_len = print->precision;
+	add_precision(print);
 	writed += add_pre_paddings(print);
-	writed += add_unsigned_base(print, val, base);
+	if (print->str_len)
+		writed += add_unsigned_base(print, val, base);
 	writed += add_post_paddings(print);
 	return (writed);
 }
