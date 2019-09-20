@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 09:41:00 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/13 19:18:41 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/20 19:45:47 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int		parse_format(t_print *print, va_list *ptr)
 		out += parse_signed_base(print, ptr, 10);
 	else if (type == 'f' || type == 'F')
 		out += parse_double(print, ptr);
-	else
+	else if (type)
 		out += add_c_with_flag(print, &type, 1);
 	return (out);
 }

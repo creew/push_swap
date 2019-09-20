@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 17:17:51 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 20:34:44 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/20 19:49:16 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ unsigned long long	get_ullong_val(t_print *print, va_list *ptr)
 	if (print->type == 'p')
 		val = (unsigned long long)va_arg(*ptr, void *);
 	else if (print->lenmod == LENMOD_HH)
-		val = va_arg(*ptr, unsigned int);
+		val = (unsigned char)va_arg(*ptr, unsigned int);
 	else if (print->lenmod == LENMOD_H)
-		val = va_arg(*ptr, unsigned int);
-	else if (print->lenmod == LENMOD_L)
+		val = (unsigned short)va_arg(*ptr, unsigned int);
+	else if (print->lenmod == LENMOD_L || print->lenmod == LENMOD_J)
 		val = va_arg(*ptr, unsigned long);
 	else if (print->lenmod == LENMOD_LL)
 		val = va_arg(*ptr, unsigned long long);
@@ -45,8 +45,12 @@ static int			calc_pre_len(t_print *print)
 	}
 	if (print->type == 'p')
 		pre_len = 2;
-	if (print->type == 'o' && print->flags & FLAG_HASH && print->is_val)
-		pre_len = 1;
+	if (print->type == 'o' && print->flags & FLAG_HASH)
+	{
+		if (print->str_len >= print->precision &&
+			(print->is_val || print->is_precision))
+			pre_len = 1;
+	}
 	return (pre_len);
 }
 
@@ -54,9 +58,9 @@ void				add_precision(t_print *print)
 {
 	if (print->is_precision)
 	{
-		if (print->precision > (print->str_len + print->pre_len)
-			|| !print->is_val)
-			print->str_len = print->precision - print->pre_len;
+		if (print->precision > print->str_len ||
+			(!print->is_val && print->precision == 0))
+			print->str_len = print->precision;
 		if (print->type != 'p')
 		{
 			print->flags &= ~FLAG_NULL;
@@ -77,7 +81,8 @@ int					parse_unsigned_base(t_print *print, va_list *ptr, int base)
 	print->pre_len = calc_pre_len(print);
 	add_precision(print);
 	writed += add_pre_paddings(print);
-	writed += add_unsigned_base(print, val, base);
+	if (print->str_len)
+		writed += add_unsigned_base(print, val, base);
 	writed += add_post_paddings(print);
 	return (writed);
 }

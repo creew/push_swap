@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:36:34 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 18:48:40 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/20 20:16:44 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 # include <wchar.h>
 # include "libft.h"
 
-# define BUF_SIZE	1024
+# define BUF_SIZE	42
 
 # define FLAGS_STR "+- #0"
 # define FLAG_PLUS	1
@@ -43,10 +43,6 @@
 # define LENMOD_T	6
 # define LENMOD_Z	7
 # define LENMOD_BL	8
-
-# define UCHAR_MASK		((1ull << (sizeof(unsigned char) * 8)) - 1)
-# define USHORT_MASK	((1ull << (sizeof(unsigned short) * 8)) - 1)
-# define UINT_MASK		((1ull << (sizeof(unsigned int) * 8)) - 1)
 
 typedef unsigned long long	t_ullong;
 
@@ -106,6 +102,8 @@ typedef struct	s_longb
 	int			size;
 	size_t		base;
 }				t_longb;
+
+int				ft_printf(const char *format, ...);
 
 int				add_to_out(t_print *print, char c);
 int				addw_to_out(t_print *print, wint_t wc);

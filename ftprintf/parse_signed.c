@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 20:30:49 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 20:13:10 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/20 20:17:19 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,17 +17,17 @@ t_llong			get_llong_val(t_print *print, va_list *ptr)
 	t_llong val;
 
 	if (print->lenmod == LENMOD_HH)
-		val = va_arg(*ptr, int);
+		val = (char)va_arg(*ptr, int);
 	else if (print->lenmod == LENMOD_H)
-		val = va_arg(*ptr, int);
-	else if (print->lenmod == LENMOD_L)
+		val = (short)va_arg(*ptr, int);
+	else if (print->lenmod == LENMOD_L || print->lenmod == LENMOD_J)
 		val = va_arg(*ptr, long);
 	else if (print->lenmod == LENMOD_LL)
 		val = va_arg(*ptr, long long);
 	else if (print->lenmod == LENMOD_T)
 		val = va_arg(*ptr, size_t);
 	else
-		val = va_arg(*ptr, int);
+		val = (int)va_arg(*ptr, int);
 	return (val);
 }
 

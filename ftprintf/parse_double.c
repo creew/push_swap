@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 10:19:14 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 19:50:00 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/20 19:45:00 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,15 +39,10 @@ void		get_double_val(t_print *print, va_list *ptr, t_fpoint *fdata)
 	else
 		ld.val = va_arg(*ptr, double);
 	fdata->exp = ld.bldbl.exp;
-	print_bits(fdata->exp);
 	fdata->is_neg = ld.bldbl.sign;
 	fdata->mant = ld.bldbl.man;
-	print_bits(fdata->mant);
 	exp = ld.bldbl.exp - 16382;
 	fdata->exp = exp;
-	ft_putstr("exp:");
-	ft_putnbr(exp);
-	ft_putchar('\n');
 	if (exp < 0)
 		fdata->lval = 0;
 	else if (exp < 64)
@@ -60,8 +55,6 @@ void		get_double_val(t_print *print, va_list *ptr, t_fpoint *fdata)
 		fdata->rval = fdata->mant << exp;
 	else
 		fdata->rval = 0;
-	print_bits(fdata->lval);
-	print_bits(fdata->rval);
 }
 
 static int	calc_dpre_len(t_print *print, t_fpoint *fdata)
@@ -84,10 +77,11 @@ int			parse_double(t_print *print, va_list *ptr)
 
 	writed = 0;
 	print->point_len = print->is_precision ? print->precision : 6;
-	if (print->point_len)
+	if (print->point_len || print->flags & FLAG_HASH)
 		print->point_len++;
 	get_double_val(print, ptr, &val);
 	round_double(print, &val, &lval, &rval);
+	print->is_neg = val.is_neg;
 	print->str_len = get_longb_len(&lval);
 	print->pre_len = calc_dpre_len(print, &val);
 	print->str_len += print->point_len;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 09:48:17 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/08 17:28:34 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/20 19:47:12 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 
 # define ABS(a) ((a) < 0 ? -(a) : (a))
 # define MIN(a, b) ((a) < (b) ? (a) : (b))
+# define MAX(a, b) ((a) > (b) ? (a) : (b))
 # define FT_LMAX (9223372036854775807ul)
 # define FT_LMIN (9223372036854775808ul)
 

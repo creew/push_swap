@@ -6,62 +6,52 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 14:23:40 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 19:41:21 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/20 20:52:22 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
+int		check_writed(t_print *print, char c, int *writed, int len)
+{
+	*writed += add_to_out(print, c);
+	return (*writed == len);
+}
+
 int		print_longb(t_print *print, t_longb *longb, int len)
 {
-	size_t		count;
+	int			count;
 	size_t		base;
 	t_ullong	val;
 	int			writed;
 
 	writed = 0;
 	count = longb->size;
-	if (count--)
+	while (count--)
 	{
 		val = longb->val[count];
 		base = longb->base / 10;
-		while (base >= 10 && val / base == 0)
+		if (count == longb->size - 1)
 		{
-			val %= base;
-			base /= 10;
-		}
-		while (base >= 10)
-		{
-			writed += add_to_out(print, val / base + '0');
-			if (writed == len)
-				return (writed);
-			val %= base;
-			base /= 10;
-		}
-		writed += add_to_out(print, val + '0');
-		if (writed == len)
-			return (writed);
-		while (count--)
-		{
-			val = longb->val[count];
-			base = longb->base / 10;
-			while (base >= 10)
+			while (base >= 10 && val / base == 0)
 			{
-				writed += add_to_out(print, val / base + '0');
-				if (writed == len)
-					return (writed);
 				val %= base;
 				base /= 10;
 			}
-			writed += add_to_out(print, val + '0');
-			if (writed == len)
-				return (writed);
 		}
+		while (base >= 10)
+		{
+			if (check_writed(print, val / base + '0', &writed, len))
+				return (writed);
+			val %= base;
+			base /= 10;
+		}
+		if (check_writed(print, val + '0', &writed, len))
+			return (writed);
 	}
-	else
+	if (!longb->size)
 	{
-		writed += add_to_out(print, '0');
-		if (writed == len)
+		if (check_writed(print, '0', &writed, len))
 			return (writed);
 	}
 	return (writed);
@@ -94,8 +84,8 @@ int		add_double(t_print *print, t_longb *lval, t_longb *rval)
 	writed = print_longb(print, lval, -1);
 	if (print->point_len)
 	{
-		lpoint = print->point_len - 1;
 		writed += add_to_out(print, '.');
+		lpoint = print->point_len - 1;
 		r_len = get_longb_len(rval);
 		while (r_len++ < print->max_rlen && lpoint-- > 0)
 			writed += add_to_out(print, '0');

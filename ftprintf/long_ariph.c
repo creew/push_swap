@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 20:19:22 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 19:46:28 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/20 19:48:01 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,7 @@ int		add_longb(t_longb *a, t_longb *b)
 
 	count = -1;
 	add = 0;
-	max = a->size;
-	if (b->size > max)
-		max = b->size;
+	max = MAX(a->size, b->size);
 	while (++count < max)
 	{
 		val = (count < a->size ? a->val[count] : (size_t)0) +
@@ -53,10 +51,10 @@ int		add_longb(t_longb *a, t_longb *b)
 		else if ((add = 1))
 			a->val[count] = val - a->base;
 	}
+	if (a->size > a->max_size || (add && a->size >= a->max_size))
+		return (0);
 	if (add)
 		a->val[a->size++] = 1;
-	if (a->size > a->max_size)
-		return (0);
 	return (1);
 }
 

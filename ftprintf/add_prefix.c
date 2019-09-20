@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 10:37:24 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 20:31:19 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/20 13:29:36 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,11 +39,8 @@ static int	add_oct_prefix(t_print *print)
 	int		writed;
 
 	writed = 0;
-	if (print->is_val)
-	{
-		if (print->flags & FLAG_HASH)
-			writed += add_to_out(print, '0');
-	}
+	if (print->flags & FLAG_HASH && print->pre_len == 1)
+		writed += add_to_out(print, '0');
 	return (writed);
 }
 

@@ -6,7 +6,7 @@
 #    By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/03 09:49:46 by eklompus          #+#    #+#              #
-#    Updated: 2019/09/19 16:13:13 by eklompus         ###   ########.fr        #
+#    Updated: 2019/09/20 20:38:29 by eklompus         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,6 @@ SRCS = 	ft_printf.c \
 		add_to_out.c \
 		add_paddings.c \
 		add_prefix.c \
-		sub_functions.c \
 		add_unsigned.c \
 		parse_unsigned.c \
 		parse_signed.c \
@@ -33,6 +32,8 @@ SRCS = 	ft_printf.c \
 		calc_double.c \
 		long_ariph.c
 
+SRC_TEST = test.c
+
 
 OBJ = $(SRCS:.c=.o)
 
@@ -40,13 +41,15 @@ INC = ./libft
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -Werror -g $(addprefix -I, $(INC))
+CC_FLAGS = -Wall -Wextra -g $(addprefix -I, $(INC))
 
 all: $(NAME)
 
+test: $(NAME) $(SRC_TEST:.c=.o)
+	$(CC) $(CC_FLAGS) -o $@ $^ -Llibft -lft
+
 $(NAME): $(OBJ)
 	make -C ./libft
-#	$(CC) $(CC_FLAGS) -o $@ $^ -Llibft -lft
 	ar rc $@ $^ libft/*.o
 
 %.o: %.c ./ft_printf.h

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 20:12:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/13 19:19:10 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/20 12:51:53 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static int		is_flag(char c)
 {
-	if (ft_strchr(FLAGS_STR, c))
+	if (c && ft_strchr(FLAGS_STR, c))
 		return (1);
 	return (0);
 }
