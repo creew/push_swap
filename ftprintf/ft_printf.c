@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 16:50:30 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/20 12:30:56 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/22 17:36:40 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ static void		clear_tprint(t_print *print)
 	print->point_len = 0;
 	print->is_val = 0;
 	print->is_neg = 0;
+	print->max_rlen = 0;
 }
 
 static int		parse_str(t_print *print, const char *format, va_list *ptr)
@@ -49,7 +50,7 @@ int				ft_printf(const char *format, ...)
 
 	out = 0;
 	va_start(ptr, format);
-	ft_bzero(&print, sizeof(t_print));
+	pf_memset(&print, 0, sizeof(t_print));
 	while (*format)
 	{
 		if (*format == '%')

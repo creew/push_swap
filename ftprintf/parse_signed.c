@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 20:30:49 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/20 20:17:19 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/21 16:11:15 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,22 +24,11 @@ t_llong			get_llong_val(t_print *print, va_list *ptr)
 		val = va_arg(*ptr, long);
 	else if (print->lenmod == LENMOD_LL)
 		val = va_arg(*ptr, long long);
-	else if (print->lenmod == LENMOD_T)
+	else if (print->lenmod == LENMOD_Z)
 		val = va_arg(*ptr, size_t);
 	else
 		val = (int)va_arg(*ptr, int);
 	return (val);
-}
-
-static int		calc_pre_len(t_print *print)
-{
-	int		pre_len;
-
-	pre_len = 0;
-	if (print->is_neg || (print->flags & FLAG_SPACE) ||
-		(print->flags & FLAG_PLUS))
-		pre_len = 1;
-	return (pre_len);
 }
 
 int				parse_signed_base(t_print *print, va_list *ptr, int base)
@@ -50,13 +39,17 @@ int				parse_signed_base(t_print *print, va_list *ptr, int base)
 
 	writed = 0;
 	val1 = get_llong_val(print, ptr);
+	if (print->lenmod == LENMOD_Z)
+	{
+		return (add_pad_and_uval(print, (t_ullong)val1, base));
+	}
 	if (val1 < 0)
 		print->is_neg = 1;
 	val = val1 < 0 ? (t_ullong)(-val1) : (t_ullong)val1;
 	if (val)
 		print->is_val = 1;
 	print->str_len = get_unsigned_length(val, base, NULL);
-	print->pre_len = calc_pre_len(print);
+	print->pre_len = calc_digit_pre_len(print);
 	add_precision(print);
 	writed += add_pre_paddings(print);
 	if (print->str_len)

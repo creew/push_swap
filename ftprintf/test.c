@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/20 12:30:42 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/20 20:34:00 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/22 18:21:26 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,9 @@ int			main(int ac, char *av[])
 	//if (ac > 1)
 	//	xren = atoi(av[1]);
 #define VAL "123456789101112131415"
-#define VAL2 5
-#define VAL3 40
-	const char *format = "%50.10**s";
+#define VAL2 12341234123
+#define VAL3 24
+	const char *format = "%#B";
 	len = ft_printf(format, VAL2, VAL3, VAL);
 	printf("len: %d\n", len);
 	len = printf(format, VAL2, VAL3, VAL);

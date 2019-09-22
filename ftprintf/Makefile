@@ -6,7 +6,7 @@
 #    By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/03 09:49:46 by eklompus          #+#    #+#              #
-#    Updated: 2019/09/20 20:38:29 by eklompus         ###   ########.fr        #
+#    Updated: 2019/09/22 18:20:20 by eklompus         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -34,33 +34,27 @@ SRCS = 	ft_printf.c \
 
 SRC_TEST = test.c
 
-
 OBJ = $(SRCS:.c=.o)
-
-INC = ./libft
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -g $(addprefix -I, $(INC))
+CC_FLAGS = -Wall -Wextra -g
 
 all: $(NAME)
 
 test: $(NAME) $(SRC_TEST:.c=.o)
-	$(CC) $(CC_FLAGS) -o $@ $^ -Llibft -lft
+	$(CC) $(CC_FLAGS) -o $@ $^
 
 $(NAME): $(OBJ)
 	make -C ./libft
-	ar rc $@ $^ libft/*.o
 
 %.o: %.c ./ft_printf.h
 	$(CC) $(CC_FLAGS) -c $< -o $@
 
 clean:
-	make clean -C ./libft
 	/bin/rm -rf $(OBJ)
 
 fclean: clean
-	/bin/rm -rf ./libft/libft.a
 	/bin/rm -f $(NAME)
 
 re: fclean all

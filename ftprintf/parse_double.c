@@ -6,28 +6,12 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/13 10:19:14 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/20 19:45:00 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/22 18:03:36 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 #include "float.h"
-
-int			print_bits(t_ullong a)
-{
-	int count;
-
-	count = 0;
-	while (count < 64)
-	{
-		ft_putchar(((a >> (63 - count)) & 1) + '0');
-		count++;
-		if (count % 8 == 0)
-			ft_putchar(' ');
-	}
-	ft_putchar('\n');
-	return (0);
-}
 
 void		get_double_val(t_print *print, va_list *ptr, t_fpoint *fdata)
 {
@@ -57,6 +41,33 @@ void		get_double_val(t_print *print, va_list *ptr, t_fpoint *fdata)
 		fdata->rval = 0;
 }
 
+int			longb_cmpn(t_longb *a, t_longb *b, int n)
+{
+	int			count;
+	t_ulong		vala;
+	t_ulong		valb;
+
+	count = 0;
+	while (n >= 9)
+	{
+		if (a->val[count] != b->val[count])
+			return (1);
+		n -= 9;
+		count++;
+	}
+	vala = a->val[count];
+	valb = b->val[count];
+	while (n)
+	{
+		if (vala % 10 != valb % 10)
+			return (1);
+		vala /= 10;
+		valb /= 10;
+		n--;
+	}
+	return (0);
+}
+
 static int	calc_dpre_len(t_print *print, t_fpoint *fdata)
 {
 	int		pre_len;
@@ -68,6 +79,27 @@ static int	calc_dpre_len(t_print *print, t_fpoint *fdata)
 	return (pre_len);
 }
 
+static int	check_nan(t_print *print, t_fpoint *val)
+{
+	int		writed;
+	int		small;
+
+	writed = 0;
+	if (val->exp == 16385)
+	{
+		small = print->type == 'f';
+		print->type = 's';
+		print->flags &= ~FLAG_NULL;
+		if (val->mant & MANT_NAN)
+			writed += add_c_with_flag(print, small ? "nan" : "NAN", 3);
+		else if (val->is_neg && val->mant & MANT_INF)
+			writed += add_c_with_flag(print, small ? "-inf" : "-INF", 4);
+		else
+			writed += add_c_with_flag(print, small ? "inf" : "INF", 3);
+	}
+	return (writed);
+}
+
 int			parse_double(t_print *print, va_list *ptr)
 {
 	int				writed;
@@ -75,11 +107,12 @@ int			parse_double(t_print *print, va_list *ptr)
 	t_longb			lval;
 	t_longb			rval;
 
-	writed = 0;
 	print->point_len = print->is_precision ? print->precision : 6;
 	if (print->point_len || print->flags & FLAG_HASH)
 		print->point_len++;
 	get_double_val(print, ptr, &val);
+	if ((writed = check_nan(print, &val)))
+		return (writed);
 	round_double(print, &val, &lval, &rval);
 	print->is_neg = val.is_neg;
 	print->str_len = get_longb_len(&lval);

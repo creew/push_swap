@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/11 09:05:37 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/20 19:50:29 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/21 16:13:59 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,11 @@ int		parse_type(t_print *print, const char *format)
 	if ((c = *format))
 	{
 		print->type = c;
-		if (ft_strchr(DEPRECATED_STR, c))
-			print->type = ft_tolower(c);
+		if (pf_strchr(DEPRECATED_STR, c))
+		{
+			print->type = pf_tolower(c);
+			print->lenmod = LENMOD_L;
+		}
 		return (1);
 	}
 	return (0);

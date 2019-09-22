@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 20:48:04 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/20 20:30:06 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/21 14:08:05 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		parse_width(t_print *print, const char *format, va_list *ptr)
 
 	count = 0;
 	f = 1;
-	while (format[count] == '*' || ft_isdigit(format[count]))
+	while (format[count] == '*' || pf_isdigit(format[count]))
 	{
 		if (format[count] == '*' && (f = 1))
 		{

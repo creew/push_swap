@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/18 13:24:24 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 19:49:13 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/22 17:34:11 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,34 @@ int		get_longb_len(t_longb *longb)
 	return (len);
 }
 
+int		get_val_by_pos(t_longb *longb, int pos)
+{
+	int			count;
+	t_ullong	val;
+
+	val = 0;
+	count = 0;
+	if (pos >= 0)
+	{
+		while (pos >= 9)
+		{
+			pos -= 9;
+			count++;
+		}
+		if (count < longb->size)
+		{
+			val = longb->val[count];
+			while (pos)
+			{
+				val = val / 10;
+				pos--;
+			}
+			val = val % 10;
+		}
+	}
+	return (val);
+}
+
 int		calc_lval(t_fpoint *fdata, t_longb *lval)
 {
 	t_longb		help;
@@ -65,9 +93,13 @@ int		calc_lval(t_fpoint *fdata, t_longb *lval)
 
 int		init_max_val(t_longb *val)
 {
-	ft_memset(val, 0, sizeof(*val));
+	int count;
+
+	count = 0;
 	init_longb(val, 0);
-	val->val[val->max_size - 1] = 5 * 1000 * 1000 * 100;
+	val->val[val->max_size - 1] = 5 * 1000 * 1000 * 100u;
+	while (count < (val->max_size - 1))
+		val->val[count++] = 0;
 	val->size = val->max_size;
 	return (0);
 }

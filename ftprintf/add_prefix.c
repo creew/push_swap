@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/12 10:37:24 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/20 13:29:36 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/22 17:41:53 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,10 +51,15 @@ static int	add_bin_prefix(t_print *print)
 	writed = 0;
 	if (print->is_val)
 	{
-		if (print->flags & FLAG_HASH)
+		if ((print->flags & FLAG_HASH) && print->type == 'b')
 		{
 			writed += add_to_out(print, '0');
 			writed += add_to_out(print, 'b');
+		}
+		else if ((print->flags & FLAG_HASH) && print->type == 'B')
+		{
+			writed += add_to_out(print, '0');
+			writed += add_to_out(print, 'B');
 		}
 	}
 	return (writed);
@@ -85,7 +90,7 @@ int			add_prefix(t_print *print)
 		writed += add_oct_prefix(print);
 	if (print->type == 'd' || print->type == 'i')
 		writed += add_dec_prefix(print);
-	if (print->type == 'b')
+	if (print->type == 'b' || print->type == 'B')
 		writed += add_bin_prefix(print);
 	if (print->type == 'f' || print->type == 'F')
 		writed += add_dec_prefix(print);

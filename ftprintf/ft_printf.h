@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:36:34 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/20 20:16:44 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/22 17:47:21 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,12 @@
 # include <unistd.h>
 # include <string.h>
 # include <wchar.h>
-# include "libft.h"
 
-# define BUF_SIZE	42
+# define ABS(a) ((a) < 0 ? -(a) : (a))
+# define MIN(a, b) ((a) < (b) ? (a) : (b))
+# define MAX(a, b) ((a) > (b) ? (a) : (b))
+
+# define BUF_SIZE	64
 
 # define FLAGS_STR "+- #0"
 # define FLAG_PLUS	1
@@ -32,7 +35,7 @@
 
 # define TYPES_STR "cCsSpdDiIoOuUxXfF"
 
-# define DEPRECATED_STR "DOUB"
+# define DEPRECATED_STR "DOUSC"
 
 # define LENMOD_STR "hljtzL"
 # define LENMOD_HH	1
@@ -43,6 +46,9 @@
 # define LENMOD_T	6
 # define LENMOD_Z	7
 # define LENMOD_BL	8
+
+# define MANT_NAN	(3ull << 62)
+# define MANT_INF	(1ull << 63)
 
 typedef unsigned long long	t_ullong;
 
@@ -97,7 +103,7 @@ typedef struct	s_fpoint
 
 typedef struct	s_longb
 {
-	t_uint		val[66];
+	t_uint		val[65];
 	int			max_size;
 	int			size;
 	size_t		base;
@@ -147,6 +153,19 @@ int				div_longb_uint(t_longb *longb, t_uint a);
 int				add_longb_uint(t_longb *a, t_uint b);
 
 int				init_max_val(t_longb *val);
+int				init_half_val(t_longb *val);
 int				get_longb_len(t_longb *longb);
 void			add_precision(t_print *print);
+
+void			*pf_memset(void *b, int c, size_t len);
+int				pf_isdigit(int c);
+char			*pf_strchr(const char *s, int c);
+size_t			pf_strlen(const char *s);
+int				pf_tolower(int c);
+
+int				add_pad_and_uval(t_print *print, t_ullong val, int base);
+int				calc_digit_pre_len(t_print *print);
+int				parse_cstr(t_print *print, char *str);
+int				get_val_by_pos(t_longb *longb, int pos);
+int				longb_cmpn(t_longb *a, t_longb *b, int n);
 #endif
