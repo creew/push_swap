@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/10 17:36:34 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/22 17:47:21 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/23 10:29:18 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ typedef struct	s_fpoint
 
 typedef struct	s_longb
 {
-	t_uint		val[65];
+	t_uint		val[1825];
 	int			max_size;
 	int			size;
 	size_t		base;

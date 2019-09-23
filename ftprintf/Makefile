@@ -6,7 +6,7 @@
 #    By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/03 09:49:46 by eklompus          #+#    #+#              #
-#    Updated: 2019/09/22 18:20:20 by eklompus         ###   ########.fr        #
+#    Updated: 2019/09/22 18:38:09 by eklompus         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -30,6 +30,7 @@ SRCS = 	ft_printf.c \
 		parse_double.c \
 		add_double.c \
 		calc_double.c \
+		sub_functions.c \
 		long_ariph.c
 
 SRC_TEST = test.c
@@ -46,7 +47,7 @@ test: $(NAME) $(SRC_TEST:.c=.o)
 	$(CC) $(CC_FLAGS) -o $@ $^
 
 $(NAME): $(OBJ)
-	make -C ./libft
+	ar rc $@ $^
 
 %.o: %.c ./ft_printf.h
 	$(CC) $(CC_FLAGS) -c $< -o $@
