@@ -6,12 +6,11 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 11:52:41 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/23 11:58:49 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/23 20:29:06 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_CHECKER_H
-#define PUSH_SWAP_CHECKER_H
-
+# define PUSH_SWAP_CHECKER_H
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 12:15:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/23 17:45:13 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/23 17:52:47 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@
 # define 	ERROR_NOT_SORTED_STACK	(-8)
 # define	RET_ENDL				(1)
 # define	RET_OK					(0)
+
 # define	STACK_SIZE				(1024)
 
 # define	S_SA					(1)
