@@ -19,7 +19,9 @@ int		ft_getc(int fd)
 	int		ret;
 
 	ret = read(fd, &c, 1);
-	if (ret != 1)
+	if (ret < 0)
 		return (-1);
+	if (ret == 0)
+		return (FT_EOF);
 	return (c);
 }

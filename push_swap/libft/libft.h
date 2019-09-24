@@ -19,6 +19,7 @@
 # define MIN(a, b) ((a) < (b) ? (a) : (b))
 # define FT_LMAX (9223372036854775807ul)
 # define FT_LMIN (9223372036854775808ul)
+# define FT_EOF (-2)
 
 typedef struct	s_list
 {

@@ -6,13 +6,13 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 11:58:29 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/23 20:48:32 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/24 11:34:20 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
-#include "../common.h"
+#include "../common/common.h"
 #include "../libft/libft.h"
 
 void	print_stack(t_stack *st1, t_stack *st2)
@@ -43,13 +43,13 @@ int		readl(int *arg)
 	size_t		count_op;
 
 	count = 0;
-	while (((res = ft_getc(0)) != -1) && count < 4)
+	while ((res = ft_getc(0)) >= 0 && count < 4)
 	{
 		if (res == '\n')
 			break ;
 		ch[count++] = res;
 	}
-	if (res == '\n' && count == 0)
+	if (res == FT_EOF && count == 0)
 		return (RET_ENDL);
 	if (res != '\n' || count < 2)
 		return (ERROR_INCORRECT_ARGS);

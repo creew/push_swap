@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
+#include "../common/common.h"
 
 int		stack_init(t_stack *st)
 {

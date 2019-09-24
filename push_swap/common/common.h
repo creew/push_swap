@@ -13,8 +13,9 @@
 #ifndef PUSH_SWAP_COMMON_H
 #define PUSH_SWAP_COMMON_H
 
+#include "../libft/libft.h"
+
 #include <stdlib.h>
-#include "libft/libft.h"
 
 # define	ARRSIZE(x)				(sizeof(x)/sizeof(x[0]))
 # define	MAX_INTMIN				(2147483648)
