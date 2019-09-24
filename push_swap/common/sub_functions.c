@@ -31,11 +31,11 @@ int		safe_atoi(char *arg, int *res)
 		if (val < '0' || val > '9')
 			return (ERROR_WRONG_INTEGER);
 		val -= '0';
-		if (is_neg  && lres >= (MAX_INTMIN / 10) && val >= (MAX_INTMIN % 10))
+		if (is_neg  && lres >= (MAX_INTMIN / 10l) && val >= (MAX_INTMIN % 10l))
 			return (ERROR_OVERFLOW_INTEGER);
-		if (!is_neg && lres >= (MAX_INTMAX / 10) && val >= (MAX_INTMAX % 10))
+		if (!is_neg && lres >= (MAX_INTMAX / 10l) && val >= (MAX_INTMAX % 10l))
 			return (ERROR_OVERFLOW_INTEGER);
-		lres = lres * 10;
+		lres = lres * 10l;
 		lres += val;
 	}
 	*res = is_neg ? (int)-lres : (int)lres ;

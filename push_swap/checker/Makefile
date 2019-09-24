@@ -6,7 +6,7 @@
 #    By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/23 10:56:58 by eklompus          #+#    #+#              #
-#    Updated: 2019/09/24 11:42:54 by eklompus         ###   ########.fr        #
+#    Updated: 2019/09/24 16:15:15 by eklompus         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,11 @@ CC_FLAGS = -Wall -Wextra -g
 
 CC_FERROR = #-Werror
 
-SRC = checker.c ../common/stack.c ../common/sub_functions.c ../common/stack_sec.c
+SRC = checker.c \
+	../common/stack.c \
+	../common/sub_functions.c \
+	../common/stack_sec.c \
+	../common/readarg.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -33,12 +37,14 @@ $(NAME): $(OBJ)
 	$(CC) $(CC_FLAGS) $(CC_FERROR) -L./../libft/ -lft $^ -o $@
 
 %.o: %.c $(INC)
-	 $(CC) $(CC_FLAGS) $(CC_FERROR) -I$(INC_DIR) -c $< -o $@
+	$(CC) $(CC_FLAGS) $(CC_FERROR) -I$(INC_DIR) -c $< -o $@
 
 clean:
+	make clean -C ../libft
 	rm -f $(OBJ)
 
 fclean: clean
+	rm -f ./../libft/libft.a
 	rm -f $(NAME)
 
 re: fclean all

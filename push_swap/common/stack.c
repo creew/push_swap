@@ -6,11 +6,11 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 12:25:25 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/23 13:55:15 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/24 11:42:03 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../common/common.h"
+#include "common.h"
 
 int		stack_init(t_stack *st)
 {

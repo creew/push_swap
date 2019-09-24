@@ -52,6 +52,8 @@ typedef struct	s_stack
 	size_t		pos;
 }				t_stack;
 
+int				arg_read(int n, char *av[], t_stack *st1);
+
 int				stack_push(t_stack *st, int a);
 int				stack_pop(t_stack *st, int *a);
 int				stack_init(t_stack *st);
