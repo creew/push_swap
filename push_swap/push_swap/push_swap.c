@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 10:56:19 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/24 17:10:35 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/24 17:14:26 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		find_optimal_solution(t_stack *st1, t_stack *st2)
 	if (st1->pos)
 	{
 		pivot = find_middle(st1, 0, st1->pos);
-		
+
 	}
 
 }
