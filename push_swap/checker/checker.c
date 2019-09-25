@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 11:58:29 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/25 13:15:30 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/25 14:51:00 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ int readl(int *arg)
 
 int main(int ac, char *av[])
 {
-	t_stack st1;
-	t_stack st2;
-	int		res;
-	int		ret;
+	t_stack		st1;
+	t_stack		st2;
+	int			res;
+	int			ret;
 
 	stack_init(&st1);
 	stack_init(&st2);

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 10:56:19 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/25 17:22:42 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/25 17:33:23 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,8 @@ int 	find3sol(t_stack *st1, t_stack *st2, int *ops, int b)
 	v1 = st1->stack[st1->pos - 1];
 	v2 = st1->stack[st1->pos - 2];
 	v3 = st1->stack[st1->pos - 3];
+	if (is_stack_sorted(st1, 3, b) == RET_OK)
+		return (RET_OK);
 	if ((b ? v1 <= v2 : v1 >= v2) && (b ? v1 <= v3 : v1 >= v3))
 	{
 		run_commands(st1, st2, S_RA, ops);
@@ -87,12 +89,12 @@ int		find_optimal_solution(t_stack *st1, t_stack *st2, size_t end,
 	size_t	count;
 	size_t	half_len;
 
-	if (end > 1 && is_stack_sorted(st1, end, backward) != RET_OK)
+	if (end > 1 && is_stack_sorted(st1, end, 0) != RET_OK)
 	{
-		if (end == 2 && backward)
+		if (end == 2)
 			return (run_commands(st1, st2, S_SA, ops));
 		if (end == 3 && st1->pos == 3)
-			return (find3sol(st1, st2, ops, backward));
+			return (find3sol(st1, st2, ops, 0));
 
 		pivot = find_middle(st1, end);
 		half_len = 0;
@@ -118,13 +120,13 @@ int		find_optimal_solution(t_stack *st1, t_stack *st2, size_t end,
 		while (count++ < half_len)
 			run_commands(st1, st2, S_PA, ops);
 
-		find_optimal_solution(st1, st2, half_len, ops, backward);
+		find_optimal_solution(st1, st2, half_len, ops, 0);
 
 		count = 0;
 		while (count++ < half_len)
 			run_commands(st1, st2, S_RA, ops);
-		
-		find_optimal_solution(st1, st2, end - half_len, ops, !backward);
+
+		find_optimal_solution(st1, st2, end - half_len, ops, 0);
 
 		count = 0;
 		while (count++ < half_len)
