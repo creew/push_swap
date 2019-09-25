@@ -14,7 +14,7 @@ NAME = push_swap
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra
+CC_FLAGS = -Wall -Wextra -g
 
 CC_FERROR = #-Werror
 

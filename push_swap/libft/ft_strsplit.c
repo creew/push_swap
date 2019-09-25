@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 13:07:21 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/08 13:10:09 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/25 08:32:50 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,7 @@ static int	fill_arr(char **strarr, int count, char const *s, char *sc)
 
 	if (strarr == NULL)
 		return (0);
-	if (sc == NULL)
-		len = ft_strlen(s);
-	else
-		len = sc - s;
+	len = sc == NULL ? ft_strlen(s) : sc - s;
 	strarr[count] = ft_strnew(len);
 	if (strarr[count] == NULL)
 	{
@@ -72,14 +69,12 @@ char		**ft_strsplit(char const *s, char c)
 	{
 		count = count_words(NULL, s, c);
 		strarr = (char **)ft_memalloc(sizeof(char *) * (count + 1));
-		if (strarr == NULL)
-			return (NULL);
-		strarr[count] = NULL;
-		res = count_words(strarr, s, c);
-		if (res < 0)
+		if (strarr != NULL)
 		{
-			free(strarr);
-			return (NULL);
+			strarr[count] = NULL;
+			res = count_words(strarr, s, c);
+			if (res < 0)
+				ft_memdel((void **)&strarr);
 		}
 	}
 	return (strarr);

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 12:15:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/23 17:52:47 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/25 10:14:20 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ typedef struct	s_stack
 }				t_stack;
 
 int				arg_read(int n, char *av[], t_stack *st1);
+void			print_stack(t_stack *st1, t_stack *st2);
+int				run_commands(t_stack *st1, t_stack *st2, int n, int *count);
 
 int				stack_push(t_stack *st, int a);
 int				stack_pop(t_stack *st, int *a);
@@ -63,7 +65,7 @@ int				stack_free(t_stack *st);
 int				stack_swap(t_stack *st);
 int				stack_rotate(t_stack *st);
 int				stack_rrotate(t_stack *st);
-int				is_stack_sorted(t_stack *st);
+int				is_stack_sorted(t_stack *st, size_t n, int backward);
 
 int				safe_atoi(char *arg, int *res);
 #endif

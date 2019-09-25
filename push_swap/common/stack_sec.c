@@ -6,24 +6,25 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 17:36:21 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/23 17:45:13 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/25 10:55:09 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 
-int		is_stack_sorted(t_stack *st)
+int		is_stack_sorted(t_stack *st, size_t n, int backward)
 {
 	int		val;
-	size_t	count;
+	int		count;
 
 	count = st->pos;
-	if (count > 1)
+	if (n > 1 && count > 1)
 	{
+		n--;
 		val = st->stack[--count];
-		while (count)
+		while (n && count)
 		{
-			if (val > st->stack[--count])
+			if (backward ? val < st->stack[--count] : val > st->stack[--count])
 				return (ERROR_NOT_SORTED_STACK);
 			val = st->stack[count];
 		}
@@ -40,6 +41,7 @@ int 	stack_free(t_stack *st)
 int 	stack_swap(t_stack *st)
 {
 	int		tmp;
+
 	if (st->pos > 1)
 	{
 		tmp = st->stack[st->pos - 2];
@@ -53,7 +55,8 @@ int 	stack_swap(t_stack *st)
 int 	stack_rotate(t_stack *st)
 {
 	int		tmp;
-	if (st->pos > 1)
+
+	if	 (st->pos > 1)
 	{
 		tmp = st->stack[st->pos - 1];
 		ft_intmove(st->stack + 1, st->stack, st->pos - 1);
@@ -66,6 +69,7 @@ int 	stack_rotate(t_stack *st)
 int 	stack_rrotate(t_stack *st)
 {
 	int		tmp;
+
 	if (st->pos > 1)
 	{
 		tmp = st->stack[0];

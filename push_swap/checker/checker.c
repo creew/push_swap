@@ -6,28 +6,11 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 11:58:29 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/24 16:08:53 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/25 10:57:43 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
-
-void print_stack(t_stack *st1, t_stack *st2)
-{
-	size_t c1;
-	size_t c2;
-
-	c1 = st1->pos;
-	c2 = st2->pos;
-	ft_putendl("st1      st2");
-	while (c1 > 0 || c2 > 0)
-	{
-		c1 ? ft_putnbr(st1->stack[--c1]) : ft_putstr("     ");
-		ft_putstr("   ");
-		c2 ? ft_putnbr(st2->stack[--c2]) : ft_putstr("     ");
-		ft_putendl("");
-	}
-}
 
 const char *g_operations[] = {"sa", "sb", "ss",	 "pa",	"pb", "ra",
 							  "rb", "rr", "rra", "rrb", "rrr"};
@@ -63,31 +46,6 @@ int readl(int *arg)
 	return (ERROR_INCORRECT_ARGS);
 }
 
-int run_commands(t_stack *st1, t_stack *st2, int n)
-{
-	int val;
-
-	if (n == S_SA || n == S_SS)
-		stack_swap(st1);
-	if (n == S_SB || n == S_SS)
-		stack_swap(st2);
-	if (n == S_PA)
-		if (stack_pop(st2, &val) == RET_OK)
-			stack_push(st1, val);
-	if (n == S_PB)
-		if (stack_pop(st1, &val) == RET_OK)
-			stack_push(st2, val);
-	if (n == S_RA || n == S_RR)
-		stack_rotate(st1);
-	if (n == S_RB || n == S_RR)
-		stack_rotate(st2);
-	if (n == S_RRA || n == S_RRR)
-		stack_rrotate(st1);
-	if (n == S_RRB || n == S_RRR)
-		stack_rrotate(st2);
-	return (RET_OK);
-}
-
 int main(int ac, char *av[])
 {
 	t_stack st1;
@@ -105,11 +63,10 @@ int main(int ac, char *av[])
 		{
 			if (ret == RET_ENDL)
 			{
-				ft_putendl(is_stack_sorted(&st1) == RET_OK && st2.pos == 0 ?
-				"OK" : "KO");
+				ft_putendl(is_stack_sorted(&st1, st1.pos) == RET_OK && st2.pos == 0 ? "OK" : "KO");
 				break;
 			}
-			run_commands(&st1, &st2, res);
+			run_commands(&st1, &st2, res, NULL);
 			print_stack(&st1, &st2);
 		}
 	}
