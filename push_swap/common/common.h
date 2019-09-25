@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 12:15:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/25 10:14:20 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/25 11:53:32 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@
 
 typedef struct	s_stack
 {
-	int			*stack;
+	int			stack[1024];
 	size_t		max_size;
 	size_t		pos;
 }				t_stack;

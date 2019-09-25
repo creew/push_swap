@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 10:56:19 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/25 14:18:22 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/25 17:22:42 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,32 +15,39 @@
 
 int		find_middle(t_stack *st1, size_t end)
 {
-	/*
-	size_t	pos;
-	long	sum;
+	size_t	count;
+	size_t	cc;
 	int		mid;
+	int		diff;
+	size_t	pos;
 	int		min;
-	size_t	mid_pos;
 
-	min = MAX_INTMAX;
-	pos = 0;
-	sum = 0;
-	while (pos++ < end)
-		sum += st1->stack[st1->pos - pos];
-	mid = sum / end;
-	mid_pos = 0;
-	pos = 0;
-	while (pos++ < end)
+	pos = 1;
+	if (end > 1)
 	{
-		if (ABS(st1->stack[st1->pos - pos] - mid) < min)
+		min = MAX_INTMAX;
+		count = 0;
+		while (count < end)
 		{
-			min = ABS(st1->stack[st1->pos - pos] - mid);
-			mid_pos = st1->pos - pos;
+			mid = st1->stack[st1->pos - count - 1];
+			cc = 0;
+			diff = 0;
+			while (cc < end)
+			{
+				if (st1->stack[st1->pos - ++cc] < mid)
+					diff--;
+				else
+					diff++;
+			}
+			if (ABS(diff) < min)
+			{
+				min = ABS(diff);
+				pos = cc;
+			}
+			count++;
 		}
 	}
-	return (st1->stack[mid_pos]);
-	 */
-	return (st1->stack[st1->pos - end - 1]);
+	return (st1->stack[st1->pos - pos]);
 }
 
 int 	find3sol(t_stack *st1, t_stack *st2, int *ops, int b)
@@ -52,21 +59,21 @@ int 	find3sol(t_stack *st1, t_stack *st2, int *ops, int b)
 	v1 = st1->stack[st1->pos - 1];
 	v2 = st1->stack[st1->pos - 2];
 	v3 = st1->stack[st1->pos - 3];
-	if (b ? v1 <= v2 : v1 >= v2 && b ? v1 <= v3 : v1 >= v3 && v2 != v3)
+	if ((b ? v1 <= v2 : v1 >= v2) && (b ? v1 <= v3 : v1 >= v3))
 	{
 		run_commands(st1, st2, S_RA, ops);
-		if (!is_stack_sorted(st1, 2, b))
+		if (is_stack_sorted(st1, 2, b) != RET_OK)
 			run_commands(st1, st2, S_SA, ops);
 	}
-	else if (b ? v2 <= v1 : v2 >= v1 && b ? v2 <= v3 : v2 >= v3 && v1 != v3)
+	else if ((b ? v2 <= v1 : v2 >= v1) && (b ? v2 <= v3 : v2 >= v3))
 	{
 		run_commands(st1, st2, S_RRA, ops);
-		if (!is_stack_sorted(st1, 2, b))
+		if (is_stack_sorted(st1, 2, b) != RET_OK)
 			run_commands(st1, st2, S_SA, ops);
 	}
-	else if (b ? v3 <= v1 : v3 >= v1 && b ? v3 <= v2 : v3 >= v2 && v1 != v2)
+	else if ((b ? v3 <= v1 : v3 >= v1) && (b ? v3 <= v2 : v3 >= v2))
 	{
-		if (!is_stack_sorted(st1, 2, b))
+		if (is_stack_sorted(st1, 2, b) != RET_OK)
 			run_commands(st1, st2, S_SA, ops);
 	}
 	return (RET_OK);
@@ -82,7 +89,7 @@ int		find_optimal_solution(t_stack *st1, t_stack *st2, size_t end,
 
 	if (end > 1 && is_stack_sorted(st1, end, backward) != RET_OK)
 	{
-		if (end == 2)
+		if (end == 2 && backward)
 			return (run_commands(st1, st2, S_SA, ops));
 		if (end == 3 && st1->pos == 3)
 			return (find3sol(st1, st2, ops, backward));
@@ -92,7 +99,8 @@ int		find_optimal_solution(t_stack *st1, t_stack *st2, size_t end,
 		count = 0;
 		while (count < end)
 		{
-			if (st1->stack[st1->pos - 1] < pivot)
+			int val = st1->stack[st1->pos - 1];
+			if (val < pivot)
 			{
 				run_commands(st1, st2, S_PB, ops);
 				half_len++;
@@ -110,13 +118,13 @@ int		find_optimal_solution(t_stack *st1, t_stack *st2, size_t end,
 		while (count++ < half_len)
 			run_commands(st1, st2, S_PA, ops);
 
-		find_optimal_solution(st1, st2, half_len, ops, 0);
+		find_optimal_solution(st1, st2, half_len, ops, backward);
 
 		count = 0;
 		while (count++ < half_len)
 			run_commands(st1, st2, S_RA, ops);
-
-		find_optimal_solution(st1, st2, end - half_len, ops, 1);
+		
+		find_optimal_solution(st1, st2, end - half_len, ops, !backward);
 
 		count = 0;
 		while (count++ < half_len)
@@ -129,8 +137,8 @@ int		find_optimal_solution(t_stack *st1, t_stack *st2, size_t end,
 
 int		main(int ac, char *av[])
 {
-	t_stack st1;
-	t_stack st2;
+	t_stack	st1;
+	t_stack	st2;
 	int		ops;
 
 	ops = 0;

@@ -6,14 +6,14 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 11:58:29 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/25 10:57:43 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/25 13:15:30 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "checker.h"
 
 const char *g_operations[] = {"sa", "sb", "ss",	 "pa",	"pb", "ra",
-							  "rb", "rr", "rra", "rrb", "rrr"};
+								"rb", "rr", "rra", "rrb", "rrr"};
 
 int readl(int *arg)
 {

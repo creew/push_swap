@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 12:25:25 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/25 09:50:13 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/25 16:07:48 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,17 @@
 
 int		stack_init(t_stack *st)
 {
-	st->stack = NULL;
+	//st->stack = NULL;
 	st->pos = 0;
-	st->max_size = 0;
+	st->max_size = 64;
 	return (RET_OK);
 }
 
 int		stack_push(t_stack *st, int a)
 {
+	/*
 	int		*newst;
+
 
 	if ((st->pos + 1) >= st->max_size)
 	{
@@ -33,7 +35,7 @@ int		stack_push(t_stack *st, int a)
 			ft_intmove(newst, st->stack, st->max_size);
 		st->stack = newst;
 		st->max_size += STACK_SIZE;
-	}
+	}*/
 	st->stack[st->pos++] = a;
 	return (RET_OK);
 }
@@ -63,6 +65,7 @@ int		stack_get_first(t_stack *st, int *a)
 
 int		stack_add_first(t_stack *st, int a)
 {
+	/*
 	int		*newst;
 
 	if ((st->pos + 1) >= st->max_size)
@@ -75,7 +78,7 @@ int		stack_add_first(t_stack *st, int a)
 		st->stack = newst;
 		st->max_size += STACK_SIZE;
 	}
-	else
+	else*/
 		ft_intmove(st->stack + 1, st->stack, st->max_size);
 	st->stack[0] = a;
 	st->pos++;
