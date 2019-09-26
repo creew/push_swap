@@ -14,12 +14,10 @@
 
 char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
 {
-	size_t	hs_len;
 	size_t	ne_len;
 	size_t	pos;
 
 	pos = 0;
-	hs_len = ft_strlen(haystack);
 	ne_len = ft_strlen(needle);
 	while (haystack[pos] && ((pos + ne_len) <= len))
 	{

@@ -14,7 +14,7 @@
 #define FT_LS_H
 
 #include <sys/stat.h>
-#include "libft.h"
+#include "libft/libft.h"
 
 # define 	STR_CURRENT_DIR		"."
 # define	LEGAL_OPTIONS		"Ralrt"

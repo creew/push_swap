@@ -15,11 +15,11 @@
 
 static int	fill_arr(char **strarr, int count, char const *s, char *sc)
 {
-	int		len;
+	size_t		len;
 
 	if (strarr == NULL)
 		return (0);
-	len = sc == NULL ? ft_strlen(s) : sc - s;
+	len = sc == NULL ? ft_strlen(s) : (size_t)(sc - s);
 	strarr[count] = ft_strnew(len);
 	if (strarr[count] == NULL)
 	{
