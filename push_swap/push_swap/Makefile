@@ -14,7 +14,7 @@ NAME = push_swap
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -g
+CC_FLAGS = -Wall -Wextra $(CC_FERROR) -g
 
 CC_FERROR = #-Werror
 
@@ -34,10 +34,10 @@ all: $(NAME)
 
 $(NAME): $(OBJ)
 	make -C ../libft
-	$(CC) $(CC_FLAGS) $(CC_FERROR) -L./../libft/ -lft $^ -o $@
+	$(CC) $(CC_FLAGS) -L./../libft/ -lft $^ -o $@
 
 %.o: %.c $(INC)
-	 $(CC) $(CC_FLAGS) $(CC_FERROR) -I$(INC_DIR) -c $< -o $@
+	 $(CC) $(CC_FLAGS) -I$(INC_DIR) -c $< -o $@
 
 clean:
 	make clean -C ../libft

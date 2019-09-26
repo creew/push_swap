@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/23 10:56:19 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/25 17:33:23 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/26 09:20:59 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,22 +29,16 @@ int		find_middle(t_stack *st1, size_t end)
 		count = 0;
 		while (count < end)
 		{
-			mid = st1->stack[st1->pos - count - 1];
+			mid = st1->stack[st1->pos - ++count];
 			cc = 0;
 			diff = 0;
 			while (cc < end)
-			{
-				if (st1->stack[st1->pos - ++cc] < mid)
-					diff--;
-				else
-					diff++;
-			}
+			    diff = st1->stack[st1->pos - ++cc] < mid ? diff - 1 : diff + 1;
 			if (ABS(diff) < min)
 			{
 				min = ABS(diff);
-				pos = cc;
+				pos = count;
 			}
-			count++;
 		}
 	}
 	return (st1->stack[st1->pos - pos]);
@@ -93,9 +87,10 @@ int		find_optimal_solution(t_stack *st1, t_stack *st2, size_t end,
 	{
 		if (end == 2)
 			return (run_commands(st1, st2, S_SA, ops));
+		/*
 		if (end == 3 && st1->pos == 3)
 			return (find3sol(st1, st2, ops, 0));
-
+*/
 		pivot = find_middle(st1, end);
 		half_len = 0;
 		count = 0;
