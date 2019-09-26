@@ -6,13 +6,14 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/26 17:40:40 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/26 18:26:24 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 #define FT_LS_H
 
+#include <sys/stat.h>
 #include "libft.h"
 
 # define 	STR_CURRENT_DIR		"."
@@ -46,6 +47,12 @@ typedef struct	s_lsdata
 	t_list	*dirs;
 	t_uint	flags;
 }				t_lsdata;
+
+typedef	struct	s_fentry
+{
+	char			*name;
+	struct stat		fs;
+}				t_fentry;
 
 t_result		parse_args(t_lsdata *lsdata, int ac, char *av[]);
 
