@@ -12,6 +12,7 @@
 
 #include "ft_ls.h"
 
+/*
 t_flist		*add_to_flist(t_flist **flist, char	*name)
 {
 	char	*tmp;
@@ -36,3 +37,4 @@ t_flist		*add_to_flist(t_flist **flist, char	*name)
 	}
 	return (newfl);
 }
+ */

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 11:35:08 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/26 14:45:25 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/26 17:11:36 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ static t_uint	get_format(char c)
 	return (F_ERROR);
 }
 
-static t_result	parse_arg(t_list **root, char *arg, t_uint *flags, int *fls)
+static t_result	parse_arg(t_lsdata *lsdata, char *arg, int *fls)
 {
 	t_list	*lst;
 
@@ -68,7 +68,7 @@ static t_result	parse_arg(t_list **root, char *arg, t_uint *flags, int *fls)
 				write_usage();
 				return (ERR_ILLEGAL_ARGS);
 			}
-			*flags = *flags | get_format(*arg);
+			lsdata->flags |= get_format(*arg);
 		}
 	}
 	else
@@ -77,12 +77,12 @@ static t_result	parse_arg(t_list **root, char *arg, t_uint *flags, int *fls)
 		lst = ft_lstnew(arg, ft_strlen(arg) + 1);
 		if (!lst)
 			return (ERR_ENOMEM);
-		ft_lstadd(root, lst);
+		ft_lstadd(&lsdata->dirs, lst);
 	}
 	return (RET_OK);
 }
 
-t_result		parse_args(t_list **root, int ac, char *av[], t_uint *flags)
+t_result		parse_args(t_lsdata *lsdata, int ac, char *av[])
 {
 	t_list	*lst;
 	int 	ret;
@@ -94,12 +94,12 @@ t_result		parse_args(t_list **root, int ac, char *av[], t_uint *flags)
 		lst = ft_lstnew(STR_CURRENT_DIR, ft_strlen(STR_CURRENT_DIR) + 1);
 		if (!lst)
 			return (ERR_ENOMEM);
-		ft_lstadd(root, lst);
+		ft_lstadd(&lsdata->dirs, lst);
 	}
 	else
 	{
 		while (--ac > 0)
-			if ((ret = parse_arg(root, av[ac], flags, &fls)) != RET_OK)
+			if ((ret = parse_arg(lsdata, av[ac], &fls)) != RET_OK)
 				return (ret);
 	}
 	return (RET_OK);

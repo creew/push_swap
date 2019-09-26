@@ -18,7 +18,7 @@ CC_FLAGS = -Wall -Wextra $(CF_ERROR)
 
 CF_ERROR = #-Werror
 
-SRCS = ft_ls.c parse_args.c
+SRCS = ft_ls.c parse_args.c read_dir.c
 
 HEADERS = ft_ls.h
 
