@@ -21,7 +21,7 @@ void	ft_intmove(int *dst, int *src, size_t size)
 	}
 	else if (dst > src)
 	{
-		while (size-- != 0)
+		while (size--)
 			dst[size] = src[size];
 	}
 }
