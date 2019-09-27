@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 09:48:17 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/23 13:59:58 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/27 11:01:08 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,4 +107,7 @@ char			*ft_strrev(char *str);
 int				ft_isspace(int c);
 void			ft_intmove(int *dst, int *src, size_t size);
 int				ft_getc(int fd);
+void			ft_lstaddsorted(t_list **root, t_list *node, void *param,
+							int (*cmp)(t_list *, t_list *, void *));
+t_list			*ft_lstnewblank(size_t content_size);
 #endif

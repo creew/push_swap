@@ -21,10 +21,16 @@ int		main(int ac, char *av[])
 	ft_bzero(&lsdata, sizeof(lsdata));
 	if ((ret = parse_args(&lsdata, ac, av)) == RET_OK)
 	{
+		lst = lsdata.files;
+		while (lst)
+		{
+			ft_putendl(((t_fentry *)lst->content)->name);
+			lst = lst->next;
+		}
 		lst = lsdata.dirs;
 		while (lst)
 		{
-			ft_putendl(lst->content);
+			ft_putendl(((t_fentry *)lst->content)->name);
 			lst = lst->next;
 		}
 	}

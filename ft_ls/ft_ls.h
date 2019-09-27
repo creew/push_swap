@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/26 18:26:24 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/27 11:19:46 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #define FT_LS_H
 
 #include <sys/stat.h>
-#include "libft/libft.h"
+#include "libft.h"
 
 # define 	STR_CURRENT_DIR		"."
 # define	LEGAL_OPTIONS		"Ralrt"
@@ -28,6 +28,7 @@ typedef unsigned int	t_uint;
 #define		ERR_ENOMEM			(-1)
 #define		ERR_ILLEGAL_ARGS	(-2)
 #define		ERR_OPEN_DIR		(-3)
+#define		ERR_STAT			(-4)
 
 #define 	F_LONG_FORMAT	(1u << 0u)
 #define		F_RECURSIVE		(1u << 1u)
@@ -41,19 +42,19 @@ typedef unsigned int	t_uint;
 #define		F_COLORISED		(1u << 9u)
 #define		F_ERROR			(0xFFFFFFFF)
 
-typedef struct	s_lsdata
-{
-	t_list	*files;
-	t_list	*dirs;
-	t_uint	flags;
-}				t_lsdata;
-
 typedef	struct	s_fentry
 {
-	char			*name;
-	struct stat		fs;
+	char				name[1024];
+	struct stat			fs;
 }				t_fentry;
 
-t_result		parse_args(t_lsdata *lsdata, int ac, char *av[]);
+typedef struct	s_lsdata
+{
+	t_list		*files;
+	t_list		*dirs;
+	t_uint		flags;
+}				t_lsdata;
 
+t_result		parse_args(t_lsdata *lsdata, int ac, char *av[]);
+t_result		add_param(t_lsdata *lsd, char *name);
 #endif

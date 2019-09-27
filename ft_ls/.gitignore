@@ -3,3 +3,4 @@
 .idea
 *.o
 /libft.a
+/libft/libft.a
