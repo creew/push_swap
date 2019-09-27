@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 16:27:31 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/27 11:28:15 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/27 11:35:37 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ static int	f_cmp(t_list *l1, t_list *l2, void *param)
 
 t_result	add_param(t_lsdata *lsd, char *name)
 {
-	struct stat	buf;
 	t_list		*lst;
 	t_fentry	*fentry;
 
@@ -54,7 +53,7 @@ t_result	add_param(t_lsdata *lsd, char *name)
 	if (stat(name, &fentry->fs) != 0)
 		return (ERR_STAT);
 	strcpy(fentry->name, name);
-	if (S_ISDIR(buf.st_mode))
+	if (S_ISDIR(fentry->fs.st_mode))
 	{
 		ft_lstaddsorted(&lsd->dirs, lst, &(lsd->flags), f_cmp);
 	}

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 11:35:08 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/27 11:28:15 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/27 11:30:27 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 		lst = ft_lstnew(STR_CURRENT_DIR, ft_strlen(STR_CURRENT_DIR) + 1);
 		if (!lst)
 			return (ERR_ENOMEM);
-		add_param(&lsd, ".");
+		add_param(lsd, ".");
 	}
 	else
 	{
