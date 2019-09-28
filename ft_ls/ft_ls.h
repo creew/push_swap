@@ -46,6 +46,7 @@ typedef	struct	s_fentry
 {
 	char				name[1024];
 	struct stat			fs;
+	t_list				*child;
 }				t_fentry;
 
 typedef struct	s_lsdata
