@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/27 11:19:46 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/29 16:11:04 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,13 @@ typedef unsigned int	t_uint;
 #define		F_GROUP_NAME	(1u << 7u)
 #define		F_DIR_LIKE_FILE	(1u << 8u)
 #define		F_COLORISED		(1u << 9u)
+#define		F_SHOWBLCKSZ	(1u << 10u)
 #define		F_ERROR			(0xFFFFFFFF)
 
 typedef	struct	s_fentry
 {
 	char				name[1024];
+	size_t 				name_len;
 	struct stat			fs;
 	t_list				*child;
 }				t_fentry;
@@ -58,4 +60,7 @@ typedef struct	s_lsdata
 
 t_result		parse_args(t_lsdata *lsdata, int ac, char *av[]);
 t_result		add_param(t_lsdata *lsd, char *name);
+
+size_t			set_path(char *path);
+size_t			add_pathdir(char *path, const char *dir);
 #endif

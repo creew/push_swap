@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 11:35:08 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/27 11:30:27 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/29 14:58:26 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,12 +51,13 @@ static t_uint	get_format(char c)
 		return (F_DIR_LIKE_FILE);
 	if (c == 'G')
 		return (F_COLORISED);
+	if (c == 's')
+		return (F_SHOWBLCKSZ);
 	return (F_ERROR);
 }
 
 static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 {
-	t_list		*lst;
 	t_result	ret;
 
 	ret = RET_OK;
