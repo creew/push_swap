@@ -27,6 +27,7 @@ int		is_stack_sorted(t_stack *st, size_t n, int backward)
 			if (backward ? val < st->stack[--count] : val > st->stack[--count])
 				return (ERROR_NOT_SORTED_STACK);
 			val = st->stack[count];
+			n--;
 		}
 	}
 	return (RET_OK);

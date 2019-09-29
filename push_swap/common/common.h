@@ -28,6 +28,7 @@
 # define 	ERROR_INCORRECT_ARGS	(-6)
 # define 	ERROR_INCORRECT_STACK_SIZE	(-7)
 # define 	ERROR_NOT_SORTED_STACK	(-8)
+# define 	ERROR_INVALID_VAL		(-9)
 # define	RET_ENDL				(1)
 # define	RET_OK					(0)
 
@@ -44,6 +45,11 @@
 # define	S_RRA					(9)
 # define	S_RRB					(10)
 # define	S_RRR					(11)
+
+
+# define	SC_SWAP					(1)
+# define	SC_ROT					(2)
+# define	SC_RROT					(3)
 
 typedef struct	s_stack
 {
