@@ -24,12 +24,12 @@ HEADERS = ft_ls.h
 
 OBJ = $(SRCS:.c=.o)
 
-LIBFT_PATH = ./libft
+LIBFT_PATH = ./libft/
 
 all: $(NAME)
 
 $(NAME): $(OBJ)
-	$(CC) $(CC_FLAGS) -L$(LIBFT_PATH) -lft $^ -o $@
+	$(CC) $(CC_FLAGS) $^ -L$(LIBFT_PATH) -lft -o $@
 
 %.o: %.c $(HEADERS)
 	$(CC) $(CC_FLAGS) -I$(LIBFT_PATH) -c $< -o $@

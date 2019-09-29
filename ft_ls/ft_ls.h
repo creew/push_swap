@@ -19,7 +19,11 @@
 # define 	STR_CURRENT_DIR		"."
 # define	LEGAL_OPTIONS		"Ralrt"
 
-
+#ifdef __linux__
+#define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
+#elif __APPLE__
+#define DD_NAME_LEN(x)	(x->d_namlen))
+#endif
 typedef int 			t_result;
 
 typedef unsigned int	t_uint;

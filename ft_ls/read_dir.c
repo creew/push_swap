@@ -43,8 +43,8 @@ t_result	read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
 		if ((lst = ft_lstnewblank(sizeof(t_fentry))) == NULL)
 			return (ERR_ENOMEM);
 		ffentry = (t_fentry *)(lst->content);
-		ft_strncpy(ffentry->name, dd->d_name, dd->d_namlen);
-		ffentry->name_len = dd->d_namlen;
+		ft_strncpy(ffentry->name, dd->d_name, DD_NAME_LEN(dd));
+		ffentry->name_len = DD_NAME_LEN(dd);
 		ft_strcpy(path + plen, ffentry->name);
 		if (stat(path, &ffentry->fs) < 0)
 			return (ERR_STAT);
