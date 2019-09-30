@@ -13,6 +13,20 @@
 #include "ft_ls.h"
 #include <sys/ioctl.h>
 
+void	delone(void *data, size_t content_size)
+{
+	(void)(content_size);
+	t_fentry *entry = (t_fentry *)data;
+	ft_lstdel(&entry->child, delone);
+	ft_memdel(&data);
+}
+
+void	delall(t_lsdata *lsd)
+{
+	ft_lstdel(&lsd->dirs,delone);
+	ft_lstdel(&lsd->files,delone);
+}
+
 t_uint 	get_maxvals(t_list *lst, t_maxvals *vals)
 {
 	t_fentry		*fentry;
@@ -73,5 +87,6 @@ int		main(int ac, char *av[])
 		printlst(&lsd, lsd.dirs);
 	}
 	write_flush(&lsd);
+	delall(&lsd);
 	return (ret);
 }
