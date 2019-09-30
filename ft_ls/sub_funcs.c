@@ -43,3 +43,21 @@ t_uint      get_uint_width(t_uint num)
 		return (get_uint_width(num / 10) + size);
 	return (size);
 }
+
+t_uint		get_uid_length(uid_t uid)
+{
+	struct passwd	*pwd;
+
+	if ((pwd = getpwuid(uid)))
+		return (ft_strlen(pwd->pw_name));
+	return (get_uint_width(uid));
+}
+
+t_uint		get_gid_length(gid_t gid)
+{
+	struct group	*grp;
+
+	if ((grp = getgrgid(gid)))
+		return (ft_strlen(grp->gr_name));
+	return (get_uint_width(gid));
+}

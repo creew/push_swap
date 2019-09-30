@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/30 14:46:14 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/30 17:58:35 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define	BUF_SIZE			42
 # define 	STR_CURRENT_DIR		"."
-# define	LEGAL_OPTIONS		"Ralrt"
+# define	LEGAL_OPTIONS		"Ralrtsg"
 
 #ifdef __linux__
 #define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
@@ -51,10 +51,19 @@ typedef unsigned int	t_uint;
 #define		F_SHOWBLCKSZ	(1u << 10u)
 #define		F_ERROR			(0xFFFFFFFF)
 
+typedef struct	s_maxvals
+{
+	t_uint 		name;
+	t_uint		blocks;
+	t_uint 		links;
+	t_uint 		owner;
+	t_uint 		group;
+	t_uint		size;
+}				t_maxvals;
+
 typedef	struct	s_fentry
 {
 	char				name[1024];
-	size_t 				name_len;
 	struct stat			fs;
 	t_list				*child;
 }				t_fentry;
@@ -64,6 +73,7 @@ typedef struct	s_lsdata
 	char		bufout[BUF_SIZE];
 	t_uint		bufpos;
 
+	t_uint		termwidth;
 	t_list		*files;
 	t_list		*dirs;
 	t_uint		flags;
@@ -75,11 +85,17 @@ t_result		add_param(t_lsdata *lsd, char *name);
 size_t			set_path(char *path);
 size_t			add_pathdir(char *path, const char *dir);
 t_uint			get_uint_width(t_uint num);
+t_uint			get_uid_length(uid_t uid);
+t_uint			get_gid_length(gid_t gid);
 
 void			write_flush(t_lsdata *lsd);
 void			write_cout(t_lsdata *lsd, char c);
 void			write_out(t_lsdata *lsd, char *str);
 void			write_number(t_lsdata *lsd, t_uint n);
 
-t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags);
+t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags,
+							t_maxvals *vals);
+t_result		print_uint(t_lsdata *lsd, t_uint num, size_t width);
+t_result		print_rights(t_lsdata *lsd, struct stat *fs);
+t_result		print_str(t_lsdata *lsd, char *str, size_t width);
 #endif
