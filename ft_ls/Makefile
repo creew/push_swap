@@ -6,7 +6,7 @@
 #    By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/09/26 10:55:03 by eklompus          #+#    #+#              #
-#    Updated: 2019/09/26 11:00:43 by eklompus         ###   ########.fr        #
+#    Updated: 2019/09/30 10:37:54 by eklompus         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,7 +18,7 @@ CC_FLAGS = -Wall -Wextra $(CF_ERROR)
 
 CF_ERROR = #-Werror
 
-SRCS = ft_ls.c parse_args.c read_dir.c sub_funcs.c
+SRCS = ft_ls.c parse_args.c read_dir.c sub_funcs.c print_entry.c writeout.c
 
 HEADERS = ft_ls.h
 

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 11:35:08 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/29 14:58:26 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/30 10:56:52 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,29 +77,25 @@ static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 	else
 	{
 		ret = add_param(lsd, arg);
+		*fls = 0;
 	}
 	return (ret);
 }
 
 t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 {
-	t_list	*lst;
 	int 	ret;
 	int		fls;
+	int		count;
 
 	fls = 1;
-	if (ac < 2)
-	{
-		lst = ft_lstnew(STR_CURRENT_DIR, ft_strlen(STR_CURRENT_DIR) + 1);
-		if (!lst)
-			return (ERR_ENOMEM);
-		add_param(lsd, ".");
-	}
-	else
-	{
-		while (--ac > 0)
-			if ((ret = parse_arg(lsd, av[ac], &fls)) != RET_OK)
-				return (ret);
-	}
-	return (RET_OK);
+	count = 1;
+	ret = RET_OK;
+	while (count < ac)
+		if ((ret = parse_arg(lsd, av[count++], &fls)) != RET_OK)
+			return (ret);
+
+	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs))
+		ret = add_param(lsd, STR_CURRENT_DIR);
+	return (ret);
 }

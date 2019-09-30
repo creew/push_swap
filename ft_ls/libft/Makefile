@@ -31,7 +31,7 @@ SRCS = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_strncmp.c ft_strncpy.c ft_strndup.c ft_strnequ.c ft_strnew.c \
 		ft_strnstr.c ft_strrchr.c ft_strrev.c ft_strsplit.c ft_strstr.c \
 		ft_strsub.c ft_strtrim.c ft_tolower.c ft_toupper.c ft_intmove.c \
-		ft_getc.c ft_lstaddsorted.c ft_lstnewblank.c
+		ft_getc.c ft_lstaddsorted.c ft_lstnewblank.c ft_lstsize.c
 
 all: $(NAME)
 

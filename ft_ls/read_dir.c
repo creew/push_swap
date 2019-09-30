@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 16:27:31 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/29 16:39:26 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/30 10:30:09 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,8 @@ t_result	read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
 		ft_strcpy(path + plen, ffentry->name);
 		if (stat(path, &ffentry->fs) < 0)
 			return (ERR_STAT);
-		if (S_ISDIR(ffentry->fs.st_mode) && lsd->flags & F_RECURSIVE)
+		if (S_ISDIR(ffentry->fs.st_mode) && lsd->flags & F_RECURSIVE &&
+			ft_strcmp(ffentry->name, ".") && ft_strcmp(ffentry->name, ".."))
 			read_dir(lsd, ffentry, path);
 		ft_lstaddsorted(&parent->child, lst, &(lsd->flags), f_cmp);
 	}

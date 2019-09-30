@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/29 16:11:04 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/30 14:46:14 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,19 @@
 #define FT_LS_H
 
 #include <sys/stat.h>
+#include <pwd.h>
+#include <grp.h>
 #include "libft.h"
 
+
+# define	BUF_SIZE			42
 # define 	STR_CURRENT_DIR		"."
 # define	LEGAL_OPTIONS		"Ralrt"
 
 #ifdef __linux__
 #define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
 #elif __APPLE__
-#define DD_NAME_LEN(x)	(x->d_namlen))
+#define DD_NAME_LEN(x)	(x->d_namlen)
 #endif
 typedef int 			t_result;
 
@@ -57,6 +61,9 @@ typedef	struct	s_fentry
 
 typedef struct	s_lsdata
 {
+	char		bufout[BUF_SIZE];
+	t_uint		bufpos;
+
 	t_list		*files;
 	t_list		*dirs;
 	t_uint		flags;
@@ -67,4 +74,12 @@ t_result		add_param(t_lsdata *lsd, char *name);
 
 size_t			set_path(char *path);
 size_t			add_pathdir(char *path, const char *dir);
+t_uint			get_uint_width(t_uint num);
+
+void			write_flush(t_lsdata *lsd);
+void			write_cout(t_lsdata *lsd, char c);
+void			write_out(t_lsdata *lsd, char *str);
+void			write_number(t_lsdata *lsd, t_uint n);
+
+t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags);
 #endif
