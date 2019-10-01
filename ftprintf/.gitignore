@@ -6,4 +6,4 @@ printf
 *.a
 pft/
 test
-
+cmake-build-debug/

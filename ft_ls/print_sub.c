@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 18:03:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 12:32:33 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 15:15:29 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,28 +81,31 @@ t_result	print_str(t_lsdata *lsd, char *str, size_t width)
 	return (RET_OK);
 }
 
-t_result	print_date(t_lsdata *lsd, t_fentry *entry)
+t_result	print_date(t_lsdata *lsd, time_t ti)
 {
-	write_out(lsd, g_months[entry->time.month]);
+	t_fttime	tft;
+
+	parse_time(ti, &tft);
+	write_out(lsd, g_months[tft.month]);
 	write_cout(lsd, ' ');
-	if (get_uint_width(entry->time.day) < 2)
+	if (get_uint_width(tft.day) < 2)
 		write_cout(lsd, ' ');
-	write_number(lsd, entry->time.day);
+	write_number(lsd, tft.day);
 	write_cout(lsd, ' ');
 	if (1)
 	{
-		if (get_uint_width(entry->time.hour) < 2)
+		if (get_uint_width(tft.hour) < 2)
 			write_cout(lsd, ' ');
-		write_number(lsd, entry->time.hour);
+		write_number(lsd, tft.hour);
 		write_cout(lsd, ':');
-		if (get_uint_width(entry->time.minute) < 2)
+		if (get_uint_width(tft.minute) < 2)
 			write_cout(lsd, '0');
-		write_number(lsd, entry->time.minute);
+		write_number(lsd, tft.minute);
 	}
 	else
 	{
 		write_cout(lsd, ' ');
-		write_number(lsd, entry->time.year);
+		write_number(lsd, tft.year);
 	}
 	return (RET_OK);
 }

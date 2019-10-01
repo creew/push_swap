@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 10:38:00 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 12:45:05 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 15:26:18 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags,
 	{
 		if (flags & F_SHOWBLCKSZ)
 		{
-			print_uint(lsd, fs->st_blocks, vals->blocks);
+			print_uint(lsd, entry->fs.st_blocks, vals->blocks);
 			write_cout(lsd, ' ');
 		}
 		print_rights(lsd, fs);
@@ -45,8 +45,8 @@ t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags,
 		print_uint(lsd, fs->st_size, vals->size + 2);
 
 		write_cout(lsd, ' ');
-		parse_time(entry->fs.st_mtimespec.tv_sec, &entry->time);
-		print_date(lsd, entry);
+		print_date(lsd, flags & F_SORTATIME ? entry->fs.st_atimespec.tv_sec :
+					entry->fs.st_mtimespec.tv_sec);
 
 		write_cout(lsd, ' ');
 		write_out(lsd, entry->name);

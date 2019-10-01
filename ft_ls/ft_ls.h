@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 12:41:50 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 15:16:36 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define	BUF_SIZE			42
 # define 	STR_CURRENT_DIR		"."
-# define	LEGAL_OPTIONS		"Ralrtsg"
+# define	LEGAL_OPTIONS		"Ralrtsgu"
 
 #ifdef __linux__
 #define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
@@ -87,7 +87,7 @@ typedef struct	s_lsdata
 	char		bufout[BUF_SIZE];
 	t_uint		bufpos;
 
-	t_fttime	time;
+	t_fttime	ftime;
 	t_uint		termwidth;
 	t_list		*files;
 	t_list		*dirs;
@@ -115,5 +115,5 @@ t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags,
 t_result		print_uint(t_lsdata *lsd, t_uint num, size_t width);
 t_result		print_rights(t_lsdata *lsd, struct stat *fs);
 t_result		print_str(t_lsdata *lsd, char *str, size_t width);
-t_result		print_date(t_lsdata *lsd, t_fentry *entry);
+t_result		print_date(t_lsdata *lsd, time_t ti);
 #endif

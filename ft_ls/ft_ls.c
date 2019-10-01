@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 11:21:07 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 15:02:51 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ void	delone(void *data, size_t content_size)
 
 void	delall(t_lsdata *lsd)
 {
-	ft_lstdel(&lsd->dirs,delone);
-	ft_lstdel(&lsd->files,delone);
+	ft_lstdel(&lsd->dirs, delone);
+	ft_lstdel(&lsd->files, delone);
 }
 
 t_uint 	get_maxvals(t_list *lst, t_maxvals *vals)
@@ -44,7 +44,7 @@ t_uint 	get_maxvals(t_list *lst, t_maxvals *vals)
 		bsize += fentry->fs.st_blocks;
 		if ((len = get_uint_width(fentry->fs.st_nlink)) > vals->links)
 			vals->links = len;
-		if ((len = get_uid_length(fentry->fs.st_uid))  > vals->owner)
+		if ((len = get_uid_length(fentry->fs.st_uid)) > vals->owner)
 			vals->owner = len;
 		if ((len =get_gid_length(fentry->fs.st_gid)) > vals->group)
 			vals->group = len;
@@ -84,7 +84,7 @@ int		main(int ac, char *av[])
 		lsd.termwidth = w.ws_col;
 	cur_time = time(NULL);
 	if (cur_time != -1)
-		parse_time(cur_time, &lsd.time);
+		parse_time(cur_time, &lsd.ftime);
 	if ((ret = parse_args(&lsd, ac, av)) == RET_OK)
 	{
 		printlst(&lsd, lsd.files);

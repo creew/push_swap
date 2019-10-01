@@ -3,7 +3,8 @@ project(ft_ls)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(ft_ls ft_ls.c ft_ls.h parse_args.c lists.c read_dir.c sort_lists.c sub_funcs.c print_entry.c writeout.c print_sub.c time_sub.c)
+add_executable(ft_ls ft_ls.c ft_ls.h parse_args.c read_dir.c sub_funcs.c
+        print_entry.c writeout.c print_sub.c time_sub.c)
 
 include_directories(./libft)
 
