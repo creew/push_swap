@@ -25,8 +25,12 @@
 
 #ifdef __linux__
 #define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
+#define ST_ATIME		st_atim
+#define ST_MTIME		st_mtim
 #elif __APPLE__
 #define DD_NAME_LEN(x)	(x->d_namlen)
+#define ST_ATIME		st_atimespec
+#define ST_MTIME		st_mtimespec
 #endif
 
 typedef int 			t_result;

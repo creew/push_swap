@@ -42,8 +42,8 @@ t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 			print_str(lsd, grp->gr_name, vals->group + 2);
 		print_uint(lsd, fs->st_size, vals->size + 2);
 		write_cout(lsd, ' ');
-		print_date(lsd, flags & F_SORTATIME ? entry->fs.st_atimespec.tv_sec :
-					entry->fs.st_mtimespec.tv_sec);
+		print_date(lsd, flags & F_SORTATIME ? entry->fs.ST_ATIME.tv_sec :
+					entry->fs.ST_MTIME.tv_sec);
 		write_cout(lsd, ' ');
 		print_name(lsd, entry);
 		write_cout(lsd, '\n');
