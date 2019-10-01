@@ -4,3 +4,4 @@
 *.o
 /libft.a
 /libft/libft.a
+/test/
