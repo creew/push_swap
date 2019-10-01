@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/01 11:35:06 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 12:42:57 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 17:38:46 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ t_result	parse_time(time_t time, t_fttime *fttime)
 
 	count = 0;
 	stime = ctime(&time);
-	while (count < (sizeof(g_months)/ sizeof(g_months[0])))
+	while (count < (sizeof(g_months) / sizeof(g_months[0])))
 	{
 		if (ft_strncmp(stime + 4, g_months[count], 3) == 0)
-			break;
+			break ;
 		count++;
 	}
 	fttime->month = count;
@@ -36,10 +36,5 @@ t_result	parse_time(time_t time, t_fttime *fttime)
 
 int			time_cmp(t_fttime *ct, t_fttime *ft)
 {
-	{
-
-
-	}
 	return (1);
 }
-

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 15:02:51 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 17:42:35 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,10 @@
 
 void	delone(void *data, size_t content_size)
 {
+	t_fentry	*entry;
+
 	(void)(content_size);
-	t_fentry *entry = (t_fentry *)data;
+	entry = (t_fentry *)data;
 	ft_lstdel(&entry->child, delone);
 	ft_memdel(&data);
 }
@@ -27,7 +29,7 @@ void	delall(t_lsdata *lsd)
 	ft_lstdel(&lsd->files, delone);
 }
 
-t_uint 	get_maxvals(t_list *lst, t_maxvals *vals)
+t_uint	get_maxvals(t_list *lst, t_maxvals *vals)
 {
 	t_fentry		*fentry;
 	size_t			len;
@@ -46,7 +48,7 @@ t_uint 	get_maxvals(t_list *lst, t_maxvals *vals)
 			vals->links = len;
 		if ((len = get_uid_length(fentry->fs.st_uid)) > vals->owner)
 			vals->owner = len;
-		if ((len =get_gid_length(fentry->fs.st_gid)) > vals->group)
+		if ((len = get_gid_length(fentry->fs.st_gid)) > vals->group)
 			vals->group = len;
 		if ((len = get_uint_width(fentry->fs.st_size)) > vals->size)
 			vals->size = len;
@@ -65,7 +67,6 @@ void	printlst(t_lsdata *lsd, t_list *lst)
 	while (lst)
 	{
 		fentry = (t_fentry *)(lst->content);
-
 		print_entry(lsd, fentry, lsd->flags, &vals);
 		printlst(lsd, fentry->child);
 		lst = lst->next;
@@ -74,10 +75,10 @@ void	printlst(t_lsdata *lsd, t_list *lst)
 
 int		main(int ac, char *av[])
 {
-	t_result	ret;
-	t_lsdata	lsd;
-	time_t		cur_time;
-	struct		winsize w;
+	t_result		ret;
+	t_lsdata		lsd;
+	time_t			cur_time;
+	struct winsize	w;
 
 	ft_bzero(&lsd, sizeof(lsd));
 	if (ioctl(0, TIOCGWINSZ, &w) != -1)

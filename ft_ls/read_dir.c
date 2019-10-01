@@ -32,7 +32,7 @@ t_result	read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
 	struct dirent	*dd;
 	t_list			*lst;
 	t_fentry		*ffentry;
-	size_t 			plen;
+	size_t			plen;
 
 	plen = set_path(path);
 	dir = opendir(path);

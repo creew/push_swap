@@ -6,15 +6,13 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 10:38:00 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 15:26:18 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 17:43:24 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-
-
-t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags,
+t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 	t_maxvals *vals)
 {
 	struct stat		*fs;
@@ -43,13 +41,11 @@ t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags,
 		if (grp)
 			print_str(lsd, grp->gr_name, vals->group + 2);
 		print_uint(lsd, fs->st_size, vals->size + 2);
-
 		write_cout(lsd, ' ');
 		print_date(lsd, flags & F_SORTATIME ? entry->fs.st_atimespec.tv_sec :
 					entry->fs.st_mtimespec.tv_sec);
-
 		write_cout(lsd, ' ');
-		write_out(lsd, entry->name);
+		print_name(lsd, entry);
 		write_cout(lsd, '\n');
 	}
 	return (RET_OK);

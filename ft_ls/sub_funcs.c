@@ -25,7 +25,7 @@ size_t		set_path(char *path)
 	return (len);
 }
 
-t_uint      get_uint_width(t_uint num)
+t_uint		get_uint_width(t_uint num)
 {
 	int		size;
 
@@ -54,4 +54,3 @@ t_uint		get_gid_length(gid_t gid)
 		return (ft_strlen(grp->gr_name));
 	return (get_uint_width(gid));
 }
-

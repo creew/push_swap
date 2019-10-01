@@ -6,14 +6,14 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 11:22:28 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/30 11:42:34 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 17:36:45 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include <unistd.h>
 
-void 	write_flush(t_lsdata *lsd)
+void	write_flush(t_lsdata *lsd)
 {
 	write(1, lsd->bufout, lsd->bufpos);
 	lsd->bufpos = 0;
@@ -39,4 +39,11 @@ void	write_number(t_lsdata *lsd, t_uint n)
 	if (n / 10)
 		write_number(lsd, n / 10);
 	write_cout(lsd, n % 10 + '0');
+}
+
+int		write_ansi(t_lsdata *lsd, char *color)
+{
+	write_cout(lsd, ANSI_CTL);
+	write_out(lsd, color);
+	return (1);
 }

@@ -6,27 +6,27 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 18:03:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 15:15:29 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 17:38:08 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
 const char *g_months[12] =
-	{
-		"Jan",
-		"Feb",
-		"Mar",
-		"Apr",
-		"May",
-		"Jun",
-		"Jul",
-		"Aug",
-		"Sep",
-		"Oct",
-		"Nov",
-		"Dec"
-	};
+{
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec"
+};
 
 t_result	print_uint(t_lsdata *lsd, t_uint num, size_t width)
 {
@@ -50,19 +50,15 @@ t_result	print_rights(t_lsdata *lsd, struct stat *fs)
 		write_cout(lsd, 'd');
 	else
 		write_cout(lsd, '-');
-
-	write_cout(lsd, fs->st_mode & S_IRUSR ? 'r' : '-' );
-	write_cout(lsd, fs->st_mode & S_IWUSR ? 'w' : '-' );
-	write_cout(lsd, fs->st_mode & S_IXUSR ? 'x' : '-' );
-
-	write_cout(lsd, fs->st_mode & S_IRGRP ? 'r' : '-' );
-	write_cout(lsd, fs->st_mode & S_IWGRP ? 'w' : '-' );
-	write_cout(lsd, fs->st_mode & S_IXGRP ? 'x' : '-' );
-
-	write_cout(lsd, fs->st_mode & S_IROTH ? 'r' : '-' );
-	write_cout(lsd, fs->st_mode & S_IWOTH ? 'w' : '-' );
-	write_cout(lsd, fs->st_mode & S_IXOTH ? 'x' : '-' );
-
+	write_cout(lsd, fs->st_mode & S_IRUSR ? 'r' : '-');
+	write_cout(lsd, fs->st_mode & S_IWUSR ? 'w' : '-');
+	write_cout(lsd, fs->st_mode & S_IXUSR ? 'x' : '-');
+	write_cout(lsd, fs->st_mode & S_IRGRP ? 'r' : '-');
+	write_cout(lsd, fs->st_mode & S_IWGRP ? 'w' : '-');
+	write_cout(lsd, fs->st_mode & S_IXGRP ? 'x' : '-');
+	write_cout(lsd, fs->st_mode & S_IROTH ? 'r' : '-');
+	write_cout(lsd, fs->st_mode & S_IWOTH ? 'w' : '-');
+	write_cout(lsd, fs->st_mode & S_IXOTH ? 'x' : '-');
 	write_cout(lsd, ' ');
 	return (RET_OK);
 }
@@ -108,4 +104,22 @@ t_result	print_date(t_lsdata *lsd, time_t ti)
 		write_number(lsd, tft.year);
 	}
 	return (RET_OK);
+}
+
+t_result	print_name(t_lsdata *lsd, t_fentry *entry)
+{
+	int f;
+
+	f = 0;
+	if (lsd->flags & F_COLORISED)
+	{
+		if (S_ISDIR(entry->fs.st_mode))
+			f = write_ansi(lsd, ANSI_BLUE);
+		else if (S_ISREG(entry->fs.st_mode) && ((entry->fs.st_mode & S_IXUSR) ||
+			(entry->fs.st_mode & S_IXGRP) || (entry->fs.st_mode & S_IXOTH)))
+			f = write_ansi(lsd, ANSI_RED);
+	}
+	write_out(lsd, entry->name);
+	if (f)
+		write_ansi(lsd, ANSI_RESET);
 }

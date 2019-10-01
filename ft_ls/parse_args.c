@@ -84,7 +84,7 @@ static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 
 t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 {
-	int 	ret;
+	int		ret;
 	int		fls;
 	int		count;
 
@@ -94,7 +94,6 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 	while (count < ac)
 		if ((ret = parse_arg(lsd, av[count++], &fls)) != RET_OK)
 			return (ret);
-
 	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs))
 		ret = add_param(lsd, STR_CURRENT_DIR);
 	return (ret);
