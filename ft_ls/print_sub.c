@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 18:03:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 17:38:08 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 17:38:21 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,12 +114,12 @@ t_result	print_name(t_lsdata *lsd, t_fentry *entry)
 	if (lsd->flags & F_COLORISED)
 	{
 		if (S_ISDIR(entry->fs.st_mode))
-			f = write_ansi(lsd, ANSI_BLUE);
+			f = write_out(lsd, ANSI_BLUE);
 		else if (S_ISREG(entry->fs.st_mode) && ((entry->fs.st_mode & S_IXUSR) ||
 			(entry->fs.st_mode & S_IXGRP) || (entry->fs.st_mode & S_IXOTH)))
-			f = write_ansi(lsd, ANSI_RED);
+			f = write_out(lsd, ANSI_RED);
 	}
 	write_out(lsd, entry->name);
 	if (f)
-		write_ansi(lsd, ANSI_RESET);
+		write_out(lsd, ANSI_RESET);
 }

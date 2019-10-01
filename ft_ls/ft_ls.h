@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 17:15:03 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 18:16:58 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,18 +54,15 @@ typedef unsigned char	t_uchar;
 # define		F_SHOWBLCKSZ	(1u << 10u)
 # define		F_ERROR			(0xFFFFFFFF)
 
-
-# define		ANSI_CTL	(27)
-# define		ANSI_RESET	"[0m"
-# define		ANSI_BLACK	"[30m"
-# define		ANSI_RED 	"[31m"
-# define		ANSI_GREEN	"[32m"
-# define		ANSI_YELLOW	"[33m"
-# define		ANSI_BLUE	"[34m"
-# define		ANSI_PURPLE	"[35m"
-# define		ANSI_CYAN	"[36m"
-# define		ANSI_WHITE	"[37m"
-
+# define		ANSI_RESET	"\e[0m"
+# define		ANSI_BLACK	"\e[30m"
+# define		ANSI_RED 	"\e[31m"
+# define		ANSI_GREEN	"\e[32m"
+# define		ANSI_YELLOW	"\e[33m"
+# define		ANSI_BLUE	"\e[34m"
+# define		ANSI_PURPLE	"\e[35m"
+# define		ANSI_CYAN	"\e[36m"
+# define		ANSI_WHITE	"\e[37m"
 
 typedef struct	s_fttime
 {
@@ -120,9 +117,8 @@ t_result		parse_time(time_t time, t_fttime *fttime);
 
 void			write_flush(t_lsdata *lsd);
 void			write_cout(t_lsdata *lsd, char c);
-void			write_out(t_lsdata *lsd, const char *str);
+int				write_out(t_lsdata *lsd, const char *str);
 void			write_number(t_lsdata *lsd, t_uint n);
-int				write_ansi(t_lsdata *lsd, char *color);
 
 t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags,
 							t_maxvals *vals);
