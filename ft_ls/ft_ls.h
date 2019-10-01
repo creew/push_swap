@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 11:38:59 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 12:41:50 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@
 #elif __APPLE__
 #define DD_NAME_LEN(x)	(x->d_namlen)
 #endif
+
 typedef int 			t_result;
 
 typedef unsigned int	t_uint;
@@ -75,10 +76,10 @@ typedef struct	s_maxvals
 
 typedef	struct	s_fentry
 {
-	char				name[1024];
-	struct stat			fs;
-	t_fttime			time;
-	t_list				*child;
+	char		name[1024];
+	struct stat	fs;
+	t_fttime	time;
+	t_list		*child;
 }				t_fentry;
 
 typedef struct	s_lsdata
@@ -106,7 +107,7 @@ t_result		parse_time(time_t time, t_fttime *fttime);
 
 void			write_flush(t_lsdata *lsd);
 void			write_cout(t_lsdata *lsd, char c);
-void			write_out(t_lsdata *lsd, char *str);
+void			write_out(t_lsdata *lsd, const char *str);
 void			write_number(t_lsdata *lsd, t_uint n);
 
 t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags,
@@ -114,4 +115,5 @@ t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags,
 t_result		print_uint(t_lsdata *lsd, t_uint num, size_t width);
 t_result		print_rights(t_lsdata *lsd, struct stat *fs);
 t_result		print_str(t_lsdata *lsd, char *str, size_t width);
+t_result		print_date(t_lsdata *lsd, t_fentry *entry);
 #endif

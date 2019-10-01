@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 10:38:00 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/30 17:13:24 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 12:45:05 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,11 @@ t_result		print_entry(t_lsdata * lsd, t_fentry *entry, unsigned int flags,
 		if (grp)
 			print_str(lsd, grp->gr_name, vals->group + 2);
 		print_uint(lsd, fs->st_size, vals->size + 2);
+
+		write_cout(lsd, ' ');
+		parse_time(entry->fs.st_mtimespec.tv_sec, &entry->time);
+		print_date(lsd, entry);
+
 		write_cout(lsd, ' ');
 		write_out(lsd, entry->name);
 		write_cout(lsd, '\n');

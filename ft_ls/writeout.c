@@ -26,7 +26,7 @@ void	write_cout(t_lsdata *lsd, char c)
 	lsd->bufout[lsd->bufpos++] = c;
 }
 
-void	write_out(t_lsdata *lsd, char *str)
+void	write_out(t_lsdata *lsd, const char *str)
 {
 	char	c;
 

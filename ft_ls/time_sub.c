@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/01 11:35:06 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 11:49:49 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 12:42:57 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 t_result	parse_time(time_t time, t_fttime *fttime)
 {
-	int		count;
+	size_t		count;
+	char		*stime;
 
-	count = -1;
-	char *stime = ctime(&time);
-	while (++count < (sizeof(g_months)/ sizeof(g_months[0])))
+	count = 0;
+	stime = ctime(&time);
+	while (count < (sizeof(g_months)/ sizeof(g_months[0])))
 	{
 		if (ft_strncmp(stime + 4, g_months[count], 3) == 0)
 			break;
+		count++;
 	}
 	fttime->month = count;
 	fttime->day = ft_atoi(stime + 8);
@@ -32,15 +34,12 @@ t_result	parse_time(time_t time, t_fttime *fttime)
 	return (RET_OK);
 }
 
-int			time_cmp(t_fttime *t1, t_fttime *t2)
+int			time_cmp(t_fttime *ct, t_fttime *ft)
 {
- 	if (t2->year >= t1->year && t2->month >= t1->month && t2->day >= t1->day &&
- 		t2->hour >= t1->hour && t2->minute >= t1->minute && t2->sec >= t1->sec)
 	{
 
 
 	}
-
-
+	return (1);
 }
 
