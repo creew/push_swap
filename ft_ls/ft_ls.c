@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/30 17:59:26 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 10:42:04 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,15 @@ int		main(int ac, char *av[])
 {
 	t_result	ret;
 	t_lsdata	lsd;
+	time_t		cur_time;
 	struct		winsize w;
 
 	ft_bzero(&lsd, sizeof(lsd));
 	if (ioctl(0, TIOCGWINSZ, &w) != -1)
 		lsd.termwidth = w.ws_col;
+	cur_time = time(NULL);
+	if (cur_time != -1)
+		parse_time(cur_time, &lsd.time);
 	if ((ret = parse_args(&lsd, ac, av)) == RET_OK)
 	{
 		printlst(&lsd, lsd.files);

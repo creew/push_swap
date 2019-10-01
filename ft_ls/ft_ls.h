@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/30 17:58:35 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/01 11:38:59 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 #include <sys/stat.h>
 #include <pwd.h>
 #include <grp.h>
+#include <time.h>
 #include "libft.h"
-
 
 # define	BUF_SIZE			42
 # define 	STR_CURRENT_DIR		"."
@@ -31,6 +31,8 @@
 typedef int 			t_result;
 
 typedef unsigned int	t_uint;
+typedef unsigned short	t_ushort;
+typedef unsigned char	t_uchar;
 
 #define		RET_OK				(0)
 #define		ERR_ENOMEM			(-1)
@@ -51,6 +53,16 @@ typedef unsigned int	t_uint;
 #define		F_SHOWBLCKSZ	(1u << 10u)
 #define		F_ERROR			(0xFFFFFFFF)
 
+typedef struct	s_fttime
+{
+	t_ushort	year;
+	t_uchar		month;
+	t_uchar		day;
+	t_uchar		hour;
+	t_uchar		minute;
+	t_uchar 	sec;
+}				t_fttime;
+
 typedef struct	s_maxvals
 {
 	t_uint 		name;
@@ -65,6 +77,7 @@ typedef	struct	s_fentry
 {
 	char				name[1024];
 	struct stat			fs;
+	t_fttime			time;
 	t_list				*child;
 }				t_fentry;
 
@@ -73,20 +86,23 @@ typedef struct	s_lsdata
 	char		bufout[BUF_SIZE];
 	t_uint		bufpos;
 
+	t_fttime	time;
 	t_uint		termwidth;
 	t_list		*files;
 	t_list		*dirs;
 	t_uint		flags;
 }				t_lsdata;
 
+extern 			const char *g_months[12];
+
 t_result		parse_args(t_lsdata *lsdata, int ac, char *av[]);
 t_result		add_param(t_lsdata *lsd, char *name);
 
 size_t			set_path(char *path);
-size_t			add_pathdir(char *path, const char *dir);
 t_uint			get_uint_width(t_uint num);
 t_uint			get_uid_length(uid_t uid);
 t_uint			get_gid_length(gid_t gid);
+t_result		parse_time(time_t time, t_fttime *fttime);
 
 void			write_flush(t_lsdata *lsd);
 void			write_cout(t_lsdata *lsd, char c);

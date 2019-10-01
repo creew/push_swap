@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-const char *g_months[] =
+const char *g_months[12] =
 	{
 		"Jan",
 		"Feb",
