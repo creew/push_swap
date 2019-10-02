@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 17:42:35 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/02 10:26:35 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,12 +64,19 @@ void	printlst(t_lsdata *lsd, t_list *lst)
 
 	ft_bzero(&vals, sizeof(vals));
 	get_maxvals(lst, &vals);
-	while (lst)
+	if (lsd->flags & F_LONG_FORMAT || lsd->flags & F_GROUP_NAME)
 	{
-		fentry = (t_fentry *)(lst->content);
-		print_entry(lsd, fentry, lsd->flags, &vals);
-		printlst(lsd, fentry->child);
-		lst = lst->next;
+		while (lst)
+		{
+			fentry = (t_fentry *)(lst->content);
+			print_entry(lsd, fentry, lsd->flags, &vals);
+			printlst(lsd, fentry->child);
+			lst = lst->next;
+		}
+	}
+	else
+	{
+
 	}
 }
 
@@ -77,15 +84,14 @@ int		main(int ac, char *av[])
 {
 	t_result		ret;
 	t_lsdata		lsd;
-	time_t			cur_time;
 	struct winsize	w;
 
 	ft_bzero(&lsd, sizeof(lsd));
 	if (ioctl(0, TIOCGWINSZ, &w) != -1)
 		lsd.termwidth = w.ws_col;
-	cur_time = time(NULL);
-	if (cur_time != -1)
-		parse_time(cur_time, &lsd.ftime);
+	lsd.ctime = time(NULL);
+	if (lsd.ctime != -1)
+		parse_time(lsd.ctime, &lsd.ftime);
 	if ((ret = parse_args(&lsd, ac, av)) == RET_OK)
 	{
 		printlst(&lsd, lsd.files);

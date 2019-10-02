@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 18:16:58 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/02 11:14:23 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,6 +68,9 @@ typedef unsigned char	t_uchar;
 # define		ANSI_CYAN	"\e[36m"
 # define		ANSI_WHITE	"\e[37m"
 
+# define		ANSI_BG_GREEN	"\e[42m"
+# define		ANSI_BG_YELLOW	"\e[43m"
+
 typedef struct	s_fttime
 {
 	t_ushort	year;
@@ -102,6 +105,7 @@ typedef struct	s_lsdata
 	t_uint		bufpos;
 
 	t_fttime	ftime;
+	time_t 		ctime;
 	t_uint		termwidth;
 	t_list		*files;
 	t_list		*dirs;
