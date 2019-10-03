@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 16:27:31 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 19:09:41 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 19:31:09 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry, char *path
 	acl_entry_t		dummy;
 	ssize_t			xattr;
 
+	dummy = 0;
 	if (lsd->flags & F_LONG_FORMAT)
 	{
 		acl = acl_get_link_np(path, ACL_TYPE_EXTENDED);
@@ -34,6 +35,7 @@ static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry, char *path
 			entry->xattr = XATTR_ATTR;
 		else if (acl != NULL)
 			entry->xattr = XATTR_ACL;
+		acl_free(acl);
 	}
 	return (RET_OK);
 }
