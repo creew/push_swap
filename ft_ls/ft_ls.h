@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 13:16:06 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 17:20:12 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 
 # define BUF_SIZE			42
 # define STR_CURRENT_DIR	"."
-# define LEGAL_OPTIONS		"RalrtsguGn"
+# define LEGAL_OPTIONS		"RalrtsguGnfS"
 
 # ifdef __linux__
 #  define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
@@ -57,6 +57,7 @@ typedef unsigned char	t_uchar;
 # define F_COLORISED		(1u << 9u)
 # define F_SHOWBLCKSZ		(1u << 10u)
 # define F_ID_NUMBERS		(1u << 11u)
+# define F_SORTSIZE			(1u << 12u)
 # define F_ERROR			(0xFFFFFFFF)
 
 # define ANSI_RESET		"\e[0m"
@@ -131,9 +132,11 @@ void			write_number(t_lsdata *lsd, t_uint n);
 
 t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 							t_maxvals *vals);
-t_result		print_uint(t_lsdata *lsd, t_uint num, size_t width);
+t_result		print_uint(t_lsdata *lsd, t_uint num, size_t width, int right);
 t_result		print_rights(t_lsdata *lsd, struct stat *fs);
-t_result		print_str(t_lsdata *lsd, char *str, size_t width);
+t_result		print_str(t_lsdata *lsd, char *str, size_t width, int right);
 t_result		print_date(t_lsdata *lsd, time_t ti);
 t_result		print_name(t_lsdata *lsd, t_fentry *entry);
+
+void			printlst(t_lsdata *lsd, t_list *lst);
 #endif

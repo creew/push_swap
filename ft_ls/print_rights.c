@@ -64,5 +64,6 @@ t_result		print_rights(t_lsdata *lsd, struct stat *fs)
 	write_cout(lsd, fs->st_mode & S_IWOTH ? 'w' : '-');
 	print_other_perm(lsd, fs->st_mode & S_ISVTX, fs->st_mode & S_IXOTH);
 	write_cout(lsd, ' ');
+	write_cout(lsd, ' ');
 	return (RET_OK);
 }

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 18:03:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/02 11:31:12 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 16:25:25 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,29 @@ const char *g_months[12] =
 	"Dec"
 };
 
-t_result	print_uint(t_lsdata *lsd, t_uint num, size_t width)
+t_result	print_uint(t_lsdata *lsd, t_uint num, size_t width, int right)
 {
 	t_uint size;
 
 	size = get_uint_width(num);
-	while (size < width)
-	{
+	while (!right && size++ < width)
 		write_cout(lsd, ' ');
-		size++;
-	}
 	write_number(lsd, num);
+	while (right && size++ < width)
+		write_cout(lsd, ' ');
 	return (RET_OK);
 }
 
-t_result	print_str(t_lsdata *lsd, char *str, size_t width)
+t_result	print_str(t_lsdata *lsd, char *str, size_t width, int right)
 {
 	t_uint size;
 
 	size = ft_strlen(str);
-	while (size < width)
-	{
+	while (!right && size++ < width)
 		write_cout(lsd, ' ');
-		size++;
-	}
 	write_out(lsd, str);
+	while (right && size++ < width)
+		write_cout(lsd, ' ');
 	return (RET_OK);
 }
 
@@ -70,7 +68,7 @@ t_result	print_date(t_lsdata *lsd, time_t ti)
 	if (1)
 	{
 		if (get_uint_width(tft.hour) < 2)
-			write_cout(lsd, ' ');
+			write_cout(lsd, '0');
 		write_number(lsd, tft.hour);
 		write_cout(lsd, ':');
 		if (get_uint_width(tft.minute) < 2)

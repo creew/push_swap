@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 16:27:31 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 16:08:34 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 17:35:46 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,26 @@ static int	f_cmp(t_list *l1, t_list *l2, void *param)
 	t_fentry	*f1;
 	t_fentry	*f2;
 	t_uint		flags;
+	long		res;
 
 	flags = *(t_uint *)(param);
 	f1 = (t_fentry *)(l1->content);
 	f2 = (t_fentry *)(l2->content);
-	return (ft_strcmp(f1->name, f2->name));
+	res = 0;
+	if (flags & F_NOT_SORTED)
+		return (0);
+	if (flags & F_SORTSIZE)
+		res = f2->fs.st_size - f1->fs.st_size;
+	else if (flags & F_SORTTIME)
+	{
+		if (flags & F_SORTATIME)
+			res = f2->fs.st_atimespec.tv_sec - f1->fs.st_atimespec.tv_sec;
+		else
+			res = f2->fs.st_mtimespec.tv_sec - f1->fs.st_mtimespec.tv_sec;
+	}
+	if (res == 0)
+		res = ft_strcmp(f1->name, f2->name);
+	return ((int)(flags & F_REVERSE ? -res : res));
 }
 
 t_result	read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
