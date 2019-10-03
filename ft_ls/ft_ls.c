@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/02 10:26:35 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 13:30:35 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	delall(t_lsdata *lsd)
 	ft_lstdel(&lsd->files, delone);
 }
 
-t_uint	get_maxvals(t_list *lst, t_maxvals *vals)
+t_uint	get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 {
 	t_fentry		*fentry;
 	size_t			len;
@@ -46,9 +46,9 @@ t_uint	get_maxvals(t_list *lst, t_maxvals *vals)
 		bsize += fentry->fs.st_blocks;
 		if ((len = get_uint_width(fentry->fs.st_nlink)) > vals->links)
 			vals->links = len;
-		if ((len = get_uid_length(fentry->fs.st_uid)) > vals->owner)
+		if ((len = get_uid_length(fentry->fs.st_uid, flags)) > vals->owner)
 			vals->owner = len;
-		if ((len = get_gid_length(fentry->fs.st_gid)) > vals->group)
+		if ((len = get_gid_length(fentry->fs.st_gid, flags)) > vals->group)
 			vals->group = len;
 		if ((len = get_uint_width(fentry->fs.st_size)) > vals->size)
 			vals->size = len;
@@ -63,7 +63,7 @@ void	printlst(t_lsdata *lsd, t_list *lst)
 	t_maxvals	vals;
 
 	ft_bzero(&vals, sizeof(vals));
-	get_maxvals(lst, &vals);
+	get_maxvals(lst, &vals, lsd->flags);
 	if (lsd->flags & F_LONG_FORMAT || lsd->flags & F_GROUP_NAME)
 	{
 		while (lst)

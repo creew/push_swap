@@ -37,20 +37,29 @@ t_uint		get_uint_width(t_uint num)
 	return (size);
 }
 
-t_uint		get_uid_length(uid_t uid)
+t_uint		get_uid_length(uid_t uid, t_uint flags)
 {
-	struct passwd	*pwd;
+	struct passwd *pwd;
 
-	if ((pwd = getpwuid(uid)))
-		return (ft_strlen(pwd->pw_name));
+	if (!(flags & F_ID_NUMBERS))
+	{
+		pwd = getpwuid(uid);
+		if (pwd)
+			return (ft_strlen(pwd->pw_name));
+	}
 	return (get_uint_width(uid));
+
 }
 
-t_uint		get_gid_length(gid_t gid)
+t_uint		get_gid_length(gid_t gid, t_uint flags)
 {
 	struct group	*grp;
 
-	if ((grp = getgrgid(gid)))
-		return (ft_strlen(grp->gr_name));
+	if (!(flags & F_ID_NUMBERS))
+	{
+		grp = getgrgid(gid);
+		if (grp)
+			return (ft_strlen(grp->gr_name));
+	}
 	return (get_uint_width(gid));
 }

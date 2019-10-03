@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 20:08:45 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/30 20:08:45 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 13:16:16 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ static t_uint	get_format(char c)
 		return (F_COLORISED);
 	if (c == 's')
 		return (F_SHOWBLCKSZ);
+	if (c == 'n')
+		return (F_ID_NUMBERS);
 	return (F_ERROR);
 }
 
@@ -94,6 +96,8 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 	while (count < ac)
 		if ((ret = parse_arg(lsd, av[count++], &fls)) != RET_OK)
 			return (ret);
+	if (lsd->flags & F_ID_NUMBERS)
+		lsd->flags |= F_LONG_FORMAT;
 	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs))
 		ret = add_param(lsd, STR_CURRENT_DIR);
 	return (ret);
