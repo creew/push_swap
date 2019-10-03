@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 20:08:45 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 17:30:47 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 18:33:41 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 		if ((ret = parse_arg(lsd, av[count++], &fls)) != RET_OK)
 			return (ret);
 	lsd->flags |= ((lsd->flags & F_ID_NUMBERS) ? F_LONG_FORMAT : 0);
+	lsd->flags |= ((lsd->flags & F_GROUP_NAME) ? F_LONG_FORMAT : 0);
 	lsd->flags |= ((lsd->flags & F_NOT_SORTED) ? F_INCLUDE_DIR : 0);
 	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs))
 		ret = add_param(lsd, STR_CURRENT_DIR);

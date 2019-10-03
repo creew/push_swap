@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 17:20:12 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 19:05:08 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,14 @@
 # include <pwd.h>
 # include <grp.h>
 # include <time.h>
+# include <unistd.h>
+# include <sys/types.h>
+# include <sys/acl.h>
+# include <sys/xattr.h>
 # include "libft.h"
 
 # define BUF_SIZE			42
+# define FT_MAX_PATH		1024
 # define STR_CURRENT_DIR	"."
 # define LEGAL_OPTIONS		"RalrtsguGnfS"
 
@@ -60,6 +65,9 @@ typedef unsigned char	t_uchar;
 # define F_SORTSIZE			(1u << 12u)
 # define F_ERROR			(0xFFFFFFFF)
 
+# define XATTR_ATTR		(1u)
+# define XATTR_ACL		(2u)
+
 # define ANSI_RESET		"\e[0m"
 # define ANSI_BLACK		"\e[30m"
 # define ANSI_RED		"\e[31m"
@@ -96,6 +104,8 @@ typedef struct	s_maxvals
 typedef	struct	s_fentry
 {
 	char		name[1024];
+	char		*link;
+	t_uchar		xattr;
 	struct stat	fs;
 	t_fttime	time;
 	t_list		*child;
@@ -133,7 +143,7 @@ void			write_number(t_lsdata *lsd, t_uint n);
 t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 							t_maxvals *vals);
 t_result		print_uint(t_lsdata *lsd, t_uint num, size_t width, int right);
-t_result		print_rights(t_lsdata *lsd, struct stat *fs);
+t_result		print_rights(t_lsdata *lsd, t_fentry *entry,  struct stat *fs);
 t_result		print_str(t_lsdata *lsd, char *str, size_t width, int right);
 t_result		print_date(t_lsdata *lsd, time_t ti);
 t_result		print_name(t_lsdata *lsd, t_fentry *entry);

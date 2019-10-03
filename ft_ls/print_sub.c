@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 18:03:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 16:25:25 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 18:16:41 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,7 @@ t_result	print_str(t_lsdata *lsd, char *str, size_t width, int right)
 	return (RET_OK);
 }
 
+/* TODO Make difference output for files yonger or older than 6 months */
 t_result	print_date(t_lsdata *lsd, time_t ti)
 {
 	t_fttime	tft;
@@ -94,6 +95,8 @@ t_result	print_name(t_lsdata *lsd, t_fentry *entry)
 			f = write_out(lsd, ANSI_BLACK ANSI_BG_GREEN);
 		else if (S_ISDIR(entry->fs.st_mode))
 			f = write_out(lsd, ANSI_BLUE);
+		else if (S_ISLNK(entry->fs.st_mode))
+			f = write_out(lsd, ANSI_PURPLE);
 		else if (S_ISREG(entry->fs.st_mode) && ((entry->fs.st_mode & S_IXUSR) ||
 			(entry->fs.st_mode & S_IXGRP) || (entry->fs.st_mode & S_IXOTH)))
 			f = write_out(lsd, ANSI_RED);
@@ -101,5 +104,11 @@ t_result	print_name(t_lsdata *lsd, t_fentry *entry)
 	write_out(lsd, entry->name);
 	if (f)
 		write_out(lsd, ANSI_RESET);
+	if (entry->link)
+	{
+		write_out(lsd, " -> ");
+		write_out(lsd, entry->link);
+	}
+
 	return (RET_OK);
 }

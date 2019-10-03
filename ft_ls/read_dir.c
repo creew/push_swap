@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 16:27:31 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 17:35:46 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 19:09:41 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,31 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-static int	f_cmp(t_list *l1, t_list *l2, void *param)
+static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry, char *path)
+{
+	acl_t			acl;
+	acl_entry_t		dummy;
+	ssize_t			xattr;
+
+	if (lsd->flags & F_LONG_FORMAT)
+	{
+		acl = acl_get_link_np(path, ACL_TYPE_EXTENDED);
+		if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1) {
+			acl_free(acl);
+			acl = NULL;
+		}
+		xattr = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
+		if (xattr < 0)
+			xattr = 0;
+		if (xattr > 0)
+			entry->xattr = XATTR_ATTR;
+		else if (acl != NULL)
+			entry->xattr = XATTR_ACL;
+	}
+	return (RET_OK);
+}
+
+static int		f_cmp(t_list *l1, t_list *l2, void *param)
 {
 	t_fentry	*f1;
 	t_fentry	*f2;
@@ -41,7 +65,8 @@ static int	f_cmp(t_list *l1, t_list *l2, void *param)
 	return ((int)(flags & F_REVERSE ? -res : res));
 }
 
-t_result	read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
+/* TODO Make better recursive reading */
+t_result		read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
 {
 	DIR				*dir;
 	struct dirent	*dd;
@@ -60,8 +85,14 @@ t_result	read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
 		ffentry = (t_fentry *)(lst->content);
 		ft_strncpy(ffentry->name, dd->d_name, DD_NAME_LEN(dd));
 		ft_strcpy(path + plen, ffentry->name);
-		if (stat(path, &ffentry->fs) < 0)
+		if (lstat(path, &ffentry->fs) < 0)
 			return (ERR_STAT);
+		read_additional_param(lsd, ffentry, path);
+		if (S_ISLNK(ffentry->fs.st_mode))
+		{
+			ffentry->link = ft_strnew(FT_MAX_PATH);
+			readlink(path, ffentry->link, FT_MAX_PATH);
+		}
 		if (S_ISDIR(ffentry->fs.st_mode) && lsd->flags & F_RECURSIVE &&
 			ft_strcmp(ffentry->name, ".") && ft_strcmp(ffentry->name, ".."))
 			read_dir(lsd, ffentry, path);
@@ -72,7 +103,7 @@ t_result	read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
 	return (RET_OK);
 }
 
-t_result	add_param(t_lsdata *lsd, char *name)
+t_result		add_param(t_lsdata *lsd, char *name)
 {
 	t_list		*lst;
 	t_fentry	*fentry;
@@ -81,7 +112,7 @@ t_result	add_param(t_lsdata *lsd, char *name)
 	if ((lst = ft_lstnewblank(sizeof(t_fentry))) == NULL)
 		return (ERR_ENOMEM);
 	fentry = (t_fentry *)(lst->content);
-	if (stat(name, &fentry->fs) != 0)
+	if (lstat(name, &fentry->fs) != 0)
 		return (ERR_STAT);
 	ft_strcpy(fentry->name, name);
 	if (S_ISDIR(fentry->fs.st_mode))

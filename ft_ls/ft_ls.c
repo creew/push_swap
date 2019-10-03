@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 14:23:59 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 14:35:16 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void	delone(void *data, size_t content_size)
 	(void)(content_size);
 	entry = (t_fentry *)data;
 	ft_lstdel(&entry->child, delone);
+	ft_strdel(&entry->link);
 	ft_memdel(&data);
 }
 
