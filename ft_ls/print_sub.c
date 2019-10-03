@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 18:03:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 18:16:41 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 20:10:48 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,10 @@ t_result	print_str(t_lsdata *lsd, char *str, size_t width, int right)
 	return (RET_OK);
 }
 
+int 		date_cmp_6month(t_fttime *tf, t_fttime *tc)
+{
+	return (0);
+}
 /* TODO Make difference output for files yonger or older than 6 months */
 t_result	print_date(t_lsdata *lsd, time_t ti)
 {
@@ -66,7 +70,7 @@ t_result	print_date(t_lsdata *lsd, time_t ti)
 		write_cout(lsd, ' ');
 	write_number(lsd, tft.day);
 	write_cout(lsd, ' ');
-	if (1)
+	if (date_cmp_6month(&tft, &lsd->ftime) == 0)
 	{
 		if (get_uint_width(tft.hour) < 2)
 			write_cout(lsd, '0');
