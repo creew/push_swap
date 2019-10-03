@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 18:03:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 20:10:48 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/03 20:32:13 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,22 @@ const char *g_months[12] =
 	"Oct",
 	"Nov",
 	"Dec"
+};
+
+const int day_in_month[12] =
+{
+	31,
+	28,
+	31,
+	30,
+	31,
+	30,
+	31,
+	31,
+	30,
+	31,
+	30,
+	31
 };
 
 t_result	print_uint(t_lsdata *lsd, t_uint num, size_t width, int right)
@@ -54,8 +70,9 @@ t_result	print_str(t_lsdata *lsd, char *str, size_t width, int right)
 	return (RET_OK);
 }
 
-int 		date_cmp_6month(t_fttime *tf, t_fttime *tc)
+int 		date_cmp_6month(t_fttime *tf, t_fttime *tc, time_t ttf, time_t ttc)
 {
+
 	return (0);
 }
 /* TODO Make difference output for files yonger or older than 6 months */
@@ -70,7 +87,7 @@ t_result	print_date(t_lsdata *lsd, time_t ti)
 		write_cout(lsd, ' ');
 	write_number(lsd, tft.day);
 	write_cout(lsd, ' ');
-	if (date_cmp_6month(&tft, &lsd->ftime) == 0)
+	if (date_cmp_6month(&tft, &lsd->ftime, ti, lsd->ctime) == 0)
 	{
 		if (get_uint_width(tft.hour) < 2)
 			write_cout(lsd, '0');
