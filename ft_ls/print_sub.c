@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 18:03:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 20:32:13 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/04 11:55:02 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,6 @@ const char *g_months[12] =
 	"Oct",
 	"Nov",
 	"Dec"
-};
-
-const int day_in_month[12] =
-{
-	31,
-	28,
-	31,
-	30,
-	31,
-	30,
-	31,
-	31,
-	30,
-	31,
-	30,
-	31
 };
 
 t_result	print_uint(t_lsdata *lsd, t_uint num, size_t width, int right)
@@ -70,12 +54,14 @@ t_result	print_str(t_lsdata *lsd, char *str, size_t width, int right)
 	return (RET_OK);
 }
 
-int 		date_cmp_6month(t_fttime *tf, t_fttime *tc, time_t ttf, time_t ttc)
+int 		date_cmp_6month(time_t ttf, time_t ttc)
 {
-
-	return (0);
+	if (ttf > ttc)
+		return ((ttf - ttc) > (182 * 24 * 60 * 60));
+	else
+		return ((ttc - ttf) > (182 * 24 * 60 * 60));
 }
-/* TODO Make difference output for files yonger or older than 6 months */
+
 t_result	print_date(t_lsdata *lsd, time_t ti)
 {
 	t_fttime	tft;
@@ -87,7 +73,7 @@ t_result	print_date(t_lsdata *lsd, time_t ti)
 		write_cout(lsd, ' ');
 	write_number(lsd, tft.day);
 	write_cout(lsd, ' ');
-	if (date_cmp_6month(&tft, &lsd->ftime, ti, lsd->ctime) == 0)
+	if (date_cmp_6month(ti, lsd->ctime) == 0)
 	{
 		if (get_uint_width(tft.hour) < 2)
 			write_cout(lsd, '0');
@@ -112,10 +98,18 @@ t_result	print_name(t_lsdata *lsd, t_fentry *entry)
 	f = 0;
 	if (lsd->flags & F_COLORISED)
 	{
-		if (entry->fs.st_mode & S_ISVTX)
-			f = write_out(lsd, ANSI_BLACK ANSI_BG_GREEN);
-		else if (S_ISDIR(entry->fs.st_mode))
-			f = write_out(lsd, ANSI_BLUE);
+		if (S_ISDIR(entry->fs.st_mode))
+		{
+			if ((entry->fs.st_mode & ACCESSPERMS) == ACCESSPERMS)
+			{
+				if (entry->fs.st_mode & S_ISVTX)
+					f = write_out(lsd, ANSI_BLACK ANSI_BG_GREEN);
+				else
+					f = write_out(lsd, ANSI_BLACK ANSI_BG_YELLOW);
+			}
+			else
+				f = write_out(lsd, ANSI_BLUE);
+		}
 		else if (S_ISLNK(entry->fs.st_mode))
 			f = write_out(lsd, ANSI_PURPLE);
 		else if (S_ISREG(entry->fs.st_mode) && ((entry->fs.st_mode & S_IXUSR) ||
@@ -125,11 +119,10 @@ t_result	print_name(t_lsdata *lsd, t_fentry *entry)
 	write_out(lsd, entry->name);
 	if (f)
 		write_out(lsd, ANSI_RESET);
-	if (entry->link)
+	if (entry->link && (lsd->flags & F_LONG_FORMAT))
 	{
 		write_out(lsd, " -> ");
 		write_out(lsd, entry->link);
 	}
-
 	return (RET_OK);
 }
