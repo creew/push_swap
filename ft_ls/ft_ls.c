@@ -13,17 +13,6 @@
 #include "ft_ls.h"
 #include <sys/ioctl.h>
 
-void	delone(void *data, size_t content_size)
-{
-	t_fentry	*entry;
-
-	(void)(content_size);
-	entry = (t_fentry *)data;
-	ft_lstdel(&entry->child, delone);
-	ft_strdel(&entry->link);
-	ft_memdel(&data);
-}
-
 void	delall(t_lsdata *lsd)
 {
 	ft_lstdel(&lsd->dirs, delone);

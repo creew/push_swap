@@ -19,7 +19,9 @@
 # include <time.h>
 # include <unistd.h>
 # include <sys/types.h>
+# ifdef __APPLE__
 # include <sys/acl.h>
+# endif
 # include <sys/xattr.h>
 # include "libft.h"
 
@@ -117,10 +119,6 @@ typedef struct	s_lsdata
 	char		bufout[BUF_SIZE];
 	t_uint		bufpos;
 
-	char 		**rstack;
-	size_t		ssize;
-	size_t		sspos;
-
 	t_fttime	ftime;
 	time_t		ctime;
 	t_uint		termwidth;
@@ -155,4 +153,5 @@ t_result		print_date(t_lsdata *lsd, time_t ti);
 t_result		print_name(t_lsdata *lsd, t_fentry *entry);
 
 void			printlst(t_lsdata *lsd, t_list *lst);
+char			*get_name_from_path(char *path);
 #endif

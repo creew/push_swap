@@ -17,15 +17,16 @@ t_uint	get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 	t_fentry		*fentry;
 	size_t			len;
 	t_uint			bsize;
+	char			*name;
 
 	bsize = 0;
 	while (lst)
 	{
 		fentry = (t_fentry *)(lst->content);
-		if ((fentry->name[0] == '.' && (flags & F_INCLUDE_DIR)) ||
-			fentry->name[0] != '.')
+		name = get_name_from_path(fentry->path);
+		if ((name[0] == '.' && (flags & F_INCLUDE_DIR)) || name[0] != '.')
 		{
-			if ((len = ft_strlen(fentry->name)) > vals->name)
+			if ((len = ft_strlen(name)) > vals->name)
 				vals->name = len;
 			if ((len = get_uint_width(fentry->fs.st_blocks)) > vals->blocks)
 				vals->blocks = len;
@@ -60,7 +61,7 @@ size_t	get_max_short_len(t_lsdata *lsd, t_list *lst)
 		if (lsd->flags & F_SHOWBLCKSZ)
 			if ((blk_len = get_uint_width(fentry->fs.st_blksize) > max_blk_len))
 				max_blk_len = blk_len;
-		if ((name_len = ft_strlen(fentry->name)) > max_name_len)
+		if ((name_len = ft_strlen(get_name_from_path(fentry->path))) > max_name_len)
 			max_name_len = name_len;
 		lst = lst->next;
 	}
@@ -72,12 +73,14 @@ size_t	get_lst_real_size(t_list *lst, t_uint flags)
 {
 	size_t		size;
 	t_fentry	*entry;
+	char		*name;
 
 	size = 0;
 	while (lst)
 	{
 		entry = (t_fentry *)lst->content;
-		if (entry->name[0] == '.')
+		name = get_name_from_path(entry->path);
+		if (name[0] == '.')
 		{
 			if (flags & F_INCLUDE_DIR)
 				size++;
@@ -94,12 +97,14 @@ t_fentry *get_entry_by_index(t_list *lst, t_uint flags, int index)
 {
 	t_fentry	*entry;
 	int			found;
+	char 		*name;
 
 	found = 0;
 	while (lst)
 	{
 		entry = (t_fentry *)lst->content;
-		if (entry->name[0] == '.')
+		name = get_name_from_path(entry->path);
+		if (name[0] == '.')
 		{
 			if (flags & F_INCLUDE_DIR)
 				found = 1;
@@ -145,7 +150,7 @@ void	printlst(t_lsdata *lsd, t_list *lst)
 		{
 
 
-
+			count++;
 		}
 	}
 }

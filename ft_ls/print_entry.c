@@ -57,7 +57,7 @@ t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 	struct stat		*fs;
 
 	fs = &entry->fs;
-	if (!(flags & F_INCLUDE_DIR) && entry->name[0] == '.')
+	if (!(flags & F_INCLUDE_DIR) && get_name_from_path(entry->path)[0] == '.')
 		return (RET_OK);
 	if (flags & F_SHOWBLCKSZ)
 	{

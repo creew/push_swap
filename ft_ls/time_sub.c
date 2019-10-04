@@ -33,8 +33,3 @@ t_result	parse_time(time_t time, t_fttime *fttime)
 	fttime->year = ft_atoi(stime + 20);
 	return (RET_OK);
 }
-
-int			time_cmp(t_fttime *ct, t_fttime *ft)
-{
-	return (1);
-}

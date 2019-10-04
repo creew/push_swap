@@ -74,3 +74,19 @@ void		delone(void *data, size_t content_size)
 	ft_strdel(&entry->link);
 	ft_memdel(&data);
 }
+
+char *get_name_from_path(char *path)
+{
+	size_t	len;
+	size_t 	count;
+
+	count = 0;
+	len = ft_strlen(path);
+	while (len - count > 0)
+	{
+		if (path[len - count - 1] == '/' && count != 0)
+			return (path + len - count);
+		count++;
+	}
+	return (path);
+}

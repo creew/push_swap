@@ -14,8 +14,10 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
+
 static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry, char *path)
 {
+#ifdef __APPLE__
 	acl_t			acl;
 	acl_entry_t		dummy;
 	ssize_t			xattr;
@@ -38,6 +40,12 @@ static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry, char *path
 		acl_free(acl);
 	}
 	return (RET_OK);
+#elif __linux__
+	(void)lsd;
+	(void)entry;
+	(void)path;
+	return (RET_OK);
+#endif
 }
 
 static int		f_cmp(t_list *l1, t_list *l2, void *param)
@@ -58,9 +66,9 @@ static int		f_cmp(t_list *l1, t_list *l2, void *param)
 	else if (flags & F_SORTTIME)
 	{
 		if (flags & F_SORTATIME)
-			res = f2->fs.st_atimespec.tv_sec - f1->fs.st_atimespec.tv_sec;
+			res = f2->fs.ST_ATIME.tv_sec - f1->fs.ST_ATIME.tv_sec;
 		else
-			res = f2->fs.st_mtimespec.tv_sec - f1->fs.st_mtimespec.tv_sec;
+			res = f2->fs.ST_MTIME.tv_sec - f1->fs.ST_MTIME.tv_sec;
 	}
 	if (res == 0)
 		res = ft_strcmp(f1->path, f2->path);
