@@ -63,3 +63,14 @@ t_uint		get_gid_length(gid_t gid, t_uint flags)
 	}
 	return (get_uint_width(gid));
 }
+
+void		delone(void *data, size_t content_size)
+{
+	t_fentry	*entry;
+
+	(void)(content_size);
+	entry = (t_fentry *)data;
+	ft_lstdel(&entry->child, delone);
+	ft_strdel(&entry->link);
+	ft_memdel(&data);
+}

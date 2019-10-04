@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 19:05:08 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/04 19:03:28 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 # include <sys/xattr.h>
 # include "libft.h"
 
-# define BUF_SIZE			42
+# define BUF_SIZE			128
 # define FT_MAX_PATH		1024
 # define STR_CURRENT_DIR	"."
 # define LEGAL_OPTIONS		"RalrtsguGnfS"
@@ -49,6 +49,7 @@ typedef unsigned char	t_uchar;
 # define ERR_ILLEGAL_ARGS	(-2)
 # define ERR_OPEN_DIR		(-3)
 # define ERR_STAT			(-4)
+# define STACK_IS_EMPTY		(-5)
 
 # define F_LONG_FORMAT		(1u << 0u)
 # define F_RECURSIVE		(1u << 1u)
@@ -103,18 +104,22 @@ typedef struct	s_maxvals
 
 typedef	struct	s_fentry
 {
-	char		name[1024];
 	char		*link;
 	t_uchar		xattr;
 	struct stat	fs;
 	t_fttime	time;
 	t_list		*child;
+	char		path[1];
 }				t_fentry;
 
 typedef struct	s_lsdata
 {
 	char		bufout[BUF_SIZE];
 	t_uint		bufpos;
+
+	char 		**rstack;
+	size_t		ssize;
+	size_t		sspos;
 
 	t_fttime	ftime;
 	time_t		ctime;
@@ -128,6 +133,7 @@ extern			const char *g_months[12];
 
 t_result		parse_args(t_lsdata *lsdata, int ac, char *av[]);
 t_result		add_param(t_lsdata *lsd, char *name);
+void			delone(void *data, size_t content_size);
 
 size_t			set_path(char *path);
 t_uint			get_uint_width(t_uint num);
