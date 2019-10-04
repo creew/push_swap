@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 16:51:43 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/04 17:10:29 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/04 17:17:06 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ int		parse_read(ssize_t readed, t_fddata *fdlist, char **line)
 int		remove_data(t_list **root, int fd, int ret)
 {
 	t_list		*list;
-	t_list		*prev;
+	t_list		**prev;
 	t_fddata	*fddata;
 
 	list = *root;
