@@ -18,10 +18,10 @@ void	ft_lstaddsorted(t_list **root, t_list *node, void *param,
 	t_list **prev;
 	t_list *lst;
 
-	lst = *root;
-	prev = root;
 	if (!root || !node || !cmp)
 		return ;
+	lst = *root;
+	prev = root;
 	while (lst)
 	{
 		if (cmp(lst, node, param) > 0)
