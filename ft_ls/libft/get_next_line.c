@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/05 16:51:43 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/08 13:59:52 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/04 17:10:29 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,23 +61,20 @@ int		remove_data(t_list **root, int fd, int ret)
 	t_fddata	*fddata;
 
 	list = *root;
-	prev = NULL;
+	prev = root;
 	while (list)
 	{
 		fddata = (t_fddata *)(list->content);
 		if (fddata->fd == fd)
 		{
-			if (prev == NULL)
-				*root = list->next;
-			else
-				prev->next = list->next;
+			*prev = list->next;
 			ft_memdel((void **)&(fddata->str));
 			ft_memdel((void **)&(fddata->buf));
 			ft_memdel((void **)&(list->content));
 			ft_memdel((void **)&(list));
 			break ;
 		}
-		prev = list;
+		prev = &(list->next);
 		list = list->next;
 	}
 	return (ret);
