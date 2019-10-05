@@ -1,20 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstget.c                                        :+:      :+:    :+:   */
+/*   ft_stack_push.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/01 11:55:40 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 13:05:19 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/05 12:46:37 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/05 13:02:00 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list		*ft_lstget(t_list *lst, int index)
+int		ft_stack_push(t_ftstack *stack, void *data)
 {
-	while (lst && index--)
-		lst = lst->next;
-	return (lst);
+	void **newstack;
+	void **old;
+
+	if (stack->pos >= stack->size)
+	{
+		newstack = ft_memalloc(stack->size + stack->init_val);
+		if (!newstack)
+			return (1);
+		if (stack->data)
+			ft_memcpy(newstack, stack->data, sizeof(void *) * stack->size);
+		old = stack->data;
+		stack->data = newstack;
+		ft_memdel((void **)&old);
+	}
+	stack->data[stack->pos++] = data;
+	return (0);
 }

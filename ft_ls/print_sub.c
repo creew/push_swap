@@ -116,7 +116,7 @@ t_result	print_name(t_lsdata *lsd, t_fentry *entry)
 			(entry->fs.st_mode & S_IXGRP) || (entry->fs.st_mode & S_IXOTH)))
 			f = write_out(lsd, ANSI_RED);
 	}
-	write_out(lsd, get_name_from_path(entry->path));
+	write_out(lsd, entry->name);
 	if (f)
 		write_out(lsd, ANSI_RESET);
 	if (entry->link && (lsd->flags & F_LONG_FORMAT))

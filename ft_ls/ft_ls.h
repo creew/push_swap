@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/04 19:03:28 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 11:00:46 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@
 #  define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
 #  define ST_ATIME			st_atim
 #  define ST_MTIME			st_mtim
+#  define read_additional_param(...)
 # elif __APPLE__
 #  define DD_NAME_LEN(x)	(x->d_namlen)
 #  define ST_ATIME			st_atimespec
@@ -51,7 +52,6 @@ typedef unsigned char	t_uchar;
 # define ERR_ILLEGAL_ARGS	(-2)
 # define ERR_OPEN_DIR		(-3)
 # define ERR_STAT			(-4)
-# define STACK_IS_EMPTY		(-5)
 
 # define F_LONG_FORMAT		(1u << 0u)
 # define F_RECURSIVE		(1u << 1u)
@@ -111,6 +111,7 @@ typedef	struct	s_fentry
 	struct stat	fs;
 	t_fttime	time;
 	t_list		*child;
+	char 		*name;
 	char		path[1];
 }				t_fentry;
 
@@ -153,5 +154,4 @@ t_result		print_date(t_lsdata *lsd, time_t ti);
 t_result		print_name(t_lsdata *lsd, t_fentry *entry);
 
 void			printlst(t_lsdata *lsd, t_list *lst);
-char			*get_name_from_path(char *path);
 #endif

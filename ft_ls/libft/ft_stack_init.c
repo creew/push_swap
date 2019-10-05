@@ -1,20 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstget.c                                        :+:      :+:    :+:   */
+/*   ft_stack_init.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/01 11:55:40 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 13:05:19 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/05 12:44:12 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/05 12:54:39 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list		*ft_lstget(t_list *lst, int index)
+int		ft_stack_init(t_ftstack *stack, size_t init_val)
 {
-	while (lst && index--)
-		lst = lst->next;
-	return (lst);
+	if (stack)
+	{
+		ft_bzero(stack, sizeof(stack));
+		stack->init_val = init_val;
+		return (0);
+	}
+	return (1);
 }

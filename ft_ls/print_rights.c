@@ -51,7 +51,7 @@ static t_result	print_filetype(t_lsdata *lsd, mode_t mode)
 	return (RET_OK);
 }
 
-t_result		print_rights(t_lsdata *lsd, t_fentry *entry,  struct stat *fs)
+t_result		print_rights(t_lsdata *lsd, t_fentry *entry, struct stat *fs)
 {
 	print_filetype(lsd, fs->st_mode);
 	write_cout(lsd, fs->st_mode & S_IRUSR ? 'r' : '-');

@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstget.c                                        :+:      :+:    :+:   */
+/*   ft_stack_pop.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/01 11:55:40 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 13:05:19 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/05 12:52:19 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/05 12:54:39 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-t_list		*ft_lstget(t_list *lst, int index)
+int		ft_stack_pop(t_ftstack *stack, void **data)
 {
-	while (lst && index--)
-		lst = lst->next;
-	return (lst);
+	if (stack->pos)
+	{
+		*data = stack->data[--stack->pos];
+		return (0);
+	}
+	return (0);
 }

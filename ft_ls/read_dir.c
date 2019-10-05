@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 16:27:31 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/04 19:03:28 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 12:07:38 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,11 @@
 #include <dirent.h>
 #include <sys/stat.h>
 
-
-static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry, char *path)
-{
 #ifdef __APPLE__
+
+static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry,
+										char *path)
+{
 	acl_t			acl;
 	acl_entry_t		dummy;
 	ssize_t			xattr;
@@ -26,7 +27,8 @@ static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry, char *path
 	if (lsd->flags & F_LONG_FORMAT)
 	{
 		acl = acl_get_link_np(path, ACL_TYPE_EXTENDED);
-		if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1) {
+		if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
+		{
 			acl_free(acl);
 			acl = NULL;
 		}
@@ -40,13 +42,9 @@ static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry, char *path
 		acl_free(acl);
 	}
 	return (RET_OK);
-#elif __linux__
-	(void)lsd;
-	(void)entry;
-	(void)path;
-	return (RET_OK);
-#endif
 }
+
+#endif
 
 static int		f_cmp(t_list *l1, t_list *l2, void *param)
 {
@@ -75,7 +73,11 @@ static int		f_cmp(t_list *l1, t_list *l2, void *param)
 	return ((int)(flags & F_REVERSE ? -res : res));
 }
 
-/* TODO Make better recursive reading */
+/*
+ * TODO Make better recursive reading
+ *
+ */
+
 t_result		read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
 {
 	DIR				*dir;
@@ -83,7 +85,6 @@ t_result		read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
 	t_list			*lst;
 	t_fentry		*ffentry;
 	size_t 			plen;
-
 
 	dir = opendir(path);
 	if (dir == NULL)
@@ -96,6 +97,7 @@ t_result		read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
 		ffentry = (t_fentry *)(lst->content);
 		ft_strcpy(ffentry->path, path);
 		plen = set_path(ffentry->path);
+		ffentry->name = ffentry->path + plen;
 		ft_strncpy(ffentry->path + plen, dd->d_name, DD_NAME_LEN(dd));
 		if (lstat(path, &ffentry->fs) < 0)
 		{
@@ -124,9 +126,13 @@ t_result		add_param(t_lsdata *lsd, char *name)
 		return (ERR_ENOMEM);
 	fentry = (t_fentry *)(lst->content);
 	if (lstat(name, &fentry->fs) != 0)
+	{
+		ft_lstdelone(&lst, delone);
 		return (ERR_STAT);
+	}
 	ft_strcpy(fentry->path, name);
-	if (S_ISDIR(fentry->fs.st_mode))
+	fentry->name = fentry->path;
+	if (S_ISDIR(fentry->fs.st_mode) && !(lsd->flags & F_DIR_LIKE_FILE))
 		ft_lstaddsorted(&lsd->dirs, lst, &(lsd->flags), f_cmp);
 	else
 		ft_lstaddsorted(&lsd->files, lst, &(lsd->flags), f_cmp);

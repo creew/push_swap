@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 09:48:17 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/27 11:01:08 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 13:05:46 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,14 @@ typedef struct	s_list
 	size_t			content_size;
 	struct s_list	*next;
 }				t_list;
+
+typedef struct	s_ftstack
+{
+	void	**data;
+	size_t	size;
+	size_t	pos;
+	size_t	init_val;
+}				t_ftstack;
 
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
@@ -112,4 +120,9 @@ void			ft_lstaddsorted(t_list **root, t_list *node, void *param,
 t_list			*ft_lstnewblank(size_t content_size);
 size_t			ft_lstsize(t_list *lst);
 t_list			*ft_lstget(t_list *lst, int	index);
+
+int				ft_stack_init(t_ftstack *stack, size_t init_val);
+int				ft_stack_pop(t_ftstack *stack, void **data);
+int				ft_stack_push(t_ftstack *stack, void *data);
+int				ft_stack_delall(t_ftstack **stack, void (*f)(void *));
 #endif

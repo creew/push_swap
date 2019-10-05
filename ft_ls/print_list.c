@@ -6,27 +6,26 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 14:24:04 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 16:25:25 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 11:09:12 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-t_uint	get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
+t_uint		get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 {
 	t_fentry		*fentry;
 	size_t			len;
 	t_uint			bsize;
-	char			*name;
 
 	bsize = 0;
 	while (lst)
 	{
 		fentry = (t_fentry *)(lst->content);
-		name = get_name_from_path(fentry->path);
-		if ((name[0] == '.' && (flags & F_INCLUDE_DIR)) || name[0] != '.')
+		if ((fentry->name[0] == '.' &&
+			(flags & F_INCLUDE_DIR)) || fentry->name[0] != '.')
 		{
-			if ((len = ft_strlen(name)) > vals->name)
+			if ((len = ft_strlen(fentry->name)) > vals->name)
 				vals->name = len;
 			if ((len = get_uint_width(fentry->fs.st_blocks)) > vals->blocks)
 				vals->blocks = len;
@@ -45,12 +44,12 @@ t_uint	get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 	return (bsize);
 }
 
-size_t	get_max_short_len(t_lsdata *lsd, t_list *lst)
+size_t		get_max_short_len(t_lsdata *lsd, t_list *lst)
 {
 	t_fentry	*fentry;
 	size_t		max_name_len;
-	size_t 		max_blk_len;
-	t_uint      blk_len;
+	size_t		max_blk_len;
+	t_uint		blk_len;
 	t_uint		name_len;
 
 	max_name_len = 0;
@@ -61,7 +60,7 @@ size_t	get_max_short_len(t_lsdata *lsd, t_list *lst)
 		if (lsd->flags & F_SHOWBLCKSZ)
 			if ((blk_len = get_uint_width(fentry->fs.st_blksize) > max_blk_len))
 				max_blk_len = blk_len;
-		if ((name_len = ft_strlen(get_name_from_path(fentry->path))) > max_name_len)
+		if ((name_len = ft_strlen(fentry->name)) > max_name_len)
 			max_name_len = name_len;
 		lst = lst->next;
 	}
@@ -69,42 +68,37 @@ size_t	get_max_short_len(t_lsdata *lsd, t_list *lst)
 		max_name_len);
 }
 
-size_t	get_lst_real_size(t_list *lst, t_uint flags)
+size_t		get_lst_real_size(t_list *lst, t_uint flags)
 {
 	size_t		size;
 	t_fentry	*entry;
-	char		*name;
 
 	size = 0;
 	while (lst)
 	{
 		entry = (t_fentry *)lst->content;
-		name = get_name_from_path(entry->path);
-		if (name[0] == '.')
+		if (entry->name[0] == '.')
 		{
 			if (flags & F_INCLUDE_DIR)
 				size++;
 		}
 		else
 			size++;
-
 		lst = lst->next;
 	}
 	return (size);
 }
 
-t_fentry *get_entry_by_index(t_list *lst, t_uint flags, int index)
+t_fentry	*get_entry_by_index(t_list *lst, t_uint flags, int index)
 {
 	t_fentry	*entry;
 	int			found;
-	char 		*name;
 
 	found = 0;
 	while (lst)
 	{
 		entry = (t_fentry *)lst->content;
-		name = get_name_from_path(entry->path);
-		if (name[0] == '.')
+		if (entry->name[0] == '.')
 		{
 			if (flags & F_INCLUDE_DIR)
 				found = 1;
@@ -123,7 +117,7 @@ t_fentry *get_entry_by_index(t_list *lst, t_uint flags, int index)
 	return (NULL);
 }
 
-void	printlst(t_lsdata *lsd, t_list *lst)
+void		printlst(t_lsdata *lsd, t_list *lst)
 {
 	t_fentry	*fentry;
 	t_maxvals	vals;
@@ -148,8 +142,6 @@ void	printlst(t_lsdata *lsd, t_list *lst)
 		max_len = get_max_short_len(lsd, lst);
 		while (count < max_len)
 		{
-
-
 			count++;
 		}
 	}

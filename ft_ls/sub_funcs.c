@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 16:02:01 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/01 14:54:45 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 11:07:20 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,6 @@ t_uint		get_uid_length(uid_t uid, t_uint flags)
 			return (ft_strlen(pwd->pw_name));
 	}
 	return (get_uint_width(uid));
-
 }
 
 t_uint		get_gid_length(gid_t gid, t_uint flags)
@@ -73,20 +72,4 @@ void		delone(void *data, size_t content_size)
 	ft_lstdel(&entry->child, delone);
 	ft_strdel(&entry->link);
 	ft_memdel(&data);
-}
-
-char *get_name_from_path(char *path)
-{
-	size_t	len;
-	size_t 	count;
-
-	count = 0;
-	len = ft_strlen(path);
-	while (len - count > 0)
-	{
-		if (path[len - count - 1] == '/' && count != 0)
-			return (path + len - count);
-		count++;
-	}
-	return (path);
 }
