@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 13:21:26 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 15:53:53 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,21 +68,21 @@ typedef unsigned char	t_uchar;
 # define F_SORTSIZE			(1u << 12u)
 # define F_ERROR			(0xFFFFFFFF)
 
-# define XATTR_ATTR		(1u)
-# define XATTR_ACL		(2u)
+# define XATTR_ATTR			(1u)
+# define XATTR_ACL			(2u)
 
-# define ANSI_RESET		"\e[0m"
-# define ANSI_BLACK		"\e[30m"
-# define ANSI_RED		"\e[31m"
-# define ANSI_GREEN		"\e[32m"
-# define ANSI_YELLOW	"\e[33m"
-# define ANSI_BLUE		"\e[34m"
-# define ANSI_PURPLE	"\e[35m"
-# define ANSI_CYAN		"\e[36m"
-# define ANSI_WHITE		"\e[37m"
+# define ANSI_RESET			"\e[0m"
+# define ANSI_BLACK			"\e[30m"
+# define ANSI_RED			"\e[31m"
+# define ANSI_GREEN			"\e[32m"
+# define ANSI_YELLOW		"\e[33m"
+# define ANSI_BLUE			"\e[34m"
+# define ANSI_PURPLE		"\e[35m"
+# define ANSI_CYAN			"\e[36m"
+# define ANSI_WHITE			"\e[37m"
 
-# define ANSI_BG_GREEN	"\e[42m"
-# define ANSI_BG_YELLOW	"\e[43m"
+# define ANSI_BG_GREEN		"\e[42m"
+# define ANSI_BG_YELLOW		"\e[43m"
 
 typedef struct	s_fttime
 {
@@ -91,7 +91,6 @@ typedef struct	s_fttime
 	t_uchar		day;
 	t_uchar		hour;
 	t_uchar		minute;
-	t_uchar		sec;
 }				t_fttime;
 
 typedef struct	s_maxvals
@@ -109,8 +108,6 @@ typedef	struct	s_fentry
 	char		*link;
 	t_uchar		xattr;
 	struct stat	fs;
-	t_fttime	time;
-	t_list		*child;
 	char 		*name;
 	char		path[1];
 }				t_fentry;
@@ -121,7 +118,6 @@ typedef struct	s_lsdata
 	t_uint		bufpos;
 
 	t_ftstack	stack;
-	t_fttime	ftime;
 	time_t		ctime;
 	t_uint		termwidth;
 	t_list		*files;
@@ -133,7 +129,6 @@ extern			const char *g_months[12];
 
 t_result		parse_args(t_lsdata *lsdata, int ac, char *av[]);
 t_result		add_param(t_lsdata *lsd, char *name);
-void			delone(void *data, size_t content_size);
 
 size_t			set_path(char *path);
 t_uint			get_uint_width(t_uint num);
@@ -156,4 +151,7 @@ t_result		print_name(t_lsdata *lsd, t_fentry *entry);
 
 t_result		read_dir(t_lsdata *lsd, t_list **root, char *path);
 void			printlst(t_lsdata *lsd, t_list *lst);
+
+int				cmp_callback(t_list *l1, t_list *l2, void *param);
+void			dellst_callback(void *data, size_t content_size);
 #endif

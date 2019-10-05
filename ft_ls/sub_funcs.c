@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/29 16:02:01 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 11:07:20 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 15:33:33 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,15 +61,4 @@ t_uint		get_gid_length(gid_t gid, t_uint flags)
 			return (ft_strlen(grp->gr_name));
 	}
 	return (get_uint_width(gid));
-}
-
-void		delone(void *data, size_t content_size)
-{
-	t_fentry	*entry;
-
-	(void)(content_size);
-	entry = (t_fentry *)data;
-	ft_lstdel(&entry->child, delone);
-	ft_strdel(&entry->link);
-	ft_memdel(&data);
 }

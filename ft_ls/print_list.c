@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 14:24:04 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 11:09:12 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 15:52:15 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,7 +123,10 @@ void		printlst(t_lsdata *lsd, t_list *lst)
 	t_maxvals	vals;
 	size_t		max_len;
 	size_t		count;
+	int			del;
+	t_list		*next;
 
+	del = 0;
 	count = 0;
 	if (lsd->flags & F_LONG_FORMAT || lsd->flags & F_GROUP_NAME)
 	{
@@ -131,10 +134,20 @@ void		printlst(t_lsdata *lsd, t_list *lst)
 		get_maxvals(lst, &vals, lsd->flags);
 		while (lst)
 		{
+			del = 0;
 			fentry = (t_fentry *)(lst->content);
+			if (S_ISDIR(fentry->fs.st_mode) && (lsd->flags & F_RECURSIVE))
+			{
+				ft_lstaddsorted(&lsd->dirs, lst, &lsd->flags, cmp_callback);
+				del = 1;
+			}
 			print_entry(lsd, fentry, lsd->flags, &vals);
-			printlst(lsd, fentry->child);
-			lst = lst->next;
+			next = lst->next;
+			if (!del)
+			{
+				ft_lstdelone(&lst, dellst_callback);
+			}
+			lst = next;
 		}
 	}
 	else

@@ -29,7 +29,6 @@ t_result	parse_time(time_t time, t_fttime *fttime)
 	fttime->day = ft_atoi(stime + 8);
 	fttime->hour = ft_atoi(stime + 11);
 	fttime->minute = ft_atoi(stime + 14);
-	fttime->sec = ft_atoi(stime + 17);
 	fttime->year = ft_atoi(stime + 20);
 	return (RET_OK);
 }
