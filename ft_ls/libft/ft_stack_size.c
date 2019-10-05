@@ -1,25 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stack_delall.c                                  :+:      :+:    :+:   */
+/*   ft_stack_size.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/05 12:54:42 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 13:22:08 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/05 13:29:02 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/05 13:30:32 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_stack_delall(t_ftstack *stack, void (*f)(void *))
+size_t	ft_stack_size(t_ftstack *stack)
 {
-	while (stack->pos)
-	{
-		if (f)
-			f(stack->data[stack->pos - 1]);
-		stack->pos--;
-	}
-	ft_memdel((void **)&stack->data);
-	return (0);
+	return (stack->pos);
 }

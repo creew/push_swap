@@ -26,6 +26,7 @@ int		ft_stack_push(t_ftstack *stack, void *data)
 			ft_memcpy(newstack, stack->data, sizeof(void *) * stack->size);
 		old = stack->data;
 		stack->data = newstack;
+		stack->size += stack->init_val;
 		ft_memdel((void **)&old);
 	}
 	stack->data[stack->pos++] = data;

@@ -6,17 +6,50 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 14:35:16 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 13:48:27 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include <sys/ioctl.h>
 
+void	dellst(void *val)
+{
+	t_list *lst;
+
+	lst = (t_list *)val;
+	ft_lstdel(&lst, delone);
+}
+
 void	delall(t_lsdata *lsd)
 {
 	ft_lstdel(&lsd->dirs, delone);
 	ft_lstdel(&lsd->files, delone);
+	ft_stack_delall(&lsd->stack, dellst);
+}
+
+t_result	lst_iter(t_lsdata * lsd)
+{
+	t_list		*lst;
+	t_list 		*prev;
+	t_fentry	*entry;
+	t_list		*dirs;
+	t_result	ret;
+
+	dirs = lsd->dirs;
+	while (dirs)
+	{
+		entry = (t_fentry *)dirs->content;
+		if ((ret = read_dir(lsd, &lst, entry->path)) == RET_OK)
+		{
+			ft_stack_push(&lsd->stack, (void *)lst);
+		}
+		prev = dirs;
+		dirs = dirs->next;
+		ft_lstdelone(&prev, delone);
+	}
+	lsd->dirs = 0;
+	return (RET_OK);
 }
 
 int		main(int ac, char *av[])
@@ -26,6 +59,7 @@ int		main(int ac, char *av[])
 	struct winsize	w;
 
 	ft_bzero(&lsd, sizeof(lsd));
+	ft_stack_init(&lsd.stack, 32);
 	if (ioctl(0, TIOCGWINSZ, &w) != -1)
 		lsd.termwidth = w.ws_col;
 	lsd.ctime = time(NULL);
@@ -34,6 +68,7 @@ int		main(int ac, char *av[])
 	if ((ret = parse_args(&lsd, ac, av)) == RET_OK)
 	{
 		printlst(&lsd, lsd.files);
+		lst_iter(&lsd, lsd.dirs);
 		printlst(&lsd, lsd.dirs);
 	}
 	write_flush(&lsd);

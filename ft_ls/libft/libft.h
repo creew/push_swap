@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 09:48:17 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 13:05:46 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 13:30:09 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,5 +124,6 @@ t_list			*ft_lstget(t_list *lst, int	index);
 int				ft_stack_init(t_ftstack *stack, size_t init_val);
 int				ft_stack_pop(t_ftstack *stack, void **data);
 int				ft_stack_push(t_ftstack *stack, void *data);
-int				ft_stack_delall(t_ftstack **stack, void (*f)(void *));
+int				ft_stack_delall(t_ftstack *stack, void (*f)(void *));
+size_t			ft_stack_size(t_ftstack *stack);
 #endif

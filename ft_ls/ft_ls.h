@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 11:00:46 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 13:21:26 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,6 +120,7 @@ typedef struct	s_lsdata
 	char		bufout[BUF_SIZE];
 	t_uint		bufpos;
 
+	t_ftstack	stack;
 	t_fttime	ftime;
 	time_t		ctime;
 	t_uint		termwidth;
@@ -153,5 +154,6 @@ t_result		print_str(t_lsdata *lsd, char *str, size_t width, int right);
 t_result		print_date(t_lsdata *lsd, time_t ti);
 t_result		print_name(t_lsdata *lsd, t_fentry *entry);
 
+t_result		read_dir(t_lsdata *lsd, t_list **root, char *path);
 void			printlst(t_lsdata *lsd, t_list *lst);
 #endif

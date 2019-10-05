@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 16:27:31 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 12:07:38 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/05 13:33:06 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ static int		f_cmp(t_list *l1, t_list *l2, void *param)
  *
  */
 
-t_result		read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
+t_result		read_dir(t_lsdata *lsd, t_list **root, char *path)
 {
 	DIR				*dir;
 	struct dirent	*dd;
@@ -110,7 +110,7 @@ t_result		read_dir(t_lsdata *lsd, t_fentry *parent, char *path)
 			ffentry->link = ft_strnew(FT_MAX_PATH);
 			readlink(path, ffentry->link, FT_MAX_PATH);
 		}
-		ft_lstaddsorted(&parent->child, lst, &(lsd->flags), f_cmp);
+		ft_lstaddsorted(root, lst, &(lsd->flags), f_cmp);
 	}
 	closedir(dir);
 	return (RET_OK);
