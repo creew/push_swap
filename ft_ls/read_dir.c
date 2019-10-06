@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 16:27:31 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 15:53:53 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 12:04:43 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,42 +51,58 @@ static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry,
  *
  */
 
+static t_result	read_one_file(t_lsdata *lsd, t_list **root, char *path,
+	struct dirent *dd)
+{
+	t_list			*lst;
+	t_fentry		*ffentry;
+	size_t 			plen;
+	char			tmp[FT_MAX_PATH + 1];
+
+	if ((lst = ft_lstnewblank(sizeof(t_fentry) + sizeof(char) *
+		(ft_strlen(path) + DD_NAME_LEN(dd) + 1))) == NULL)
+		return (ERR_ENOMEM);
+	ffentry = (t_fentry *)(lst->content);
+	ft_strcpy(ffentry->path, path);
+	plen = set_path(ffentry->path);
+	ffentry->name = ffentry->path + plen;
+	ft_strncpy(ffentry->path + plen, dd->d_name, DD_NAME_LEN(dd));
+	if (lstat(ffentry->path, &ffentry->fs) < 0)
+	{
+		ft_lstdelone(&lst, dellst_callback);
+		return (ERR_STAT);
+	}
+	read_additional_param(lsd, ffentry, ffentry->path);
+	if (S_ISLNK(ffentry->fs.st_mode))
+	{
+		plen = readlink(ffentry->path, tmp, FT_MAX_PATH);
+		if (plen != -1)
+		{
+			ffentry->link = ft_strnew(plen + 1);
+			strncpy(ffentry->link, tmp, plen);
+		}
+	}
+	ft_lstaddsorted(root, lst, &(lsd->flags), cmp_callback);
+	return (RET_OK);
+}
+
 t_result		read_dir(t_lsdata *lsd, t_list **root, char *path)
 {
 	DIR				*dir;
 	struct dirent	*dd;
-	t_list			*lst;
-	t_fentry		*ffentry;
-	size_t 			plen;
+	t_result		ret;
 
 	dir = opendir(path);
 	if (dir == NULL)
 		return (ERR_OPEN_DIR);
+	ret = RET_OK;
 	while ((dd = readdir(dir)) != NULL)
 	{
-		if ((lst = ft_lstnewblank(sizeof(t_fentry) + sizeof(char) *
-			(ft_strlen(path) + DD_NAME_LEN(dd) + 1))) == NULL)
-			return (ERR_ENOMEM);
-		ffentry = (t_fentry *)(lst->content);
-		ft_strcpy(ffentry->path, path);
-		plen = set_path(ffentry->path);
-		ffentry->name = ffentry->path + plen;
-		ft_strncpy(ffentry->path + plen, dd->d_name, DD_NAME_LEN(dd));
-		if (lstat(path, &ffentry->fs) < 0)
-		{
-			ft_lstdelone(&lst, dellst_callback);
-			return (ERR_STAT);
-		}
-		read_additional_param(lsd, ffentry, path);
-		if (S_ISLNK(ffentry->fs.st_mode))
-		{
-			ffentry->link = ft_strnew(FT_MAX_PATH);
-			readlink(path, ffentry->link, FT_MAX_PATH);
-		}
-		ft_lstaddsorted(root, lst, &(lsd->flags), cmp_callback);
+		if ((ret = read_one_file(lsd, root, path, dd)) != RET_OK)
+			break;
 	}
 	closedir(dir);
-	return (RET_OK);
+	return (ret);
 }
 
 t_result		add_param(t_lsdata *lsd, char *name)

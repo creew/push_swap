@@ -16,6 +16,8 @@ int		ft_stack_init(t_ftstack *stack, size_t init_val)
 {
 	if (stack)
 	{
+		if (init_val == 0)
+			init_val = 64;
 		ft_bzero(stack, sizeof(stack));
 		stack->init_val = init_val;
 		return (0);

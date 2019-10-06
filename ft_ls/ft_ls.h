@@ -154,4 +154,6 @@ void			printlst(t_lsdata *lsd, t_list *lst);
 
 int				cmp_callback(t_list *l1, t_list *l2, void *param);
 void			dellst_callback(void *data, size_t content_size);
+
+int				is_notadir(char *name);
 #endif

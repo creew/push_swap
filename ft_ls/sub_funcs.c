@@ -62,3 +62,10 @@ t_uint		get_gid_length(gid_t gid, t_uint flags)
 	}
 	return (get_uint_width(gid));
 }
+
+int			is_notadir(char *name)
+{
+	if (!ft_strcmp(name, ".")  || !ft_strcmp(name, ".."))
+		return (1);
+	return (0);
+}

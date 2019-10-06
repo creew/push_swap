@@ -39,6 +39,7 @@ t_result	lst_iter(t_lsdata * lsd)
 	t_result	ret;
 
 	dirs = lsd->dirs;
+	lst = 0;
 	while (dirs)
 	{
 		entry = (t_fentry *)dirs->content;

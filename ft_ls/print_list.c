@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 14:24:04 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 15:52:15 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 12:13:52 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,7 +126,6 @@ void		printlst(t_lsdata *lsd, t_list *lst)
 	int			del;
 	t_list		*next;
 
-	del = 0;
 	count = 0;
 	if (lsd->flags & F_LONG_FORMAT || lsd->flags & F_GROUP_NAME)
 	{
@@ -136,7 +135,8 @@ void		printlst(t_lsdata *lsd, t_list *lst)
 		{
 			del = 0;
 			fentry = (t_fentry *)(lst->content);
-			if (S_ISDIR(fentry->fs.st_mode) && (lsd->flags & F_RECURSIVE))
+			if (S_ISDIR(fentry->fs.st_mode) && (lsd->flags & F_RECURSIVE)
+				&& !is_notadir(fentry->name))
 			{
 				ft_lstaddsorted(&lsd->dirs, lst, &lsd->flags, cmp_callback);
 				del = 1;
@@ -144,9 +144,7 @@ void		printlst(t_lsdata *lsd, t_list *lst)
 			print_entry(lsd, fentry, lsd->flags, &vals);
 			next = lst->next;
 			if (!del)
-			{
 				ft_lstdelone(&lst, dellst_callback);
-			}
 			lst = next;
 		}
 	}
