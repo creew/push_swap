@@ -28,7 +28,8 @@ int			ft_stack_push(t_ftstack *stack, void *data)
 
 	if (stack->pos >= stack->size)
 	{
-		newstack = ft_memalloc(stack->size + stack->init_val);
+		newstack = ft_memalloc(
+			sizeof(void *) * (stack->size + stack->init_val));
 		if (!newstack)
 			return (1);
 		if (stack->data)

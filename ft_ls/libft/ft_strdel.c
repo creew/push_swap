@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 18:04:56 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/08 13:00:41 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 18:17:47 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,5 @@
 void	ft_strdel(char **as)
 {
 	if (as)
-	{
-		free(*as);
-		*as = NULL;
-	}
+		ft_memdel((void **)as);
 }

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 14:24:04 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/06 16:39:34 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 19:31:50 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -133,7 +133,7 @@ void		printlst(t_lsdata *lsd, t_list *lst)
 				if (S_ISDIR(entry->fs.st_mode) && (lsd->flags & F_RECURSIVE)
 					&& !is_notadir(entry->name) && is_showed_entry(entry, lsd->flags))
 				{
-					ft_lstaddsorted(&lsd->dirs, lst, &lsd->flags, cmp_callback);
+					ft_lstaddrevsorted(&lsd->dirs, lst, &lsd->flags, cmp_callback);
 					del = 1;
 				}
 				print_entry(lsd, entry, lsd->flags, &vals);

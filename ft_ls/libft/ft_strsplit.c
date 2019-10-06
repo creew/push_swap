@@ -25,7 +25,7 @@ static int	fill_arr(char **strarr, int count, char const *s, char *sc)
 	{
 		while (count > 0)
 		{
-			free(strarr[count - 1]);
+			ft_strdel(&strarr[count - 1]);
 			count--;
 		}
 		return (-1);

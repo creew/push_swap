@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 09:48:17 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/06 17:09:22 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 17:36:48 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,6 +119,8 @@ void			ft_intmove(int *dst, int *src, size_t size);
 int				ft_getc(int fd);
 void			ft_lstaddsorted(t_list **root, t_list *node, void *param,
 							int (*cmp)(t_list *, t_list *, void *));
+void			ft_lstaddrevsorted(t_list **root, t_list *node, void *param,
+						int (*cmp)(t_list *, t_list *, void *));
 t_list			*ft_lstnewblank(size_t content_size);
 size_t			ft_lstsize(t_list *lst);
 t_list			*ft_lstget(t_list *lst, int	index);
