@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/06 13:58:50 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 17:48:19 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,31 +28,61 @@ void	delall(t_lsdata *lsd)
 	ft_stack_delall(&lsd->stack, dellst);
 }
 
+void	printstack(t_ftstack *stack, char *st)
+{
+	size_t size;
+	t_list *lst;
+	t_fentry *entry;
+
+	size = stack->pos;
+	while(size)
+	{
+		lst = (t_list *)stack->data[size - 1];
+		entry = (t_fentry *)lst->content;
+		printf("**stack: %s, %lu: %s**\n", st, stack->pos - size, entry->path);
+		size--;
+	}
+}
+
+void	print_list(t_list *lst, char *sr)
+{
+	t_fentry	*entry;
+	int			n;
+
+	n = 0;
+	while(lst)
+	{
+		entry = (t_fentry *)lst->content;
+		printf("**lst: %s, %d: %s**\n", sr, n, entry->path);
+		n++;
+		lst=lst->next;
+	}
+}
+
 t_result	lst_iter(t_lsdata * lsd)
 {
-	t_list		*lst;
-	t_list 		*prev;
+
+	t_list 		*next;
 	t_fentry	*entry;
 	t_list		*dirs;
 	t_result	ret;
 
 	dirs = lsd->dirs;
-	lst = 0;
 	while (dirs)
 	{
+		next = dirs->next;
 		entry = (t_fentry *)dirs->content;
-		ft_putendl(entry->path);
-		if ((ret = read_dir(lsd, &lst, entry->path)) == RET_OK)
-		{
-			ft_stack_push(&lsd->stack, (void *)lst);
-		}
-		prev = dirs;
-		dirs = dirs->next;
-		ft_lstdelone(&prev, dellst_callback);
+		dirs->next = 0;
+		if ((ret = read_dir(lsd, &dirs->next, entry->path)) == RET_OK)
+			ft_stack_push(&lsd->stack, (void *)dirs);
+			//ft_queue_add(&lsd->queue, (void *)dirs);
+		dirs = next;
 	}
 	lsd->dirs = 0;
 	return (RET_OK);
 }
+
+
 
 int		main(int ac, char *av[])
 {
@@ -73,9 +103,12 @@ int		main(int ac, char *av[])
 		while (ft_stack_size(&lsd.stack))
 		{
 			ft_stack_pop(&lsd.stack, (void **)&lst);
-
-			printlst(&lsd, lst);
+			print_dir_lst(&lsd, lst);
 			lst_iter(&lsd);
+			if (ft_stack_size(&lsd.stack))
+			{
+				write_out(&lsd, "\n");
+			}
 		}
 	}
 	write_flush(&lsd);

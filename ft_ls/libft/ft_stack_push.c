@@ -6,16 +6,25 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/05 12:46:37 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 13:02:00 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 15:35:47 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_stack_push(t_ftstack *stack, void *data)
+static void	voidcpy(void **dst, void **src, size_t size)
 {
-	void **newstack;
-	void **old;
+	while (size)
+	{
+		*dst++ = *src++;
+		size--;
+	}
+}
+
+int			ft_stack_push(t_ftstack *stack, void *data)
+{
+	void	**newstack;
+	void	**old;
 
 	if (stack->pos >= stack->size)
 	{
@@ -23,7 +32,7 @@ int		ft_stack_push(t_ftstack *stack, void *data)
 		if (!newstack)
 			return (1);
 		if (stack->data)
-			ft_memcpy(newstack, stack->data, sizeof(void *) * stack->size);
+			voidcpy(newstack, stack->data, stack->size);
 		old = stack->data;
 		stack->data = newstack;
 		stack->size += stack->init_val;

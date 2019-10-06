@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 16:27:31 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/06 13:23:11 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 15:36:58 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ static t_result	read_one_file(t_lsdata *lsd, t_list **root, char *path,
 	t_list			*lst;
 	t_fentry		*ffentry;
 	size_t 			plen;
+	ssize_t			llen;
 	char			tmp[FT_MAX_PATH + 1];
 
 	if ((lst = ft_lstnewblank(sizeof(t_fentry) + sizeof(char) *
@@ -72,14 +73,14 @@ static t_result	read_one_file(t_lsdata *lsd, t_list **root, char *path,
 		ft_lstdelone(&lst, dellst_callback);
 		return (ERR_STAT);
 	}
-	read_additional_param(lsd, ffentry, ffentry->path);
+	//read_additional_param(lsd, ffentry, ffentry->path);
 	if (S_ISLNK(ffentry->fs.st_mode))
 	{
-		plen = readlink(ffentry->path, tmp, FT_MAX_PATH);
-		if (plen != -1)
+		llen = readlink(ffentry->path, tmp, FT_MAX_PATH);
+		if (llen != -1)
 		{
-			ffentry->link = ft_strnew(plen + 1);
-			strncpy(ffentry->link, tmp, plen);
+			ffentry->link = ft_strnew(llen + 1);
+			strncpy(ffentry->link, tmp, llen);
 		}
 	}
 	ft_lstaddsorted(root, lst, &(lsd->flags), cmp_callback);

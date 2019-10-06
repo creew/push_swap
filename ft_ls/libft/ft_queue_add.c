@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_stack_pop.c                                     :+:      :+:    :+:   */
+/*   ft_queue_add.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/05 12:52:19 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 12:54:39 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/06 17:04:13 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/06 17:04:13 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int		ft_stack_pop(t_ftstack *stack, void **data)
+int 	ft_queue_add(t_ftqueue **queue, void *data)
 {
-	if (stack->pos)
+	t_ftqueue *newq;
+
+	if (queue)
 	{
-		*data = stack->data[--stack->pos];
-		return (0);
+		newq = ft_lstnewblank(0);
+		if (newq)
+		{
+			newq->content = data;
+			newq->next = *queue;
+			*queue = newq;
+			return (0);
+		}
 	}
 	return (1);
 }

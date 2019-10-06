@@ -6,13 +6,14 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/06 12:13:52 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 17:36:48 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 
+#include <stdio.h>
 # include <sys/stat.h>
 # include <pwd.h>
 # include <grp.h>
@@ -25,7 +26,7 @@
 # include <sys/xattr.h>
 # include "libft.h"
 
-# define BUF_SIZE			1
+# define BUF_SIZE			128
 # define FT_MAX_PATH		1024
 # define STR_CURRENT_DIR	"."
 # define LEGAL_OPTIONS		"RalrtsguGnfS"
@@ -101,6 +102,7 @@ typedef struct	s_maxvals
 	t_uint		owner;
 	t_uint		group;
 	t_uint		size;
+	t_uint		total_blocks;
 }				t_maxvals;
 
 typedef	struct	s_fentry
@@ -118,6 +120,7 @@ typedef struct	s_lsdata
 	t_uint		bufpos;
 
 	t_ftstack	stack;
+	//t_ftqueue	*queue;
 	time_t		ctime;
 	t_uint		termwidth;
 	t_list		*files;
@@ -156,4 +159,5 @@ int				cmp_callback(t_list *l1, t_list *l2, void *param);
 void			dellst_callback(void *data, size_t content_size);
 
 int				is_notadir(char *name);
+void			print_dir_lst(t_lsdata *lsd, t_list *lst);
 #endif

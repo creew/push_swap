@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 09:48:17 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 13:30:09 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 17:09:22 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ typedef struct	s_ftstack
 	size_t	pos;
 	size_t	init_val;
 }				t_ftstack;
+
+typedef	t_list	t_ftqueue;
 
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
@@ -126,4 +128,7 @@ int				ft_stack_pop(t_ftstack *stack, void **data);
 int				ft_stack_push(t_ftstack *stack, void *data);
 int				ft_stack_delall(t_ftstack *stack, void (*f)(void *));
 size_t			ft_stack_size(t_ftstack *stack);
+
+int				ft_queue_add(t_ftqueue **queue, void *data);
+int				ft_queue_poll(t_ftqueue **queue, void **data);
 #endif

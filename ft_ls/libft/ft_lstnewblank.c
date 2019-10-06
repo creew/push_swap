@@ -20,8 +20,11 @@ t_list		*ft_lstnewblank(size_t content_size)
 	if (lst == NULL)
 		return (NULL);
 	lst->next = NULL;
-	lst->content = ft_memalloc(content_size);
-	if (lst->content == NULL)
-		ft_memdel((void **)&lst);
+	if (content_size)
+	{
+		lst->content = ft_memalloc(content_size);
+		if (lst->content == NULL)
+			ft_memdel((void **)&lst);
+	}
 	return (lst);
 }
