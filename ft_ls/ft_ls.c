@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 16:10:40 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 13:58:50 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,6 @@ void	delall(t_lsdata *lsd)
 	ft_stack_delall(&lsd->stack, dellst);
 }
 
-
-
 t_result	lst_iter(t_lsdata * lsd)
 {
 	t_list		*lst;
@@ -43,6 +41,7 @@ t_result	lst_iter(t_lsdata * lsd)
 	while (dirs)
 	{
 		entry = (t_fentry *)dirs->content;
+		ft_putendl(entry->path);
 		if ((ret = read_dir(lsd, &lst, entry->path)) == RET_OK)
 		{
 			ft_stack_push(&lsd->stack, (void *)lst);
@@ -74,9 +73,9 @@ int		main(int ac, char *av[])
 		while (ft_stack_size(&lsd.stack))
 		{
 			ft_stack_pop(&lsd.stack, (void **)&lst);
+
 			printlst(&lsd, lst);
 			lst_iter(&lsd);
-			//ft_lstdel(&lst, dellst_callback);
 		}
 	}
 	write_flush(&lsd);

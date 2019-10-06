@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 15:53:53 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 12:13:52 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@
 # include <sys/xattr.h>
 # include "libft.h"
 
-# define BUF_SIZE			128
+# define BUF_SIZE			1
 # define FT_MAX_PATH		1024
 # define STR_CURRENT_DIR	"."
 # define LEGAL_OPTIONS		"RalrtsguGnfS"
