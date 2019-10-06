@@ -12,6 +12,32 @@
 
 #include "ft_ls.h"
 
+# ifdef __APPLE__
+static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry)
+{
+	acl_t			acl;
+	acl_entry_t		dummy;
+	ssize_t			xattr;
+
+	dummy = 0;
+	acl = acl_get_link_np(entry->path, ACL_TYPE_EXTENDED);
+	if (acl && acl_get_entry(acl, ACL_FIRST_ENTRY, &dummy) == -1)
+	{
+		acl_free(acl);
+		acl = NULL;
+	}
+	xattr = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
+	if (xattr < 0)
+		xattr = 0;
+	if (xattr > 0)
+		entry->xattr = XATTR_ATTR;
+	else if (acl != NULL)
+		entry->xattr = XATTR_ACL;
+	acl_free(acl);
+	return (RET_OK);
+}
+#endif
+
 static t_result	print_uid(t_lsdata *lsd, uid_t uid, size_t width, t_uint flag)
 {
 	struct passwd *pwd;
@@ -51,6 +77,24 @@ static t_result	print_gid(t_lsdata *lsd, gid_t gid, size_t width, t_uint flag)
 	return (RET_OK);
 }
 
+t_result print_link(t_lsdata *lsd, t_fentry *entry)
+{
+	char		link[FT_MAX_PATH + 1];
+	ssize_t		llen;
+
+	if ((lsd->flags & F_LONG_FORMAT) && (S_ISLNK(entry->fs.st_mode)))
+	{
+		llen = readlink(entry->path, link, FT_MAX_PATH);
+		if (llen != -1)
+		{
+			link[llen] = '\0';
+			write_out(lsd, " -> ");
+			write_out(lsd, link);
+		}
+	}
+	return (RET_OK);
+}
+
 t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 	t_maxvals *vals)
 {
@@ -59,6 +103,7 @@ t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 	fs = &entry->fs;
 	if (!(flags & F_INCLUDE_DIR) && entry->name[0] == '.')
 		return (RET_OK);
+	read_additional_param(lsd, entry);
 	if (flags & F_SHOWBLCKSZ)
 	{
 		print_uint(lsd, fs->st_blocks, vals->blocks, 0);

@@ -81,8 +81,6 @@ t_result	lst_iter(t_lsdata * lsd)
 	return (RET_OK);
 }
 
-
-
 int		main(int ac, char *av[])
 {
 	t_result		ret;

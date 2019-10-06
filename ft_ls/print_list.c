@@ -22,6 +22,7 @@ void		get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 	t_fentry		*entry;
 	size_t			len;
 
+	ft_bzero(vals, sizeof(*vals));
 	while (lst)
 	{
 		entry = (t_fentry *)(lst->content);
@@ -106,41 +107,46 @@ t_fentry	*get_entry_by_index(t_list *lst, t_uint flags, int index)
 	return (NULL);
 }
 
-void		printlst(t_lsdata *lsd, t_list *lst)
+void		print_long_entry(t_lsdata *lsd, t_list *lst)
 {
 	t_fentry	*entry;
 	t_maxvals	vals;
-	size_t		max_len;
-	size_t		count;
 	int			del;
 	t_list		*next;
 
+	get_maxvals(lst, &vals, lsd->flags);
+	write_out(lsd, "total ");
+	write_number(lsd, vals.total_blocks);
+	write_cout(lsd, '\n');
+	while (lst)
+	{
+		del = 0;
+		entry = (t_fentry *)(lst->content);
+		next = lst->next;
+		if (S_ISDIR(entry->fs.st_mode) && (lsd->flags & F_RECURSIVE)
+			&& !is_notadir(entry->name) && is_showed_entry(entry, lsd->flags))
+		{
+			ft_lstaddrevsorted(&lsd->dirs, lst, &lsd->flags, cmp_callback);
+			del = 1;
+		}
+		print_entry(lsd, entry, lsd->flags, &vals);
+		if (!del)
+			ft_lstdelone(&lst, dellst_callback);
+		lst = next;
+	}
+}
+
+void		printlst(t_lsdata *lsd, t_list *lst)
+{
+	size_t		max_len;
+	size_t		count;
+
 	count = 0;
-	if (lsd->flags & F_LONG_FORMAT || lsd->flags & F_GROUP_NAME)
+	if (lsd->flags & F_LONG_FORMAT)
 	{
 		if (get_lst_real_size(lst, lsd->flags))
 		{
-			ft_bzero(&vals, sizeof(vals));
-			get_maxvals(lst, &vals, lsd->flags);
-			write_out(lsd, "total ");
-			write_number(lsd, vals.total_blocks);
-			write_cout(lsd, '\n');
-			while (lst)
-			{
-				del = 0;
-				entry = (t_fentry *)(lst->content);
-				next = lst->next;
-				if (S_ISDIR(entry->fs.st_mode) && (lsd->flags & F_RECURSIVE)
-					&& !is_notadir(entry->name) && is_showed_entry(entry, lsd->flags))
-				{
-					ft_lstaddrevsorted(&lsd->dirs, lst, &lsd->flags, cmp_callback);
-					del = 1;
-				}
-				print_entry(lsd, entry, lsd->flags, &vals);
-				if (!del)
-					ft_lstdelone(&lst, dellst_callback);
-				lst = next;
-			}
+			print_long_entry(lsd, lst);
 		}
 	}
 	else

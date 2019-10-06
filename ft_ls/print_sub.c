@@ -119,10 +119,6 @@ t_result	print_name(t_lsdata *lsd, t_fentry *entry)
 	write_out(lsd, entry->name);
 	if (f)
 		write_out(lsd, ANSI_RESET);
-	if (entry->link && (lsd->flags & F_LONG_FORMAT))
-	{
-		write_out(lsd, " -> ");
-		write_out(lsd, entry->link);
-	}
+	print_link(lsd, entry);
 	return (RET_OK);
 }

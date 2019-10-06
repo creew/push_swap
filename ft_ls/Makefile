@@ -19,7 +19,8 @@ CC_FLAGS = -Wall -Wextra $(CF_ERROR)
 CF_ERROR = #-Werror
 
 SRCS = ft_ls.c parse_args.c read_dir.c sub_funcs.c print_entry.c writeout.c \
-		print_sub.c print_rights.c print_list.c time_sub.c callbacks.c
+		print_sub.c print_rights.c print_list.c time_sub.c callbacks.c \
+		write_errors.c
 
 HEADERS = ft_ls.h
 

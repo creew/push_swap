@@ -12,21 +12,13 @@
 
 #include "ft_ls.h"
 
-static t_result	write_usage(void)
+static t_uint	getformat2(char c)
 {
-	ft_putstr_fd("usage: ls [-", 2);
-	ft_putstr_fd(LEGAL_OPTIONS, 2);
-	ft_putstr_fd("] [file ...]", 2);
-	ft_putchar_fd('\n', 2);
-	return (RET_OK);
-}
-
-static t_result	write_illegal_param(char s)
-{
-	ft_putstr_fd("ls: illegal option -- ", 2);
-	ft_putchar_fd(s, 2);
-	ft_putchar_fd('\n', 2);
-	return (RET_OK);
+	if (c == 'n')
+		return (F_ID_NUMBERS);
+	if (c == 'S')
+		return (F_SORTSIZE);
+	return (F_ERROR);
 }
 
 static t_uint	get_format(char c)
@@ -53,11 +45,7 @@ static t_uint	get_format(char c)
 		return (F_COLORISED);
 	if (c == 's')
 		return (F_SHOWBLCKSZ);
-	if (c == 'n')
-		return (F_ID_NUMBERS);
-	if (c == 'S')
-		return (F_SORTSIZE);
-	return (F_ERROR);
+	return (getformat2(c));
 }
 
 static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)

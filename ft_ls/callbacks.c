@@ -12,7 +12,26 @@
 
 #include "ft_ls.h"
 
-int		cmp_callback(t_list *l1, t_list *l2, void *param)
+static long	cmp_time(t_fentry *f1, t_fentry *f2, t_uint flags)
+{
+	long res;
+
+	if (flags & F_SORTATIME)
+	{
+		res = f2->fs.ST_ATIME.tv_sec - f1->fs.ST_ATIME.tv_sec;
+		if (!res)
+			res = f2->fs.ST_ATIME.tv_nsec - f1->fs.ST_ATIME.tv_nsec;
+	}
+	else
+	{
+		res = f2->fs.ST_MTIME.tv_sec - f1->fs.ST_MTIME.tv_sec;
+		if (!res)
+			res = f2->fs.ST_MTIME.tv_nsec - f1->fs.ST_MTIME.tv_nsec;
+	}
+	return (res);
+}
+
+int			cmp_callback(t_list *l1, t_list *l2, void *param)
 {
 	t_fentry	*f1;
 	t_fentry	*f2;
@@ -28,18 +47,13 @@ int		cmp_callback(t_list *l1, t_list *l2, void *param)
 	if (flags & F_SORTSIZE)
 		res = f2->fs.st_size - f1->fs.st_size;
 	else if (flags & F_SORTTIME)
-	{
-		if (flags & F_SORTATIME)
-			res = f2->fs.ST_ATIME.tv_sec - f1->fs.ST_ATIME.tv_sec;
-		else
-			res = f2->fs.ST_MTIME.tv_sec - f1->fs.ST_MTIME.tv_sec;
-	}
+		res = cmp_time(f1, f2, flags);
 	if (res == 0)
 		res = ft_strcmp(f1->path, f2->path);
 	return ((int)(flags & F_REVERSE ? -res : res));
 }
 
-void	dellst_callback(void *data, size_t content_size)
+void		dellst_callback(void *data, size_t content_size)
 {
 	t_fentry	*entry;
 

@@ -152,6 +152,8 @@ t_result		print_str(t_lsdata *lsd, char *str, size_t width, int right);
 t_result		print_date(t_lsdata *lsd, time_t ti);
 t_result		print_name(t_lsdata *lsd, t_fentry *entry);
 
+t_result		print_link(t_lsdata *lsd, t_fentry *entry);
+
 t_result		read_dir(t_lsdata *lsd, t_list **root, char *path);
 void			printlst(t_lsdata *lsd, t_list *lst);
 
@@ -160,4 +162,7 @@ void			dellst_callback(void *data, size_t content_size);
 
 int				is_notadir(char *name);
 void			print_dir_lst(t_lsdata *lsd, t_list *lst);
+
+t_result		write_usage(void);
+t_result		write_illegal_param(char s);
 #endif
