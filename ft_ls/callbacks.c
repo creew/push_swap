@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/05 15:47:47 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/05 15:53:26 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 11:05:35 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,6 @@ int			cmp_callback(t_list *l1, t_list *l2, void *param)
 
 void		dellst_callback(void *data, size_t content_size)
 {
-	t_fentry	*entry;
-
-	(void)(content_size);
-	entry = (t_fentry *)data;
-	ft_strdel(&entry->link);
+	(void)content_size;
 	ft_memdel(&data);
 }

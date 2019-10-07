@@ -1,48 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   writeout.c                                         :+:      :+:    :+:   */
+/*   write_strings.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/30 11:22:28 by eklompus          #+#    #+#             */
+/*   Created: 2019/10/07 11:51:07 by eklompus          #+#    #+#             */
 /*   Updated: 2019/10/07 11:58:49 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
-#include <unistd.h>
 
-void	write_flush(t_lsdata *lsd)
+int		write_out_total(t_lsdata *lsd, t_uint blocks)
 {
-	write(1, lsd->bufout, lsd->bufpos);
-	lsd->bufpos = 0;
-}
-
-int		write_cout(t_lsdata *lsd, char c)
-{
-	if (lsd->bufpos + 1 >= BUF_SIZE)
-		write_flush(lsd);
-	lsd->bufout[lsd->bufpos++] = c;
-	if (c == '\n')
-		write_flush(lsd);
+	write_out(lsd, "total ");
+	write_number(lsd, blocks);
+	write_cout(lsd, '\n');
 	return (1);
 }
 
-int		write_out(t_lsdata *lsd, const char *str)
+int		write_out_path(t_lsdata *lsd, char *path)
 {
-	char		c;
-	const char	*src;
-
-	src = str;
-	while ((c = *str++))
-		write_cout(lsd, c);
-	return (int)(str - src - 1);
-}
-
-void	write_number(t_lsdata *lsd, t_uint n)
-{
-	if (n / 10)
-		write_number(lsd, n / 10);
-	write_cout(lsd, n % 10 + '0');
+	write_out(lsd, path);
+	write_cout(lsd, ':');
+	write_cout(lsd, '\n');
+	return (1);
 }

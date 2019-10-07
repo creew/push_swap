@@ -6,14 +6,14 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/06 19:43:42 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 12:31:18 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 #include <sys/ioctl.h>
 
-void	dellst(void *val)
+void		dellst(void *val)
 {
 	t_list *lst;
 
@@ -21,21 +21,22 @@ void	dellst(void *val)
 	ft_lstdel(&lst, dellst_callback);
 }
 
-void	delall(t_lsdata *lsd)
+void		delall(t_lsdata *lsd)
 {
 	ft_lstdel(&lsd->dirs, dellst_callback);
 	ft_lstdel(&lsd->files, dellst_callback);
 	ft_stack_delall(&lsd->stack, dellst);
 }
 
-void	printstack(t_ftstack *stack, char *st)
+/*
+void		printstack(t_ftstack *stack, char *st)
 {
-	size_t size;
-	t_list *lst;
-	t_fentry *entry;
+	size_t		size;
+	t_list		*lst;
+	t_fentry	*entry;
 
 	size = stack->pos;
-	while(size)
+	while (size)
 	{
 		lst = (t_list *)stack->data[size - 1];
 		entry = (t_fentry *)lst->content;
@@ -44,25 +45,25 @@ void	printstack(t_ftstack *stack, char *st)
 	}
 }
 
-void	print_list(t_list *lst, char *sr)
+void		print_list(t_list *lst, char *sr)
 {
 	t_fentry	*entry;
 	int			n;
 
 	n = 0;
-	while(lst)
+	while (lst)
 	{
 		entry = (t_fentry *)lst->content;
 		printf("**lst: %s, %d: %s**\n", sr, n, entry->path);
 		n++;
-		lst=lst->next;
+		lst = lst->next;
 	}
 }
+ */
 
-t_result	lst_iter(t_lsdata * lsd)
+t_result	lst_iter(t_lsdata *lsd)
 {
-
-	t_list 		*next;
+	t_list		*next;
 	t_fentry	*entry;
 	t_list		*dirs;
 	t_result	ret;
@@ -81,7 +82,7 @@ t_result	lst_iter(t_lsdata * lsd)
 	return (RET_OK);
 }
 
-int		main(int ac, char *av[])
+int			main(int ac, char *av[])
 {
 	t_result		ret;
 	t_lsdata		lsd;
@@ -95,7 +96,8 @@ int		main(int ac, char *av[])
 	lsd.ctime = time(NULL);
 	if ((ret = parse_args(&lsd, ac, av)) == RET_OK)
 	{
-		printlst(&lsd, lsd.files);
+		printlst(&lsd, lsd.files, 1);
+		lsd.files = 0;
 		lst_iter(&lsd);
 		while (ft_stack_size(&lsd.stack))
 		{

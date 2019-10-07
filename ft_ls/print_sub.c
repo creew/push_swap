@@ -5,27 +5,16 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/30 18:03:23 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/04 11:55:02 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/07 12:05:34 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/07 12:14:26 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-const char *g_months[12] =
-{
-	"Jan",
-	"Feb",
-	"Mar",
-	"Apr",
-	"May",
-	"Jun",
-	"Jul",
-	"Aug",
-	"Sep",
-	"Oct",
-	"Nov",
-	"Dec"
+const char *g_months[12] = {
+	"Jan", "Feb", "Mar", "Apr", "May", "Jun",
+	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
 
 t_result	print_uint(t_lsdata *lsd, t_uint num, size_t width, int right)
@@ -52,14 +41,6 @@ t_result	print_str(t_lsdata *lsd, char *str, size_t width, int right)
 	while (right && size++ < width)
 		write_cout(lsd, ' ');
 	return (RET_OK);
-}
-
-int 		date_cmp_6month(time_t ttf, time_t ttc)
-{
-	if (ttf > ttc)
-		return ((ttf - ttc) > (182 * 24 * 60 * 60));
-	else
-		return ((ttc - ttf) > (182 * 24 * 60 * 60));
 }
 
 t_result	print_date(t_lsdata *lsd, time_t ti)
@@ -91,6 +72,24 @@ t_result	print_date(t_lsdata *lsd, time_t ti)
 	return (RET_OK);
 }
 
+static int	print_folder_color(t_lsdata *lsd, t_fentry *entry)
+{
+	int f;
+
+	f = 0;
+	if ((entry->fs.st_mode & ACCESSPERMS) == ACCESSPERMS)
+	{
+		write_out(lsd, ANSI_BLACK);
+		if (entry->fs.st_mode & S_ISVTX)
+			f = write_out(lsd, ANSI_BG_GREEN);
+		else
+			f = write_out(lsd, ANSI_BG_YELLOW);
+	}
+	else
+		f = write_out(lsd, ANSI_BLUE);
+	return (f);
+}
+
 t_result	print_name(t_lsdata *lsd, t_fentry *entry)
 {
 	int f;
@@ -99,21 +98,11 @@ t_result	print_name(t_lsdata *lsd, t_fentry *entry)
 	if (lsd->flags & F_COLORISED)
 	{
 		if (S_ISDIR(entry->fs.st_mode))
-		{
-			if ((entry->fs.st_mode & ACCESSPERMS) == ACCESSPERMS)
-			{
-				if (entry->fs.st_mode & S_ISVTX)
-					f = write_out(lsd, ANSI_BLACK ANSI_BG_GREEN);
-				else
-					f = write_out(lsd, ANSI_BLACK ANSI_BG_YELLOW);
-			}
-			else
-				f = write_out(lsd, ANSI_BLUE);
-		}
+			f = print_folder_color(lsd, entry);
 		else if (S_ISLNK(entry->fs.st_mode))
 			f = write_out(lsd, ANSI_PURPLE);
 		else if (S_ISREG(entry->fs.st_mode) && ((entry->fs.st_mode & S_IXUSR) ||
-			(entry->fs.st_mode & S_IXGRP) || (entry->fs.st_mode & S_IXOTH)))
+				(entry->fs.st_mode & S_IXGRP) || (entry->fs.st_mode & S_IXOTH)))
 			f = write_out(lsd, ANSI_RED);
 	}
 	write_out(lsd, entry->name);

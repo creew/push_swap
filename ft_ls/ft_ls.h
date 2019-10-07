@@ -6,14 +6,13 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/06 19:32:34 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 13:48:12 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_LS_H
 # define FT_LS_H
 
-#include <stdio.h>
 # include <sys/stat.h>
 # include <pwd.h>
 # include <grp.h>
@@ -21,12 +20,12 @@
 # include <unistd.h>
 # include <sys/types.h>
 # ifdef __APPLE__
-# include <sys/acl.h>
+#  include <sys/acl.h>
 # endif
 # include <sys/xattr.h>
 # include "libft.h"
 
-# define BUF_SIZE			128
+# define BUF_SIZE			1024
 # define FT_MAX_PATH		1024
 # define STR_CURRENT_DIR	"."
 # define LEGAL_OPTIONS		"RalrtsguGnfS"
@@ -107,10 +106,9 @@ typedef struct	s_maxvals
 
 typedef	struct	s_fentry
 {
-	char		*link;
 	t_uchar		xattr;
 	struct stat	fs;
-	char 		*name;
+	char		*name;
 	char		path[1];
 }				t_fentry;
 
@@ -119,8 +117,9 @@ typedef struct	s_lsdata
 	char		bufout[BUF_SIZE];
 	t_uint		bufpos;
 
+	int			argcount;
+	int			dircount;
 	t_ftstack	stack;
-	//t_ftqueue	*queue;
 	time_t		ctime;
 	t_uint		termwidth;
 	t_list		*files;
@@ -137,17 +136,20 @@ size_t			set_path(char *path);
 t_uint			get_uint_width(t_uint num);
 t_uint			get_uid_length(uid_t uid, t_uint flags);
 t_uint			get_gid_length(gid_t gid, t_uint flags);
+t_uint			get_str_length(char *str);
+
 t_result		parse_time(time_t time, t_fttime *fttime);
+int				date_cmp_6month(time_t ttf, time_t ttc);
 
 void			write_flush(t_lsdata *lsd);
-void			write_cout(t_lsdata *lsd, char c);
+int				write_cout(t_lsdata *lsd, char c);
 int				write_out(t_lsdata *lsd, const char *str);
 void			write_number(t_lsdata *lsd, t_uint n);
 
 t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 							t_maxvals *vals);
 t_result		print_uint(t_lsdata *lsd, t_uint num, size_t width, int right);
-t_result		print_rights(t_lsdata *lsd, t_fentry *entry,  struct stat *fs);
+t_result		print_rights(t_lsdata *lsd, t_fentry *entry, struct stat *fs);
 t_result		print_str(t_lsdata *lsd, char *str, size_t width, int right);
 t_result		print_date(t_lsdata *lsd, time_t ti);
 t_result		print_name(t_lsdata *lsd, t_fentry *entry);
@@ -155,14 +157,19 @@ t_result		print_name(t_lsdata *lsd, t_fentry *entry);
 t_result		print_link(t_lsdata *lsd, t_fentry *entry);
 
 t_result		read_dir(t_lsdata *lsd, t_list **root, char *path);
-void			printlst(t_lsdata *lsd, t_list *lst);
+void			printlst(t_lsdata *lsd, t_list *lst, int is_files);
 
 int				cmp_callback(t_list *l1, t_list *l2, void *param);
 void			dellst_callback(void *data, size_t content_size);
 
-int				is_notadir(char *name);
+int				is_notadir(const char *name);
 void			print_dir_lst(t_lsdata *lsd, t_list *lst);
 
 t_result		write_usage(void);
 t_result		write_illegal_param(char s);
+t_result		write_no_such_file(char *s);
+t_result		write_perm_denied(char *s);
+
+int				write_out_total(t_lsdata *lsd, t_uint blocks);
+int				write_out_path(t_lsdata *lsd, char *path);
 #endif

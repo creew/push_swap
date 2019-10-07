@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 14:24:04 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/06 19:31:50 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 12:29:19 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void		get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 		entry = (t_fentry *)(lst->content);
 		if (is_showed_entry(entry, flags))
 		{
-			if ((len = ft_strlen(entry->name)) > vals->name)
+			if ((len = get_str_length(entry->name)) > vals->name)
 				vals->name = len;
 			if ((len = get_uint_width(entry->fs.st_blocks)) > vals->blocks)
 				vals->blocks = len;
@@ -64,7 +64,7 @@ size_t		get_max_short_len(t_lsdata *lsd, t_list *lst)
 			if (lsd->flags & F_SHOWBLCKSZ)
 				if ((blk_len = get_uint_width(entry->fs.st_blksize) > max_blk_len))
 					max_blk_len = blk_len;
-			if ((name_len = ft_strlen(entry->name)) > max_name_len)
+			if ((name_len = get_str_length(entry->name)) > max_name_len)
 				max_name_len = name_len;
 		}
 		lst = lst->next;
@@ -107,7 +107,7 @@ t_fentry	*get_entry_by_index(t_list *lst, t_uint flags, int index)
 	return (NULL);
 }
 
-void		print_long_entry(t_lsdata *lsd, t_list *lst)
+void		print_long_entry(t_lsdata *lsd, t_list *lst, int is_files)
 {
 	t_fentry	*entry;
 	t_maxvals	vals;
@@ -115,16 +115,16 @@ void		print_long_entry(t_lsdata *lsd, t_list *lst)
 	t_list		*next;
 
 	get_maxvals(lst, &vals, lsd->flags);
-	write_out(lsd, "total ");
-	write_number(lsd, vals.total_blocks);
-	write_cout(lsd, '\n');
+	if (!is_files)
+		write_out_total(lsd, vals.total_blocks);
 	while (lst)
 	{
 		del = 0;
 		entry = (t_fentry *)(lst->content);
 		next = lst->next;
-		if (S_ISDIR(entry->fs.st_mode) && (lsd->flags & F_RECURSIVE)
-			&& !is_notadir(entry->name) && is_showed_entry(entry, lsd->flags))
+		if (!is_files && S_ISDIR(entry->fs.st_mode) &&
+			(lsd->flags & F_RECURSIVE) && !is_notadir(entry->name) &&
+			is_showed_entry(entry, lsd->flags))
 		{
 			ft_lstaddrevsorted(&lsd->dirs, lst, &lsd->flags, cmp_callback);
 			del = 1;
@@ -136,7 +136,7 @@ void		print_long_entry(t_lsdata *lsd, t_list *lst)
 	}
 }
 
-void		printlst(t_lsdata *lsd, t_list *lst)
+void		printlst(t_lsdata *lsd, t_list *lst, int is_files)
 {
 	size_t		max_len;
 	size_t		count;
@@ -145,9 +145,7 @@ void		printlst(t_lsdata *lsd, t_list *lst)
 	if (lsd->flags & F_LONG_FORMAT)
 	{
 		if (get_lst_real_size(lst, lsd->flags))
-		{
-			print_long_entry(lsd, lst);
-		}
+			print_long_entry(lsd, lst, is_files);
 	}
 	else
 	{
@@ -161,15 +159,12 @@ void		printlst(t_lsdata *lsd, t_list *lst)
 
 void		print_dir_lst(t_lsdata *lsd, t_list *lst)
 {
-	t_fentry	*entry;
-
 	if (lst)
 	{
-		entry = (t_fentry *)lst->content;
-		write_out(lsd, entry->path);
-		write_cout(lsd, ':');
-		write_cout(lsd, '\n');
-		printlst(lsd, lst->next);
+		if (lsd->dircount > 0 || (lsd->argcount > 1))
+			write_out_path(lsd, ((t_fentry *)lst->content)->path);
+		printlst(lsd, lst->next, 0);
 		ft_lstdelone(&lst, dellst_callback);
+		lsd->dircount++;
 	}
 }

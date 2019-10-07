@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 99)
 
 add_executable(ft_ls ft_ls.c ft_ls.h parse_args.c read_dir.c sub_funcs.c
         print_entry.c writeout.c print_sub.c time_sub.c print_rights.c print_list.c
-        callbacks.c write_errors.c)
+        callbacks.c write_errors.c write_strings.c get_field_lengths.c)
 
 include_directories(./libft)
 

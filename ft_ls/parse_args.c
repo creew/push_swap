@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 20:08:45 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/03 18:33:41 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 11:27:18 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,10 @@ static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 	}
 	else
 	{
+		lsd->argcount++;
 		ret = add_param(lsd, arg);
+		if (ret == ERR_STAT)
+			write_no_such_file(arg);
 		*fls = 0;
 	}
 	return (ret);

@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 16:27:31 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/06 18:51:53 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 14:16:08 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static t_result	read_one_file(t_lsdata *lsd, t_list **root, char *path,
 {
 	t_list			*lst;
 	t_fentry		*ffentry;
-	size_t 			plen;
+	size_t			plen;
 
 	if ((lst = ft_lstnewblank(sizeof(t_fentry) + sizeof(char) *
 		(ft_strlen(path) + DD_NAME_LEN(dd) + 1))) == NULL)
@@ -51,7 +51,7 @@ t_result		read_dir(t_lsdata *lsd, t_list **root, char *path)
 	while ((dd = readdir(dir)) != NULL)
 	{
 		if ((ret = read_one_file(lsd, root, path, dd)) != RET_OK)
-			break;
+			break ;
 	}
 	closedir(dir);
 	return (ret);
@@ -74,7 +74,7 @@ t_result		add_param(t_lsdata *lsd, char *name)
 	ft_strcpy(fentry->path, name);
 	fentry->name = fentry->path;
 	if (S_ISDIR(fentry->fs.st_mode) && !(lsd->flags & F_DIR_LIKE_FILE))
-		ft_lstaddsorted(&lsd->dirs, lst, &(lsd->flags), cmp_callback);
+		ft_lstaddrevsorted(&lsd->dirs, lst, &(lsd->flags), cmp_callback);
 	else
 		ft_lstaddsorted(&lsd->files, lst, &(lsd->flags), cmp_callback);
 	return (RET_OK);

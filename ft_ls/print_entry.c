@@ -6,14 +6,15 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 10:38:00 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/06 19:34:24 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 11:46:49 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ls.h"
 
-# ifdef __APPLE__
-static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry)
+#ifdef __APPLE__
+
+static t_result	read_additional_param(t_fentry *entry)
 {
 	acl_t			acl;
 	acl_entry_t		dummy;
@@ -26,7 +27,7 @@ static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry)
 		acl_free(acl);
 		acl = NULL;
 	}
-	xattr = listxattr(path, NULL, 0, XATTR_NOFOLLOW);
+	xattr = listxattr(entry->path, NULL, 0, XATTR_NOFOLLOW);
 	if (xattr < 0)
 		xattr = 0;
 	if (xattr > 0)
@@ -36,6 +37,7 @@ static t_result	read_additional_param(t_lsdata *lsd, t_fentry *entry)
 	acl_free(acl);
 	return (RET_OK);
 }
+
 #endif
 
 static t_result	print_uid(t_lsdata *lsd, uid_t uid, size_t width, t_uint flag)
@@ -77,7 +79,7 @@ static t_result	print_gid(t_lsdata *lsd, gid_t gid, size_t width, t_uint flag)
 	return (RET_OK);
 }
 
-t_result print_link(t_lsdata *lsd, t_fentry *entry)
+t_result		print_link(t_lsdata *lsd, t_fentry *entry)
 {
 	char		link[FT_MAX_PATH + 1];
 	ssize_t		llen;
@@ -103,7 +105,7 @@ t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 	fs = &entry->fs;
 	if (!(flags & F_INCLUDE_DIR) && entry->name[0] == '.')
 		return (RET_OK);
-	read_additional_param(lsd, entry);
+	read_additional_param(entry);
 	if (flags & F_SHOWBLCKSZ)
 	{
 		print_uint(lsd, fs->st_blocks, vals->blocks, 0);
