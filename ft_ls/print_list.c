@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/03 14:24:04 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/07 12:29:19 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 18:20:13 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,31 +46,29 @@ void		get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 	}
 }
 
-size_t		get_max_short_len(t_lsdata *lsd, t_list *lst)
+void		get_smaxvals(t_list *lst, t_smaxvals *vals, t_uint flags)
 {
 	t_fentry	*entry;
-	size_t		max_name_len;
-	size_t		max_blk_len;
 	t_uint		blk_len;
 	t_uint		name_len;
 
-	max_name_len = 0;
-	max_blk_len = 0;
+	ft_bzero(vals, sizeof(*vals));
 	while (lst)
 	{
 		entry = (t_fentry *)(lst->content);
-		if (is_showed_entry(entry, lsd->flags))
+		if (is_showed_entry(entry, flags))
 		{
-			if (lsd->flags & F_SHOWBLCKSZ)
-				if ((blk_len = get_uint_width(entry->fs.st_blksize) > max_blk_len))
-					max_blk_len = blk_len;
-			if ((name_len = get_str_length(entry->name)) > max_name_len)
-				max_name_len = name_len;
+			if (flags & F_SHOWBLCKSZ)
+			{
+				blk_len = get_uint_width(entry->fs.st_blksize);
+				if (blk_len > vals->blocks)
+					vals->blocks = blk_len;
+			}
+			if ((name_len = get_str_length(entry->name)) > vals->name)
+				vals->name = name_len;
 		}
 		lst = lst->next;
 	}
-	return ((lsd->flags & F_SHOWBLCKSZ) ? max_blk_len + max_name_len + 1 :
-		max_name_len);
 }
 
 size_t		get_lst_real_size(t_list *lst, t_uint flags)
@@ -107,7 +105,7 @@ t_fentry	*get_entry_by_index(t_list *lst, t_uint flags, int index)
 	return (NULL);
 }
 
-void		print_long_entry(t_lsdata *lsd, t_list *lst, int is_files)
+void		print_long(t_lsdata *lsd, t_list *lst, int is_files)
 {
 	t_fentry	*entry;
 	t_maxvals	vals;
@@ -129,30 +127,63 @@ void		print_long_entry(t_lsdata *lsd, t_list *lst, int is_files)
 			ft_lstaddrevsorted(&lsd->dirs, lst, &lsd->flags, cmp_callback);
 			del = 1;
 		}
-		print_entry(lsd, entry, lsd->flags, &vals);
+		print_long_entry(lsd, entry, lsd->flags, &vals);
 		if (!del)
 			ft_lstdelone(&lst, dellst_callback);
 		lst = next;
 	}
 }
 
+t_result		print_short_entry(t_lsdata *lsd, t_fentry *entry,
+								  unsigned int flags, t_smaxvals *vals)
+{
+
+
+	return (RET_OK);
+}
+
+void		print_short(t_lsdata *lsd, t_list *lst, int is_files)
+{
+	t_smaxvals	vls;
+	size_t 		size;
+	size_t 		count;
+	t_fentry	*entry;
+	int			del;
+
+	get_smaxvals(lst, &vls, lsd->flags);
+	size = get_lst_real_size(lst, lsd->flags);
+	vls.maxw = (vls.name + vls.blocks + vls.blocks == 0 ? 0 : 1 + 8) / 8 * 8;
+	vls.col = lsd->termwidth / vls.maxw;
+	if (vls.col == 0)
+		vls.col = 1;
+	vls.row = (size + vls.col) / vls.col;
+	vls.col = (size + vls.row - 1) / vls.row;
+	count = 0;
+	while (count < size)
+	{
+		entry = get_entry_by_index(lst, lsd->flags, count * vls.row);
+		if (!is_files && S_ISDIR(entry->fs.st_mode) &&
+			(lsd->flags & F_RECURSIVE) && !is_notadir(entry->name) &&
+			is_showed_entry(entry, lsd->flags))
+		{
+			ft_lstaddrevsorted(&lsd->dirs, lst, &lsd->flags, cmp_callback);
+		}
+		print_short_entry(lsd, entry, lsd->flags, &vls);
+		count++;
+	}
+}
+
 void		printlst(t_lsdata *lsd, t_list *lst, int is_files)
 {
-	size_t		max_len;
-	size_t		count;
-
-	count = 0;
-	if (lsd->flags & F_LONG_FORMAT)
+	if (get_lst_real_size(lst, lsd->flags))
 	{
-		if (get_lst_real_size(lst, lsd->flags))
-			print_long_entry(lsd, lst, is_files);
-	}
-	else
-	{
-		max_len = get_max_short_len(lsd, lst);
-		while (count < max_len)
+		if (lsd->flags & F_LONG_FORMAT)
 		{
-			count++;
+			print_long(lsd, lst, is_files);
+		}
+		else
+		{
+			print_short(lsd, lst, is_files);
 		}
 	}
 }
@@ -163,7 +194,10 @@ void		print_dir_lst(t_lsdata *lsd, t_list *lst)
 	{
 		if (lsd->dircount > 0 || (lsd->argcount > 1))
 			write_out_path(lsd, ((t_fentry *)lst->content)->path);
-		printlst(lsd, lst->next, 0);
+		if (lst->next == (t_list *)-1l)
+			write_perm_denied(((t_fentry *)(lst->content))->name);
+		else
+			printlst(lsd, lst->next, 0);
 		ft_lstdelone(&lst, dellst_callback);
 		lsd->dircount++;
 	}

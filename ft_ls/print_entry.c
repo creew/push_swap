@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 10:38:00 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/07 11:46:49 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 16:40:08 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,7 +97,7 @@ t_result		print_link(t_lsdata *lsd, t_fentry *entry)
 	return (RET_OK);
 }
 
-t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
+t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 	t_maxvals *vals)
 {
 	struct stat		*fs;

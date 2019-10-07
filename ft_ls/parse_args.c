@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/30 20:08:45 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/07 11:27:18 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 11:34:23 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,14 +85,26 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 
 	fls = 1;
 	count = 1;
-	ret = RET_OK;
 	while (count < ac)
-		if ((ret = parse_arg(lsd, av[count++], &fls)) != RET_OK)
+	{
+		ret = parse_arg(lsd, av[count++], &fls);
+		if (ret != RET_OK)
+			lsd->err = 1;
+		if (ret == ERR_ILLEGAL_ARGS || ret == ERR_ENOMEM)
 			return (ret);
+	}
 	lsd->flags |= ((lsd->flags & F_ID_NUMBERS) ? F_LONG_FORMAT : 0);
 	lsd->flags |= ((lsd->flags & F_GROUP_NAME) ? F_LONG_FORMAT : 0);
 	lsd->flags |= ((lsd->flags & F_NOT_SORTED) ? F_INCLUDE_DIR : 0);
 	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs))
+	{
 		ret = add_param(lsd, STR_CURRENT_DIR);
-	return (ret);
+		if (ret != RET_OK)
+			lsd->err = 1;
+		if (ret == ERR_ENOMEM)
+			return (ret);
+		if (ret == ERR_STAT)
+			write_no_such_file(STR_CURRENT_DIR);
+	}
+	return (RET_OK);
 }

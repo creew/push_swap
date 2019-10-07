@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:18 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/07 13:48:12 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 16:40:08 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,6 +104,15 @@ typedef struct	s_maxvals
 	t_uint		total_blocks;
 }				t_maxvals;
 
+typedef	struct	s_smaxvals
+{
+	t_uint		name;
+	t_uint		blocks;
+	t_uint		maxw;
+	t_uint		col;
+	t_uint		row;
+}				t_smaxvals;
+
 typedef	struct	s_fentry
 {
 	t_uchar		xattr;
@@ -117,6 +126,7 @@ typedef struct	s_lsdata
 	char		bufout[BUF_SIZE];
 	t_uint		bufpos;
 
+	int			err;
 	int			argcount;
 	int			dircount;
 	t_ftstack	stack;
@@ -146,8 +156,8 @@ int				write_cout(t_lsdata *lsd, char c);
 int				write_out(t_lsdata *lsd, const char *str);
 void			write_number(t_lsdata *lsd, t_uint n);
 
-t_result		print_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
-							t_maxvals *vals);
+t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry,
+									unsigned int flags, t_maxvals *vals);
 t_result		print_uint(t_lsdata *lsd, t_uint num, size_t width, int right);
 t_result		print_rights(t_lsdata *lsd, t_fentry *entry, struct stat *fs);
 t_result		print_str(t_lsdata *lsd, char *str, size_t width, int right);

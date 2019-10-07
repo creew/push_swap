@@ -6,7 +6,7 @@
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/26 10:27:11 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/07 12:31:18 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/07 15:56:18 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,37 @@ t_result	lst_iter(t_lsdata *lsd)
 		next = dirs->next;
 		entry = (t_fentry *)dirs->content;
 		dirs->next = 0;
-		if ((ret = read_dir(lsd, &dirs->next, entry->path)) == RET_OK)
-			ft_stack_push(&lsd->stack, (void *)dirs);
+		ret = read_dir(lsd, &dirs->next, entry->path);
+		if (ret != RET_OK)
+		{
+			dirs->next = (t_list *)(-1l);
+			lsd->err = 1;
+		}
+		ft_stack_push(&lsd->stack, (void *)dirs);
 		dirs = next;
 	}
 	lsd->dirs = 0;
 	return (RET_OK);
+}
+
+void		print_all(t_lsdata *lsd)
+{
+	t_list	*lst;
+
+	printlst(lsd, lsd->files, 1);
+	lsd->files = 0;
+	lst_iter(lsd);
+	if (ft_stack_size(&lsd->stack))
+		write_cout(lsd, '\n');
+	while (ft_stack_size(&lsd->stack))
+	{
+		ft_stack_pop(&lsd->stack, (void **)&lst);
+		print_dir_lst(lsd, lst);
+		lst_iter(lsd);
+		if (ft_stack_size(&lsd->stack))
+			write_cout(lsd, '\n');
+	}
+	write_flush(lsd);
 }
 
 int			main(int ac, char *av[])
@@ -87,28 +112,17 @@ int			main(int ac, char *av[])
 	t_result		ret;
 	t_lsdata		lsd;
 	struct winsize	w;
-	t_list			*lst;
 
 	ft_bzero(&lsd, sizeof(lsd));
 	ft_stack_init(&lsd.stack, 32);
 	if (ioctl(0, TIOCGWINSZ, &w) != -1)
 		lsd.termwidth = w.ws_col;
 	lsd.ctime = time(NULL);
-	if ((ret = parse_args(&lsd, ac, av)) == RET_OK)
-	{
-		printlst(&lsd, lsd.files, 1);
-		lsd.files = 0;
-		lst_iter(&lsd);
-		while (ft_stack_size(&lsd.stack))
-		{
-			ft_stack_pop(&lsd.stack, (void **)&lst);
-			print_dir_lst(&lsd, lst);
-			lst_iter(&lsd);
-			if (ft_stack_size(&lsd.stack))
-				write_cout(&lsd, '\n');
-		}
-		write_flush(&lsd);
-	}
+	ret = parse_args(&lsd, ac, av);
+	if (ret != RET_OK)
+		lsd.err = 1;
+	if (ret != ERR_ENOMEM && ret != ERR_ILLEGAL_ARGS)
+		print_all(&lsd);
 	delall(&lsd);
-	return (ret == RET_OK ? 0 : 1);
+	return (lsd.err);
 }
