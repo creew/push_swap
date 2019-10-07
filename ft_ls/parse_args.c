@@ -18,6 +18,8 @@ static t_uint	getformat2(char c)
 		return (F_ID_NUMBERS);
 	if (c == 'S')
 		return (F_SORTSIZE);
+	if (c == '1')
+	    return (F_ONECOLUMN);
 	return (F_ERROR);
 }
 
@@ -96,6 +98,8 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 	lsd->flags |= ((lsd->flags & F_ID_NUMBERS) ? F_LONG_FORMAT : 0);
 	lsd->flags |= ((lsd->flags & F_GROUP_NAME) ? F_LONG_FORMAT : 0);
 	lsd->flags |= ((lsd->flags & F_NOT_SORTED) ? F_INCLUDE_DIR : 0);
+	if (lsd->flags & F_ONECOLUMN)
+		lsd->termwidth = 0;
 	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs))
 	{
 		ret = add_param(lsd, STR_CURRENT_DIR);

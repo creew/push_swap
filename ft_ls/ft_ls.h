@@ -66,6 +66,7 @@ typedef unsigned char	t_uchar;
 # define F_SHOWBLCKSZ		(1u << 10u)
 # define F_ID_NUMBERS		(1u << 11u)
 # define F_SORTSIZE			(1u << 12u)
+# define F_ONECOLUMN		(1u << 13u)
 # define F_ERROR			(0xFFFFFFFF)
 
 # define XATTR_ATTR			(1u)
