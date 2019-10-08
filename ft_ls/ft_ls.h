@@ -28,7 +28,7 @@
 # define BUF_SIZE			1024
 # define FT_MAX_PATH		1024
 # define STR_CURRENT_DIR	"."
-# define LEGAL_OPTIONS		"RalrtsguGnfS1d"
+# define LEGAL_OPTIONS		"RalrtsguGnfS1di"
 
 # ifdef __linux__
 #  define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
@@ -46,6 +46,7 @@ typedef int				t_result;
 typedef unsigned int	t_uint;
 typedef unsigned short	t_ushort;
 typedef unsigned char	t_uchar;
+typedef unsigned long	t_ulong;
 
 # define RET_OK				(0)
 # define ERR_ENOMEM			(-1)
@@ -67,6 +68,7 @@ typedef unsigned char	t_uchar;
 # define F_ID_NUMBERS		(1u << 11u)
 # define F_SORTSIZE			(1u << 12u)
 # define F_ONECOLUMN		(1u << 13u)
+# define F_INODES			(1u << 14u)
 # define F_ERROR			(0xFFFFFFFF)
 
 # define XATTR_ATTR			(1u)
@@ -97,6 +99,7 @@ typedef struct	s_fttime
 typedef struct	s_maxvals
 {
 	t_uint		name;
+	t_ulong		inode;
 	t_uint		blocks;
 	t_uint		links;
 	t_uint		owner;
@@ -108,6 +111,7 @@ typedef struct	s_maxvals
 typedef	struct	s_smaxvals
 {
 	t_uint		name;
+	t_ulong		inode;
 	t_uint		blocks;
 	t_uint		maxw;
 	t_uint		col;
@@ -144,7 +148,7 @@ t_result		parse_args(t_lsdata *lsdata, int ac, char *av[]);
 t_result		add_param(t_lsdata *lsd, char *name);
 
 size_t			set_path(char *path);
-t_uint			get_uint_width(t_uint num);
+t_uint			get_ulong_width(t_uint num);
 t_uint			get_uid_length(uid_t uid, t_uint flags);
 t_uint			get_gid_length(gid_t gid, t_uint flags);
 t_uint			get_str_length(char *str);
@@ -155,11 +159,11 @@ int				date_cmp_6month(time_t ttf, time_t ttc);
 void			write_flush(t_lsdata *lsd);
 int				write_cout(t_lsdata *lsd, char c);
 int				write_out(t_lsdata *lsd, const char *str);
-void			write_number(t_lsdata *lsd, t_uint n);
+void			write_number(t_lsdata *lsd, t_ulong n);
 
 t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry,
 									unsigned int flags, t_maxvals *vals);
-t_result		print_uint(t_lsdata *lsd, t_uint num, size_t width, int right);
+t_result		print_ulong(t_lsdata *lsd, t_ulong num, size_t width, int right);
 t_result		print_rights(t_lsdata *lsd, t_fentry *entry, struct stat *fs);
 t_result		print_str(t_lsdata *lsd, char *str, size_t width, int right);
 t_result		print_date(t_lsdata *lsd, time_t ti);
@@ -184,4 +188,12 @@ t_result		write_perm_denied(char *s);
 int				write_out_total(t_lsdata *lsd, t_uint blocks);
 int				write_out_path(t_lsdata *lsd, char *path);
 t_list			*create_copy_tlist(t_list *lst);
+
+void			print_short(t_lsdata *lsd, t_list *lst, int is_files);
+
+int				is_showed_entry(t_fentry *entry, t_uint flags);
+void			get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags);
+void			get_smaxvals(t_list *lst, t_smaxvals *vals, t_uint flags);
+size_t			get_lst_real_size(t_list *lst, t_uint flags);
+t_list			*get_list_by_index(t_list *lst, t_uint flags, int index);
 #endif

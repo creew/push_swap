@@ -17,11 +17,11 @@ const char *g_months[12] = {
 	"Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
 };
 
-t_result	print_uint(t_lsdata *lsd, t_uint num, size_t width, int right)
+t_result	print_ulong(t_lsdata *lsd, t_ulong num, size_t width, int right)
 {
 	t_uint size;
 
-	size = get_uint_width(num);
+	size = get_ulong_width(num);
 	while (!right && size++ < width)
 		write_cout(lsd, ' ');
 	write_number(lsd, num);
@@ -50,17 +50,17 @@ t_result	print_date(t_lsdata *lsd, time_t ti)
 	parse_time(ti, &tft);
 	write_out(lsd, g_months[tft.month]);
 	write_cout(lsd, ' ');
-	if (get_uint_width(tft.day) < 2)
+	if (get_ulong_width(tft.day) < 2)
 		write_cout(lsd, ' ');
 	write_number(lsd, tft.day);
 	write_cout(lsd, ' ');
 	if (date_cmp_6month(ti, lsd->ctime) == 0)
 	{
-		if (get_uint_width(tft.hour) < 2)
+		if (get_ulong_width(tft.hour) < 2)
 			write_cout(lsd, '0');
 		write_number(lsd, tft.hour);
 		write_cout(lsd, ':');
-		if (get_uint_width(tft.minute) < 2)
+		if (get_ulong_width(tft.minute) < 2)
 			write_cout(lsd, '0');
 		write_number(lsd, tft.minute);
 	}
@@ -93,7 +93,7 @@ static int	print_folder_color(t_lsdata *lsd, t_fentry *entry)
 t_result	print_name(t_lsdata *lsd, t_fentry *entry, size_t width)
 {
 	int f;
-	int len;
+	size_t len;
 
 	f = 0;
 	if (lsd->flags & F_COLORISED)

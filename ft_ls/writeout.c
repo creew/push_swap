@@ -40,7 +40,7 @@ int		write_out(t_lsdata *lsd, const char *str)
 	return (int)(str - src - 1);
 }
 
-void	write_number(t_lsdata *lsd, t_uint n)
+void	write_number(t_lsdata *lsd, t_ulong n)
 {
 	if (n / 10)
 		write_number(lsd, n / 10);

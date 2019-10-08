@@ -19,7 +19,9 @@ static t_uint	getformat2(char c)
 	if (c == 'S')
 		return (F_SORTSIZE);
 	if (c == '1')
-	    return (F_ONECOLUMN);
+		return (F_ONECOLUMN);
+	if (c == 'i')
+		return (F_INODES);
 	return (F_ERROR);
 }
 

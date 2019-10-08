@@ -12,15 +12,15 @@
 
 #include "ft_ls.h"
 
-t_uint		get_uint_width(t_uint num)
+t_uint		get_ulong_width(t_uint num)
 {
-	int		size;
+	t_uint		size;
 
 	size = 1;
 	if (num == 0)
 		return (size);
 	if (num / 10 != 0)
-		return (get_uint_width(num / 10) + size);
+		return (get_ulong_width(num / 10) + size);
 	return (size);
 }
 
@@ -34,7 +34,7 @@ t_uint		get_uid_length(uid_t uid, t_uint flags)
 		if (pwd)
 			return (ft_strlen(pwd->pw_name));
 	}
-	return (get_uint_width(uid));
+	return (get_ulong_width(uid));
 }
 
 t_uint		get_gid_length(gid_t gid, t_uint flags)
@@ -47,7 +47,7 @@ t_uint		get_gid_length(gid_t gid, t_uint flags)
 		if (grp)
 			return (ft_strlen(grp->gr_name));
 	}
-	return (get_uint_width(gid));
+	return (get_ulong_width(gid));
 }
 
 t_uint		get_str_length(char *str)

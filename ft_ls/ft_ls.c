@@ -28,39 +28,6 @@ void		delall(t_lsdata *lsd)
 	ft_stack_delall(&lsd->stack, dellst);
 }
 
-/*
-void		printstack(t_ftstack *stack, char *st)
-{
-	size_t		size;
-	t_list		*lst;
-	t_fentry	*entry;
-
-	size = stack->pos;
-	while (size)
-	{
-		lst = (t_list *)stack->data[size - 1];
-		entry = (t_fentry *)lst->content;
-		printf("**stack: %s, %lu: %s**\n", st, stack->pos - size, entry->path);
-		size--;
-	}
-}
-
-void		print_list(t_list *lst, char *sr)
-{
-	t_fentry	*entry;
-	int			n;
-
-	n = 0;
-	while (lst)
-	{
-		entry = (t_fentry *)lst->content;
-		printf("**lst: %s, %d: %s**\n", sr, n, entry->path);
-		n++;
-		lst = lst->next;
-	}
-}
- */
-
 t_result	lst_iter(t_lsdata *lsd)
 {
 	t_list		*next;

@@ -54,7 +54,7 @@ static t_result	print_uid(t_lsdata *lsd, uid_t uid, size_t width, t_uint flag)
 				print_str(lsd, pwd->pw_name, width, 0);
 		}
 		if (!pwd)
-			print_uint(lsd, uid, width, 0);
+			print_ulong(lsd, uid, width, 0);
 		write_cout(lsd, ' ');
 		write_cout(lsd, ' ');
 	}
@@ -73,7 +73,7 @@ static t_result	print_gid(t_lsdata *lsd, gid_t gid, size_t width, t_uint flag)
 			print_str(lsd, grp->gr_name, width, 1);
 	}
 	if (!grp)
-		print_uint(lsd, gid, width, 1);
+		print_ulong(lsd, gid, width, 1);
 	write_cout(lsd, ' ');
 	write_cout(lsd, ' ');
 	return (RET_OK);
@@ -97,8 +97,8 @@ t_result		print_link(t_lsdata *lsd, t_fentry *entry)
 	return (RET_OK);
 }
 
-t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
-	t_maxvals *vals)
+t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry,
+					unsigned int flags, t_maxvals *vals)
 {
 	struct stat		*fs;
 
@@ -106,17 +106,22 @@ t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 	if (!(flags & F_INCLUDE_DIR) && entry->name[0] == '.')
 		return (RET_OK);
 	read_additional_param(entry);
+	if (flags & F_INODES)
+	{
+		print_ulong(lsd, fs->st_ino, vals->inode, 0);
+		write_cout(lsd, ' ');
+	}
 	if (flags & F_SHOWBLCKSZ)
 	{
-		print_uint(lsd, fs->st_blocks, vals->blocks, 0);
+		print_ulong(lsd, fs->st_blocks, vals->blocks, 0);
 		write_cout(lsd, ' ');
 	}
 	print_rights(lsd, entry, fs);
-	print_uint(lsd, fs->st_nlink, vals->links, 0);
+	print_ulong(lsd, fs->st_nlink, vals->links, 0);
 	write_cout(lsd, ' ');
 	print_uid(lsd, fs->st_uid, vals->owner, flags);
 	print_gid(lsd, fs->st_gid, vals->group, flags);
-	print_uint(lsd, fs->st_size, vals->size, 0);
+	print_ulong(lsd, fs->st_size, vals->size, 0);
 	write_cout(lsd, ' ');
 	print_date(lsd, flags & F_SORTATIME ? entry->fs.ST_ATIME.tv_sec :
 					entry->fs.ST_MTIME.tv_sec);
