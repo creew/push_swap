@@ -28,7 +28,7 @@
 # define BUF_SIZE			1024
 # define FT_MAX_PATH		1024
 # define STR_CURRENT_DIR	"."
-# define LEGAL_OPTIONS		"RalrtsguGnfS"
+# define LEGAL_OPTIONS		"RalrtsguGnfS1d"
 
 # ifdef __linux__
 #  define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
@@ -163,7 +163,7 @@ t_result		print_uint(t_lsdata *lsd, t_uint num, size_t width, int right);
 t_result		print_rights(t_lsdata *lsd, t_fentry *entry, struct stat *fs);
 t_result		print_str(t_lsdata *lsd, char *str, size_t width, int right);
 t_result		print_date(t_lsdata *lsd, time_t ti);
-t_result		print_name(t_lsdata *lsd, t_fentry *entry);
+t_result		print_name(t_lsdata *lsd, t_fentry *entry, size_t width);
 
 t_result		print_link(t_lsdata *lsd, t_fentry *entry);
 
@@ -183,4 +183,5 @@ t_result		write_perm_denied(char *s);
 
 int				write_out_total(t_lsdata *lsd, t_uint blocks);
 int				write_out_path(t_lsdata *lsd, char *path);
+t_list			*create_copy_tlist(t_list *lst);
 #endif

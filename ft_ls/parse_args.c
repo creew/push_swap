@@ -53,10 +53,13 @@ static t_uint	get_format(char c)
 static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 {
 	t_result	ret;
+	struct stat	stat;
 
 	ret = RET_OK;
-	if (*arg == '-' && *fls)
+	if (*arg == '-' && arg[1] != '\0' && *fls && lstat(arg, &stat) < 0)
 	{
+		if (arg[1] == '-' && arg[2] == '\0')
+			return (ret);
 		while (*++arg)
 		{
 			if (!ft_strchr(LEGAL_OPTIONS, *arg))
@@ -100,7 +103,7 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 	lsd->flags |= ((lsd->flags & F_NOT_SORTED) ? F_INCLUDE_DIR : 0);
 	if (lsd->flags & F_ONECOLUMN)
 		lsd->termwidth = 0;
-	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs))
+	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs) && !lsd->err)
 	{
 		ret = add_param(lsd, STR_CURRENT_DIR);
 		if (ret != RET_OK)

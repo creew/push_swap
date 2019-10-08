@@ -60,7 +60,7 @@ void		get_smaxvals(t_list *lst, t_smaxvals *vals, t_uint flags)
 		{
 			if (flags & F_SHOWBLCKSZ)
 			{
-				blk_len = get_uint_width(entry->fs.st_blksize);
+				blk_len = get_uint_width(entry->fs.st_blocks);
 				if (blk_len > vals->blocks)
 					vals->blocks = blk_len;
 			}
@@ -69,6 +69,7 @@ void		get_smaxvals(t_list *lst, t_smaxvals *vals, t_uint flags)
 		}
 		lst = lst->next;
 	}
+	vals->maxw = ((vals->name + (vals->blocks ? (vals->blocks + 9) : 8)) / 8) * 8;
 }
 
 size_t		get_lst_real_size(t_list *lst, t_uint flags)
@@ -80,14 +81,14 @@ size_t		get_lst_real_size(t_list *lst, t_uint flags)
 	while (lst)
 	{
 		entry = (t_fentry *)lst->content;
-		if (entry->name[0] != '.' || (flags & F_INCLUDE_DIR))
+		if (is_showed_entry(entry, flags))
 			size++;
 		lst = lst->next;
 	}
 	return (size);
 }
 
-t_fentry	*get_entry_by_index(t_list *lst, t_uint flags, int index)
+t_list	*get_list_by_index(t_list *lst, t_uint flags, int index)
 {
 	t_fentry	*entry;
 
@@ -97,7 +98,7 @@ t_fentry	*get_entry_by_index(t_list *lst, t_uint flags, int index)
 		if (is_showed_entry(entry, flags))
 		{
 			if (index == 0)
-				return ((t_fentry *)lst->content);
+				return (lst);
 			index--;
 		}
 		lst = lst->next;
@@ -135,10 +136,24 @@ void		print_long(t_lsdata *lsd, t_list *lst, int is_files)
 }
 
 t_result		print_short_entry(t_lsdata *lsd, t_fentry *entry,
-								  unsigned int flags, t_smaxvals *vals)
+	unsigned int flags, t_smaxvals *vals, int islast)
 {
+	size_t len;
 
-
+	len = 0;
+	if (flags & F_SHOWBLCKSZ)
+	{
+		print_uint(lsd, entry->fs.st_blocks, vals->blocks, 0);
+		write_cout(lsd, ' ');
+		len = vals->blocks + 1;
+	}
+	print_name(lsd, entry, 0);
+	len += get_str_length(entry->name);
+	if (!islast)
+	{
+		while (len++ < vals->maxw)
+			write_cout(lsd, ' ');
+	}
 	return (RET_OK);
 }
 
@@ -149,28 +164,50 @@ void		print_short(t_lsdata *lsd, t_list *lst, int is_files)
 	size_t 		count;
 	t_fentry	*entry;
 	int			del;
+	int			row;
+	int 		col;
+	t_list 		*cur_lst;
+	t_list		*newl;
 
 	get_smaxvals(lst, &vls, lsd->flags);
 	size = get_lst_real_size(lst, lsd->flags);
-	vls.maxw = (vls.name + vls.blocks + vls.blocks == 0 ? 0 : 1 + 8) / 8 * 8;
+
 	vls.col = lsd->termwidth / vls.maxw;
 	if (vls.col == 0)
 		vls.col = 1;
-	vls.row = (size + vls.col) / vls.col;
+	vls.row = (size + vls.col - 1) / vls.col;
 	vls.col = (size + vls.row - 1) / vls.row;
 	count = 0;
+	row = 0;
+	col = 0;
 	while (count < size)
 	{
-		entry = get_entry_by_index(lst, lsd->flags, count * vls.row);
-		if (!is_files && S_ISDIR(entry->fs.st_mode) &&
-			(lsd->flags & F_RECURSIVE) && !is_notadir(entry->name) &&
-			is_showed_entry(entry, lsd->flags))
+		if (row + col * vls.row < size)
 		{
-			ft_lstaddrevsorted(&lsd->dirs, lst, &lsd->flags, cmp_callback);
+			cur_lst = get_list_by_index(lst, lsd->flags, row + col * vls.row);
+			if (cur_lst)
+			{
+				entry = (t_fentry *)cur_lst->content;
+				if (!is_files && S_ISDIR(entry->fs.st_mode) && (lsd->flags & F_RECURSIVE) &&
+					!is_notadir(entry->name) && is_showed_entry(entry, lsd->flags))
+				{
+					newl = create_copy_tlist(cur_lst);
+					if (newl)
+						ft_lstaddrevsorted(&lsd->dirs, newl, &lsd->flags, cmp_callback);
+				}
+				print_short_entry(lsd, entry, lsd->flags, &vls, row + (col + 1) * vls.row >= size);
+			}
 		}
-		print_short_entry(lsd, entry, lsd->flags, &vls);
+		col++;
+		if (row + col * vls.row >= size || col >= vls.col)
+		{
+			write_cout(lsd, '\n');
+			col = 0;
+			row++;
+		}
 		count++;
 	}
+	ft_lstdel(&lst, dellst_callback);
 }
 
 void		printlst(t_lsdata *lsd, t_list *lst, int is_files)

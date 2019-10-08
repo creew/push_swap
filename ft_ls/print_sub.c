@@ -90,9 +90,10 @@ static int	print_folder_color(t_lsdata *lsd, t_fentry *entry)
 	return (f);
 }
 
-t_result	print_name(t_lsdata *lsd, t_fentry *entry)
+t_result	print_name(t_lsdata *lsd, t_fentry *entry, size_t width)
 {
 	int f;
+	int len;
 
 	f = 0;
 	if (lsd->flags & F_COLORISED)
@@ -105,9 +106,11 @@ t_result	print_name(t_lsdata *lsd, t_fentry *entry)
 				(entry->fs.st_mode & S_IXGRP) || (entry->fs.st_mode & S_IXOTH)))
 			f = write_out(lsd, ANSI_RED);
 	}
-	write_out(lsd, entry->name);
+	len = write_out(lsd, entry->name);
 	if (f)
 		write_out(lsd, ANSI_RESET);
+	while (len++ < width)
+		write_cout(lsd, ' ');
 	print_link(lsd, entry);
 	return (RET_OK);
 }

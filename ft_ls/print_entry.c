@@ -121,7 +121,7 @@ t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
 	print_date(lsd, flags & F_SORTATIME ? entry->fs.ST_ATIME.tv_sec :
 					entry->fs.ST_MTIME.tv_sec);
 	write_cout(lsd, ' ');
-	print_name(lsd, entry);
+	print_name(lsd, entry, 0);
 	write_cout(lsd, '\n');
 	return (RET_OK);
 }

@@ -20,6 +20,7 @@ t_list		*ft_lstnewblank(size_t content_size)
 	if (lst == NULL)
 		return (NULL);
 	lst->next = NULL;
+	lst->content_size = content_size;
 	if (content_size)
 	{
 		lst->content = ft_memalloc(content_size);

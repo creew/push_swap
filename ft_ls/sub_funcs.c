@@ -39,3 +39,21 @@ int		is_notadir(const char *name)
 	}
 	return (0);
 }
+
+t_list	*create_copy_tlist(t_list *lst)
+{
+	t_list		*newlst;
+	t_fentry	*entry;
+	t_fentry	*oldentry;
+	size_t		len;
+
+	if ((newlst = ft_lstnew(lst->content, lst->content_size)))
+	{
+		oldentry = (t_fentry *)lst->content;
+		len = oldentry->name - oldentry->path;
+		newlst->next = 0;
+		entry = (t_fentry *)newlst->content;
+		entry->name = entry->path + len;
+	}
+	return (newlst);
+}
