@@ -31,7 +31,7 @@ int		is_notadir(const char *name)
 	{
 		if (name[1] == '\0')
 			return (1);
-		if (name [1] == '.')
+		if (name[1] == '.')
 		{
 			if (name[2] == '\0')
 				return (1);

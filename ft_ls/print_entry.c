@@ -97,8 +97,8 @@ t_result		print_link(t_lsdata *lsd, t_fentry *entry)
 	return (RET_OK);
 }
 
-t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry, unsigned int flags,
-	t_maxvals *vals)
+t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry,
+								unsigned int flags, t_maxvals *vals)
 {
 	struct stat		*fs;
 

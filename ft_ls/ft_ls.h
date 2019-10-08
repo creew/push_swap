@@ -167,6 +167,8 @@ t_result		print_name(t_lsdata *lsd, t_fentry *entry, size_t width);
 
 t_result		print_link(t_lsdata *lsd, t_fentry *entry);
 
+void			print_short(t_lsdata *lsd, t_list *lst, int is_files);
+
 t_result		read_dir(t_lsdata *lsd, t_list **root, char *path);
 void			printlst(t_lsdata *lsd, t_list *lst, int is_files);
 
@@ -184,4 +186,10 @@ t_result		write_perm_denied(char *s);
 int				write_out_total(t_lsdata *lsd, t_uint blocks);
 int				write_out_path(t_lsdata *lsd, char *path);
 t_list			*create_copy_tlist(t_list *lst);
+
+int				is_showed_entry(t_fentry *entry, t_uint flags);
+void			get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags);
+void			get_smaxvals(t_list *lst, t_smaxvals *vals, t_uint flags);
+size_t			get_lst_real_size(t_list *lst, t_uint flags);
+t_list			*get_list_by_index(t_list *lst, t_uint flags, int index);
 #endif

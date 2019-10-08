@@ -19,7 +19,7 @@ static t_uint	getformat2(char c)
 	if (c == 'S')
 		return (F_SORTSIZE);
 	if (c == '1')
-	    return (F_ONECOLUMN);
+		return (F_ONECOLUMN);
 	return (F_ERROR);
 }
 
@@ -74,8 +74,7 @@ static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 	else
 	{
 		lsd->argcount++;
-		ret = add_param(lsd, arg);
-		if (ret == ERR_STAT)
+		if ((ret = add_param(lsd, arg)) == ERR_STAT)
 			write_no_such_file(arg);
 		*fls = 0;
 	}
@@ -92,8 +91,7 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 	count = 1;
 	while (count < ac)
 	{
-		ret = parse_arg(lsd, av[count++], &fls);
-		if (ret != RET_OK)
+		if ((ret = parse_arg(lsd, av[count++], &fls)) != RET_OK)
 			lsd->err = 1;
 		if (ret == ERR_ILLEGAL_ARGS || ret == ERR_ENOMEM)
 			return (ret);
@@ -105,8 +103,7 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 		lsd->termwidth = 0;
 	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs) && !lsd->err)
 	{
-		ret = add_param(lsd, STR_CURRENT_DIR);
-		if (ret != RET_OK)
+		if ((ret = add_param(lsd, STR_CURRENT_DIR)) != RET_OK)
 			lsd->err = 1;
 		if (ret == ERR_ENOMEM)
 			return (ret);
