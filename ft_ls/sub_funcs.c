@@ -57,3 +57,19 @@ t_list	*create_copy_tlist(t_list *lst)
 	}
 	return (newlst);
 }
+
+int		check_is_dir(t_fentry *entry)
+{
+	struct stat fs;
+
+	if (S_ISLNK(entry->fs.st_mode))
+	{
+		if (stat(entry->path, &fs) == 0)
+		{
+			return (S_ISDIR(fs.st_mode));
+		}
+		return (0);
+	}
+	return (S_ISDIR(entry->fs.st_mode));
+
+}

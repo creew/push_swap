@@ -52,7 +52,7 @@ void		print_short(t_lsdata *lsd, t_list *lst, int is_files)
 	t_list		*newl;
 
 	get_smaxvals(lst, &vls, lsd->flags);
-	size = get_lst_real_size(lst, lsd->flags);
+	size = get_lst_real_size(lst, lsd->flags, is_files);
 	vls.col = lsd->termwidth / vls.maxw;
 	if (vls.col == 0)
 		vls.col = 1;
@@ -65,7 +65,7 @@ void		print_short(t_lsdata *lsd, t_list *lst, int is_files)
 	{
 		if (row + col * vls.row < size)
 		{
-			cur_lst = get_list_by_index(lst, lsd->flags, row + col * vls.row);
+			cur_lst = get_list_by_index(lst, lsd->flags, row + col * vls.row, is_files);
 			if (cur_lst)
 			{
 				entry = (t_fentry *)cur_lst->content;

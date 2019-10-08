@@ -194,6 +194,9 @@ void			print_short(t_lsdata *lsd, t_list *lst, int is_files);
 int				is_showed_entry(t_fentry *entry, t_uint flags);
 void			get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags);
 void			get_smaxvals(t_list *lst, t_smaxvals *vals, t_uint flags);
-size_t			get_lst_real_size(t_list *lst, t_uint flags);
-t_list			*get_list_by_index(t_list *lst, t_uint flags, int index);
+size_t			get_lst_real_size(t_list *lst, t_uint flags, int is_file);
+t_list			*get_list_by_index(t_list *lst, t_uint flags, int index,
+							int is_file);
+
+int				check_is_dir(t_fentry *entry);
 #endif

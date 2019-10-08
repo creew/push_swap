@@ -55,13 +55,15 @@ static t_uint	get_format(char c)
 static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 {
 	t_result	ret;
-	struct stat	stat;
 
 	ret = RET_OK;
-	if (*arg == '-' && arg[1] != '\0' && *fls && lstat(arg, &stat) < 0)
+	if (*arg == '-' && arg[1] != '\0' && *fls)
 	{
 		if (arg[1] == '-' && arg[2] == '\0')
+		{
+			*fls = 0;
 			return (ret);
+		}
 		while (*++arg)
 		{
 			if (!ft_strchr(LEGAL_OPTIONS, *arg))

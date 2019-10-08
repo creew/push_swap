@@ -80,7 +80,7 @@ void	get_smaxvals(t_list *lst, t_smaxvals *vals, t_uint flags)
 		(vals->inode ? (vals->inode + 1) : 0) + 8) / 8) * 8;
 }
 
-size_t	get_lst_real_size(t_list *lst, t_uint flags)
+size_t	get_lst_real_size(t_list *lst, t_uint flags, int is_file)
 {
 	size_t		size;
 	t_fentry	*entry;
@@ -89,21 +89,21 @@ size_t	get_lst_real_size(t_list *lst, t_uint flags)
 	while (lst)
 	{
 		entry = (t_fentry *)lst->content;
-		if (is_showed_entry(entry, flags))
+		if (is_file || is_showed_entry(entry, flags))
 			size++;
 		lst = lst->next;
 	}
 	return (size);
 }
 
-t_list	*get_list_by_index(t_list *lst, t_uint flags, int index)
+t_list	*get_list_by_index(t_list *lst, t_uint flags, int index, int is_file)
 {
 	t_fentry	*entry;
 
 	while (lst)
 	{
 		entry = (t_fentry *)lst->content;
-		if (is_showed_entry(entry, flags))
+		if (is_file || is_showed_entry(entry, flags))
 		{
 			if (index == 0)
 				return (lst);

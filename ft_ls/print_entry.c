@@ -103,8 +103,6 @@ t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry,
 	struct stat		*fs;
 
 	fs = &entry->fs;
-	if (!(flags & F_INCLUDE_DIR) && entry->name[0] == '.')
-		return (RET_OK);
 	read_additional_param(entry);
 	if (flags & F_INODES)
 	{
