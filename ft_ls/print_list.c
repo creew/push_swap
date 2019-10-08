@@ -12,7 +12,7 @@
 
 #include "ft_ls.h"
 
-void	print_long(t_lsdata *lsd, t_list *lst, int is_files)
+void		print_long(t_lsdata *lsd, t_list *lst, int is_files)
 {
 	t_fentry	*entry;
 	t_maxvals	vals;
@@ -41,7 +41,7 @@ void	print_long(t_lsdata *lsd, t_list *lst, int is_files)
 	}
 }
 
-void	printlst(t_lsdata *lsd, t_list *lst, int is_files)
+void		printlst(t_lsdata *lsd, t_list *lst, int is_files)
 {
 	if (get_lst_real_size(lst, lsd->flags))
 	{
@@ -56,7 +56,7 @@ void	printlst(t_lsdata *lsd, t_list *lst, int is_files)
 	}
 }
 
-void	print_dir_lst(t_lsdata *lsd, t_list *lst)
+void		print_dir_lst(t_lsdata *lsd, t_list *lst)
 {
 	if (lst)
 	{
