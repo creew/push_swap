@@ -22,13 +22,13 @@ t_result		print_short_entry(t_lsdata *lsd, t_fentry *entry,
 	{
 		print_ulong(lsd, entry->fs.st_ino, vals->inode, 0);
 		write_cout(lsd, ' ');
-		len = vals->inode + 1;
+		len += (vals->inode + 1);
 	}
 	if (flags & F_SHOWBLCKSZ)
 	{
 		print_ulong(lsd, entry->fs.st_blocks, vals->blocks, 0);
 		write_cout(lsd, ' ');
-		len = vals->blocks + 1;
+		len += (vals->blocks + 1);
 	}
 	print_name(lsd, entry, 0);
 	len += get_str_length(entry->name);
