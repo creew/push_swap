@@ -92,8 +92,8 @@ static int	print_folder_color(t_lsdata *lsd, t_fentry *entry)
 
 t_result	print_name(t_lsdata *lsd, t_fentry *entry, size_t width)
 {
-	int f;
-	size_t len;
+	int		f;
+	size_t	len;
 
 	f = 0;
 	if (lsd->flags & F_COLORISED)
