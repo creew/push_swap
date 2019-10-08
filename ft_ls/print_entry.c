@@ -51,7 +51,7 @@ static t_result	print_uid(t_lsdata *lsd, uid_t uid, size_t width, t_uint flag)
 		{
 			pwd = getpwuid(uid);
 			if (pwd)
-				print_str(lsd, pwd->pw_name, width, 0);
+				print_str(lsd, pwd->pw_name, width, 1);
 		}
 		if (!pwd)
 			print_ulong(lsd, uid, width, 0);
