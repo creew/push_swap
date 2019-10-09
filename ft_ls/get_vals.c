@@ -17,6 +17,26 @@ int		is_showed_entry(t_fentry *entry, t_uint flags)
 	return ((entry->name[0] != '.' || (flags & F_INCLUDE_DIR)));
 }
 
+static void get_size_maxvals(t_fentry *entry, t_maxvals *vals)
+{
+	size_t			len;
+
+	if (S_ISCHR(entry->fs.st_mode) || S_ISBLK(entry->fs.st_mode))
+	{
+		if ((len = get_ulong_width(major(entry->fs.st_rdev))) > vals->major)
+			vals->major = len;
+		if ((len = get_ulong_width(minor(entry->fs.st_rdev))) > vals->minor)
+			vals->minor = len;
+		if ((vals->major + vals->minor + 3) > vals->size)
+			vals->size = vals->major + vals->minor + 3;
+	}
+	else
+	{
+		if ((len = get_ulong_width(entry->fs.st_size)) > vals->size)
+			vals->size = len;
+	}
+}
+
 void	get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 {
 	t_fentry		*entry;
@@ -28,6 +48,7 @@ void	get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 		entry = (t_fentry *)(lst->content);
 		if (is_showed_entry(entry, flags))
 		{
+			get_size_maxvals(entry, vals);
 			if ((len = get_str_length(entry->name)) > vals->name)
 				vals->name = len;
 			if ((len = get_ulong_width(entry->fs.st_ino)) > vals->inode)
@@ -41,8 +62,7 @@ void	get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 				vals->owner = len;
 			if ((len = get_gid_length(entry->fs.st_gid, flags)) > vals->group)
 				vals->group = len;
-			if ((len = get_ulong_width(entry->fs.st_size)) > vals->size)
-				vals->size = len;
+
 		}
 		lst = lst->next;
 	}

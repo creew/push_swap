@@ -72,21 +72,30 @@ t_result	print_date(t_lsdata *lsd, time_t ti)
 	return (RET_OK);
 }
 
-static int	print_folder_color(t_lsdata *lsd, t_fentry *entry)
+static int	print_color(t_lsdata *lsd, t_fentry *entry, int f)
 {
-	int f;
-
-	f = 0;
-	if ((entry->fs.st_mode & ACCESSPERMS) == ACCESSPERMS)
+	if (S_ISDIR(entry->fs.st_mode))
 	{
-		write_out(lsd, ANSI_BLACK);
-		if (entry->fs.st_mode & S_ISVTX)
-			f = write_out(lsd, ANSI_BG_GREEN);
+		if ((entry->fs.st_mode & ACCESSPERMS) == ACCESSPERMS)
+		{
+			write_out(lsd, ANSI_BLACK);
+			f = write_out(lsd, entry->fs.st_mode & S_ISVTX ?
+						ANSI_BG_GREEN : ANSI_BG_YELLOW);
+		}
 		else
-			f = write_out(lsd, ANSI_BG_YELLOW);
+			f = write_out(lsd, ANSI_BLUE);
 	}
-	else
-		f = write_out(lsd, ANSI_BLUE);
+	else if (S_ISLNK(entry->fs.st_mode))
+		f = write_out(lsd, ANSI_PURPLE);
+	else if (S_ISREG(entry->fs.st_mode) && ((entry->fs.st_mode & S_IXUSR) ||
+		(entry->fs.st_mode & S_IXGRP) || (entry->fs.st_mode & S_IXOTH)))
+		f = write_out(lsd, ANSI_RED);
+	else if (S_ISBLK(entry->fs.st_mode) || S_ISCHR(entry->fs.st_mode))
+	{
+		write_out(lsd, ANSI_BLUE);
+		f = write_out(lsd, S_ISBLK(entry->fs.st_mode) ?
+						ANSI_BG_CYAN : ANSI_BG_YELLOW);
+	}
 	return (f);
 }
 
@@ -97,15 +106,7 @@ t_result	print_name(t_lsdata *lsd, t_fentry *entry, size_t width)
 
 	f = 0;
 	if (lsd->flags & F_COLORISED)
-	{
-		if (S_ISDIR(entry->fs.st_mode))
-			f = print_folder_color(lsd, entry);
-		else if (S_ISLNK(entry->fs.st_mode))
-			f = write_out(lsd, ANSI_PURPLE);
-		else if (S_ISREG(entry->fs.st_mode) && ((entry->fs.st_mode & S_IXUSR) ||
-				(entry->fs.st_mode & S_IXGRP) || (entry->fs.st_mode & S_IXOTH)))
-			f = write_out(lsd, ANSI_RED);
-	}
+		f = print_color(lsd, entry, 0);
 	len = write_out(lsd, entry->name);
 	if (f)
 		write_out(lsd, ANSI_RESET);

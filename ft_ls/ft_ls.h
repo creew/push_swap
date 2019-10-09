@@ -22,13 +22,15 @@
 # ifdef __APPLE__
 #  include <sys/acl.h>
 # endif
-# include <sys/xattr.h>
-# include "libft.h"
+#include "libft.h"
+
+#include <mach/task_info.h>
+#include <sys/xattr.h>
 
 # define BUF_SIZE			1024
 # define FT_MAX_PATH		1024
 # define STR_CURRENT_DIR	"."
-# define LEGAL_OPTIONS		"RalrtsguGnfS1di"
+# define LEGAL_OPTIONS		"RalrtsguGnfS1diC"
 
 # ifdef __linux__
 #  define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
@@ -69,6 +71,7 @@ typedef unsigned long	t_ulong;
 # define F_SORTSIZE			(1u << 12u)
 # define F_ONECOLUMN		(1u << 13u)
 # define F_INODES			(1u << 14u)
+# define F_SIMPLE_OUT		(1u << 15u)
 # define F_ERROR			(0xFFFFFFFF)
 
 # define XATTR_ATTR			(1u)
@@ -86,6 +89,7 @@ typedef unsigned long	t_ulong;
 
 # define ANSI_BG_GREEN		"\e[42m"
 # define ANSI_BG_YELLOW		"\e[43m"
+# define ANSI_BG_CYAN		"\e[46m"
 
 typedef struct	s_fttime
 {
@@ -98,6 +102,8 @@ typedef struct	s_fttime
 
 typedef struct	s_maxvals
 {
+	t_uint		major;
+	t_uint		minor;
 	t_uint		name;
 	t_ulong		inode;
 	t_uint		blocks;
@@ -172,7 +178,7 @@ t_result		print_name(t_lsdata *lsd, t_fentry *entry, size_t width);
 t_result		print_link(t_lsdata *lsd, t_fentry *entry);
 
 t_result		read_dir(t_lsdata *lsd, t_list **root, char *path);
-void			printlst(t_lsdata *lsd, t_list *lst, int is_files);
+void			printlst(t_lsdata *lsd, t_list **lst, int is_files);
 
 int				cmp_callback(t_list *l1, t_list *l2, void *param);
 void			dellst_callback(void *data, size_t content_size);
@@ -198,5 +204,5 @@ size_t			get_lst_real_size(t_list *lst, t_uint flags, int is_file);
 t_list			*get_list_by_index(t_list *lst, t_uint flags, int index,
 							int is_file);
 
-int				check_is_dir(t_fentry *entry);
+int				check_is_dir(t_fentry *entry, t_uint flags);
 #endif

@@ -60,8 +60,7 @@ void		print_all(t_lsdata *lsd)
 	size_t	sz_files;
 
 	sz_files = ft_lstsize(lsd->files);
-	printlst(lsd, lsd->files, 1);
-	lsd->files = 0;
+	printlst(lsd, &lsd->files, 1);
 	lst_iter(lsd);
 	if (ft_stack_size(&lsd->stack) && sz_files)
 		write_cout(lsd, '\n');

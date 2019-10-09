@@ -14,7 +14,7 @@ NAME = ft_ls
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra $(CF_ERROR)
+CC_FLAGS = -Wall -Wextra -g $(CF_ERROR)
 
 CF_ERROR = #-Werror
 

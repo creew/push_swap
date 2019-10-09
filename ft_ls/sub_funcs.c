@@ -58,11 +58,11 @@ t_list	*create_copy_tlist(t_list *lst)
 	return (newlst);
 }
 
-int		check_is_dir(t_fentry *entry)
+int		check_is_dir(t_fentry *entry, t_uint flags)
 {
 	struct stat fs;
 
-	if (S_ISLNK(entry->fs.st_mode))
+	if (S_ISLNK(entry->fs.st_mode) && !(flags & F_LONG_FORMAT))
 	{
 		if (stat(entry->path, &fs) == 0)
 		{
@@ -71,5 +71,4 @@ int		check_is_dir(t_fentry *entry)
 		return (0);
 	}
 	return (S_ISDIR(entry->fs.st_mode));
-
 }

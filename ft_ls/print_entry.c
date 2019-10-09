@@ -97,6 +97,23 @@ t_result		print_link(t_lsdata *lsd, t_fentry *entry)
 	return (RET_OK);
 }
 
+t_result		print_size(t_lsdata *lsd, t_fentry *entry, t_maxvals *vals)
+{
+	if (S_ISCHR(entry->fs.st_mode) || S_ISBLK(entry->fs.st_mode))
+	{
+		print_ulong(lsd, major(entry->fs.st_rdev),
+			vals->size - vals->minor - 2, 0);
+		write_cout(lsd, ',');
+		print_ulong(lsd, minor(entry->fs.st_rdev),
+					vals->size - vals->major - 2, 0);
+	}
+	else
+	{
+		print_ulong(lsd, entry->fs.st_size, vals->size, 0);
+	}
+	return (RET_OK);
+}
+
 t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry,
 					unsigned int flags, t_maxvals *vals)
 {
@@ -119,7 +136,7 @@ t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry,
 	write_cout(lsd, ' ');
 	print_uid(lsd, fs->st_uid, vals->owner, flags);
 	print_gid(lsd, fs->st_gid, vals->group, flags);
-	print_ulong(lsd, fs->st_size, vals->size, 0);
+	print_size(lsd, entry, vals);
 	write_cout(lsd, ' ');
 	print_date(lsd, flags & F_SORTATIME ? entry->fs.ST_ATIME.tv_sec :
 					entry->fs.ST_MTIME.tv_sec);

@@ -68,7 +68,7 @@ void		print_short(t_lsdata *lsd, t_list *lst, int is_files)
 			cur_lst = get_list_by_index(lst, lsd->flags, row + col * vls.row, is_files);
 			if (cur_lst)
 			{
-				entry = (t_fentry *)cur_lst->content;
+				entry = (t_fentry *) cur_lst->content;
 				if (!is_files && S_ISDIR(entry->fs.st_mode) && (lsd->flags & F_RECURSIVE) &&
 					!is_notadir(entry->name) && is_showed_entry(entry, lsd->flags))
 				{
@@ -88,5 +88,4 @@ void		print_short(t_lsdata *lsd, t_list *lst, int is_files)
 		}
 		count++;
 	}
-	ft_lstdel(&lst, dellst_callback);
 }

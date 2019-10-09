@@ -12,6 +12,21 @@
 
 #include "ft_ls.h"
 
+static void		setformat(t_lsdata *lsd, t_uint flag)
+{
+	if (flag == F_LONG_FORMAT || flag == F_SIMPLE_OUT ||
+		flag == F_ONECOLUMN || flag == F_GROUP_NAME)
+	{
+		lsd->flags &= ~F_LONG_FORMAT;
+		lsd->flags &= ~F_SIMPLE_OUT;
+		lsd->flags &= ~F_ONECOLUMN;
+		lsd->flags &= ~F_GROUP_NAME;
+	}
+	lsd->flags |= flag;
+	lsd->flags |= (flag == F_ID_NUMBERS) ? F_LONG_FORMAT : 0;
+	lsd->flags |= (flag == F_GROUP_NAME) ? F_LONG_FORMAT : 0;
+}
+
 static t_uint	getformat2(char c)
 {
 	if (c == 'n')
@@ -22,6 +37,8 @@ static t_uint	getformat2(char c)
 		return (F_ONECOLUMN);
 	if (c == 'i')
 		return (F_INODES);
+	if (c == 'C')
+		return (F_SIMPLE_OUT);
 	return (F_ERROR);
 }
 
@@ -72,7 +89,7 @@ static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 				write_usage();
 				return (ERR_ILLEGAL_ARGS);
 			}
-			lsd->flags |= get_format(*arg);
+			setformat(lsd, get_format(*arg));
 		}
 	}
 	else
@@ -102,8 +119,6 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 		if (ret == ERR_ILLEGAL_ARGS || ret == ERR_ENOMEM)
 			return (ret);
 	}
-	lsd->flags |= ((lsd->flags & F_ID_NUMBERS) ? F_LONG_FORMAT : 0);
-	lsd->flags |= ((lsd->flags & F_GROUP_NAME) ? F_LONG_FORMAT : 0);
 	lsd->flags |= ((lsd->flags & F_NOT_SORTED) ? F_INCLUDE_DIR : 0);
 	if (lsd->flags & F_ONECOLUMN)
 		lsd->termwidth = 0;

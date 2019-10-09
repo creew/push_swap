@@ -73,7 +73,7 @@ t_result		add_param(t_lsdata *lsd, char *name)
 	}
 	ft_strcpy(fentry->path, name);
 	fentry->name = fentry->path;
-	if (check_is_dir(fentry) && !(lsd->flags & F_DIR_LIKE_FILE))
+	if (check_is_dir(fentry, lsd->flags) && !(lsd->flags & F_DIR_LIKE_FILE))
 		ft_lstaddrevsorted(&lsd->dirs, lst, &(lsd->flags), cmp_callback);
 	else
 		ft_lstaddsorted(&lsd->files, lst, &(lsd->flags), cmp_callback);
