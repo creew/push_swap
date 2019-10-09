@@ -68,7 +68,7 @@ void		get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags)
 	}
 }
 
-static void	get_one_smaxval(t_fentry *entry, t_maxvals *vals, t_uint flags)
+static void	get_one_smaxval(t_fentry *entry, t_smaxvals *vals, t_uint flags)
 {
 	t_uint		len;
 
@@ -100,6 +100,10 @@ void		get_smaxvals(t_list *lst, t_smaxvals *vals, t_uint flags)
 		get_one_smaxval(entry, vals, flags);
 		lst = lst->next;
 	}
-	vals->maxw = ((vals->name + (vals->blocks ? (vals->blocks + 1) : 0) +
-		(vals->inode ? (vals->inode + 1) : 0) + 8) / 8) * 8;
+	if (!(flags & F_COLORISED))
+		vals->maxw = ((vals->name + (vals->blocks ? (vals->blocks + 1) : 0) +
+			(vals->inode ? (vals->inode + 1) : 0) + 8) / 8) * 8;
+	else
+		vals->maxw = vals->name + (vals->blocks ? (vals->blocks + 1) : 0) +
+			(vals->inode ? (vals->inode + 1) : 0) + 1;
 }

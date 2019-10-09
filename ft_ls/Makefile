@@ -14,9 +14,9 @@ NAME = ft_ls
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -g $(CF_ERROR)
+CC_FLAGS = -Wall -Wextra  $(CF_ERROR)
 
-CF_ERROR = #-Werror
+CF_ERROR = -Werror
 
 SRCS = ft_ls.c parse_args.c read_dir.c sub_funcs.c print_entry.c writeout.c \
 		print_sub.c print_rights.c print_list.c time_sub.c callbacks.c \
@@ -43,6 +43,7 @@ clean:
 	rm -f $(OBJ)
 
 fclean: clean
+	rm -f $(LIBFT_PATH)libft.a
 	rm -f $(NAME)
 
 re: fclean all

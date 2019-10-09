@@ -12,48 +12,81 @@
 
 #include "ft_ls.h"
 
-void		print_long(t_lsdata *lsd, t_list *lst, int is_files)
+int			add_recursivable_dir(t_lsdata *lsd, t_list *lst, int is_files)
+{
+	t_list		*newl;
+	t_fentry	*entry;
+
+	entry = (t_fentry *)(lst->content);
+	if (!is_files && S_ISDIR(entry->fs.st_mode) &&
+		(lsd->flags & F_RECURSIVE) && !is_notadir(entry->name))
+	{
+		newl = create_copy_tlist(lst);
+		if (newl)
+		{
+			ft_lstaddrevsorted(&lsd->dirs, newl, &lsd->flags, cmp_callback);
+			return (1);
+		}
+		return (-1);
+	}
+	return (0);
+}
+
+int			print_long(t_lsdata *lsd, t_list *lst, int is_files)
 {
 	t_fentry	*entry;
 	t_maxvals	vals;
-	t_list		*newl;
+	int			printed;
 
+	printed = 0;
 	get_maxvals(lst, &vals, lsd->flags);
 	if (!is_files)
 		write_out_total(lsd, vals.total_blocks);
 	while (lst)
 	{
 		entry = (t_fentry *)(lst->content);
-		if (is_showed_entry(entry, lsd->flags) || is_files)
+		if (is_entry_printable(entry, is_files, lsd->flags))
 		{
-			if (!is_files && S_ISDIR(entry->fs.st_mode) &&
-				(lsd->flags & F_RECURSIVE) && !is_notadir(entry->name))
-			{
-				newl = create_copy_tlist(lst);
-				if (newl)
-					ft_lstaddrevsorted(&lsd->dirs, newl,
-						&lsd->flags, cmp_callback);
-			}
+			add_recursivable_dir(lsd, lst, is_files);
 			print_long_entry(lsd, entry, lsd->flags, &vals);
+			printed++;
 		}
 		lst = lst->next;
 	}
+	return (printed);
 }
 
-void		printlst(t_lsdata *lsd, t_list **lst, int is_files)
+void		print_nosuch(t_lsdata *lsd, t_list *lst)
 {
+	t_fentry *entry;
+
+	if (lst)
+	{
+		print_nosuch(lsd, lst->next);
+		entry = (t_fentry *)lst->content;
+		if (entry->is_nosuch)
+		{
+			lsd->err = 1;
+			write_no_such_file(entry->path);
+		}
+	}
+}
+
+int			printlst(t_lsdata *lsd, t_list **lst, int is_files)
+{
+	int	printed;
+
+	printed = 0;
+	print_nosuch(lsd, *lst);
 	if (get_lst_real_size(*lst, lsd->flags, is_files))
 	{
 		if (lsd->flags & F_LONG_FORMAT)
-		{
-			print_long(lsd, *lst, is_files);
-		}
+			printed = print_long(lsd, *lst, is_files);
 		else
-		{
-			print_short(lsd, *lst, is_files);
-		}
+			printed = print_short(lsd, *lst, is_files);
 	}
 	ft_lstdel(lst, dellst_callback);
+	return (printed);
 }
 
 void		print_dir_lst(t_lsdata *lsd, t_list *lst)

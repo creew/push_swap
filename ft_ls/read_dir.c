@@ -66,16 +66,22 @@ t_result		add_param(t_lsdata *lsd, char *name)
 		sizeof(t_fentry) + sizeof(char) * (ft_strlen(name) + 1))) == NULL)
 		return (ERR_ENOMEM);
 	fentry = (t_fentry *)(lst->content);
-	if (lstat(name, &fentry->fs) != 0)
-	{
-		ft_lstdelone(&lst, dellst_callback);
-		return (ERR_STAT);
-	}
+	fentry->is_nosuch = lstat(name, &fentry->fs) == 0 ? 0 : 1;
 	ft_strcpy(fentry->path, name);
 	fentry->name = fentry->path;
-	if (check_is_dir(fentry, lsd->flags) && !(lsd->flags & F_DIR_LIKE_FILE))
-		ft_lstaddrevsorted(&lsd->dirs, lst, &(lsd->flags), cmp_callback);
+	if (fentry->is_nosuch)
+	{
+		if (lsd->flags & F_REVERSE)
+			ft_lstaddsorted(&lsd->files, lst, &(lsd->flags), cmp_callback);
+		else
+			ft_lstaddrevsorted(&lsd->files, lst, &(lsd->flags), cmp_callback);
+	}
 	else
-		ft_lstaddsorted(&lsd->files, lst, &(lsd->flags), cmp_callback);
+	{
+		if (check_is_dir(fentry, lsd->flags) && !(lsd->flags & F_DIR_LIKE_FILE))
+			ft_lstaddrevsorted(&lsd->dirs, lst, &(lsd->flags), cmp_callback);
+		else
+			ft_lstaddsorted(&lsd->files, lst, &(lsd->flags), cmp_callback);
+	}
 	return (RET_OK);
 }

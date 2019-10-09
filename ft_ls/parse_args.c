@@ -24,6 +24,16 @@ static t_result	check_n_addparam(t_lsdata *lsd, char c)
 	return (RET_OK);
 }
 
+static t_result	check_fts(char *arg)
+{
+	if (ft_strlen(arg) == 0)
+	{
+		write_no_such_file("fts_open");
+		return (ERR_FTS_OPEN);
+	}
+	return (RET_OK);
+}
+
 static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 {
 	t_result	ret;
@@ -44,10 +54,10 @@ static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 	}
 	else
 	{
+		if ((ret = check_fts(arg)) != RET_OK)
+			return (ret);
 		lsd->argcount++;
 		ret = add_param(lsd, arg);
-		if (ret == ERR_STAT)
-			write_no_such_file(arg);
 		*fls = 0;
 	}
 	return (ret);
@@ -60,10 +70,6 @@ static t_result	add_std_dir(t_lsdata *lsd)
 	ret = add_param(lsd, STR_CURRENT_DIR);
 	if (ret != RET_OK)
 		lsd->err = 1;
-	if (ret == ERR_ENOMEM)
-		return (ret);
-	if (ret == ERR_STAT)
-		write_no_such_file(STR_CURRENT_DIR);
 	return (ret);
 }
 
@@ -80,7 +86,7 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 		ret = parse_arg(lsd, av[count++], &fls);
 		if (ret != RET_OK)
 			lsd->err = 1;
-		if (ret == ERR_ILLEGAL_ARGS || ret == ERR_ENOMEM)
+		if (ret != RET_OK)
 			return (ret);
 	}
 	lsd->flags |= ((lsd->flags & F_NOT_SORTED) ? F_INCLUDE_DIR : 0);
@@ -88,7 +94,7 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 		lsd->termwidth = 0;
 	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs) && !lsd->err)
 	{
-		if ((ret = add_std_dir(lsd)) == ERR_ENOMEM)
+		if ((ret = add_std_dir(lsd)) != RET_OK)
 			return (ret);
 	}
 	return (RET_OK);

@@ -57,12 +57,11 @@ t_result	lst_iter(t_lsdata *lsd)
 void		print_all(t_lsdata *lsd)
 {
 	t_list	*lst;
-	size_t	sz_files;
+	int		printed;
 
-	sz_files = ft_lstsize(lsd->files);
-	printlst(lsd, &lsd->files, 1);
+	printed = printlst(lsd, &lsd->files, 1);
 	lst_iter(lsd);
-	if (ft_stack_size(&lsd->stack) && sz_files)
+	if (ft_stack_size(&lsd->stack) && printed)
 		write_cout(lsd, '\n');
 	while (ft_stack_size(&lsd->stack))
 	{
@@ -88,9 +87,13 @@ int			main(int ac, char *av[])
 	lsd.ctime = time(NULL);
 	ret = parse_args(&lsd, ac, av);
 	if (ret != RET_OK)
+	{
 		lsd.err = 1;
-	if (ret != ERR_ENOMEM && ret != ERR_ILLEGAL_ARGS)
+	}
+	else
+	{
 		print_all(&lsd);
+	}
 	delall(&lsd);
 	return (lsd.err);
 }

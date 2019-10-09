@@ -22,10 +22,9 @@
 # ifdef __APPLE__
 #  include <sys/acl.h>
 # endif
-#include "libft.h"
+# include "libft.h"
 
-#include <mach/task_info.h>
-#include <sys/xattr.h>
+# include <sys/xattr.h>
 
 # define BUF_SIZE			1024
 # define FT_MAX_PATH		1024
@@ -36,7 +35,6 @@
 #  define DD_NAME_LEN(x)	(ft_strlen(x->d_name))
 #  define ST_ATIME			st_atim
 #  define ST_MTIME			st_mtim
-#  define read_additional_param(...)
 # elif __APPLE__
 #  define DD_NAME_LEN(x)	(x->d_namlen)
 #  define ST_ATIME			st_atimespec
@@ -55,6 +53,7 @@ typedef unsigned long	t_ulong;
 # define ERR_ILLEGAL_ARGS	(-2)
 # define ERR_OPEN_DIR		(-3)
 # define ERR_STAT			(-4)
+# define ERR_FTS_OPEN		(-5)
 
 # define F_LONG_FORMAT		(1u << 0u)
 # define F_RECURSIVE		(1u << 1u)
@@ -125,9 +124,9 @@ typedef	struct	s_smaxvals
 typedef struct	s_window
 {
 	t_uint		crow;
-	t_uint 		ccol;
+	t_uint		ccol;
 	t_uint		mrow;
-	t_uint 		mcol;
+	t_uint		mcol;
 	t_uint		size;
 	t_smaxvals	vls;
 }				t_window;
@@ -135,6 +134,7 @@ typedef struct	s_window
 typedef	struct	s_fentry
 {
 	t_uchar		xattr;
+	t_uchar		is_nosuch;
 	struct stat	fs;
 	char		*name;
 	char		path[1];
@@ -177,7 +177,8 @@ void			write_number(t_lsdata *lsd, t_ulong n);
 
 t_result		print_long_entry(t_lsdata *lsd, t_fentry *entry,
 									unsigned int flags, t_maxvals *vals);
-t_result		print_ulong(t_lsdata *lsd, t_ulong num, size_t width, int right);
+t_result		print_ulong(t_lsdata *lsd, t_ulong num, size_t width,
+							int right);
 t_result		print_rights(t_lsdata *lsd, t_fentry *entry, struct stat *fs);
 t_result		print_str(t_lsdata *lsd, char *str, size_t width, int right);
 t_result		print_date(t_lsdata *lsd, time_t ti);
@@ -189,7 +190,7 @@ t_result		print_link(t_lsdata *lsd, t_fentry *entry);
 t_result		print_size(t_lsdata *lsd, t_fentry *entry, t_maxvals *vals);
 
 t_result		read_dir(t_lsdata *lsd, t_list **root, char *path);
-void			printlst(t_lsdata *lsd, t_list **lst, int is_files);
+int				printlst(t_lsdata *lsd, t_list **lst, int is_files);
 
 int				cmp_callback(t_list *l1, t_list *l2, void *param);
 void			dellst_callback(void *data, size_t content_size);
@@ -206,14 +207,16 @@ int				write_out_total(t_lsdata *lsd, t_uint blocks);
 int				write_out_path(t_lsdata *lsd, char *path);
 t_list			*create_copy_tlist(t_list *lst);
 
-void			print_short(t_lsdata *lsd, t_list *lst, int is_files);
+int				print_short(t_lsdata *lsd, t_list *lst, int is_files);
 
 int				is_showed_entry(t_fentry *entry, t_uint flags);
 void			get_maxvals(t_list *lst, t_maxvals *vals, t_uint flags);
 void			get_smaxvals(t_list *lst, t_smaxvals *vals, t_uint flags);
+
 size_t			get_lst_real_size(t_list *lst, t_uint flags, int is_file);
 t_list			*get_list_by_index(t_list *lst, t_uint flags, int index,
-							int is_file);
+						int is_file);
+int				is_entry_printable(t_fentry *entry, int is_file, t_uint flags);
 
 int				check_is_dir(t_fentry *entry, t_uint flags);
 
