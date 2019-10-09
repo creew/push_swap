@@ -120,9 +120,17 @@ typedef	struct	s_smaxvals
 	t_ulong		inode;
 	t_uint		blocks;
 	t_uint		maxw;
-	t_uint		col;
-	t_uint		row;
 }				t_smaxvals;
+
+typedef struct	s_window
+{
+	t_uint		crow;
+	t_uint 		ccol;
+	t_uint		mrow;
+	t_uint 		mcol;
+	t_uint		size;
+	t_smaxvals	vls;
+}				t_window;
 
 typedef	struct	s_fentry
 {
@@ -175,7 +183,10 @@ t_result		print_str(t_lsdata *lsd, char *str, size_t width, int right);
 t_result		print_date(t_lsdata *lsd, time_t ti);
 t_result		print_name(t_lsdata *lsd, t_fentry *entry, size_t width);
 
+t_result		print_uid(t_lsdata *lsd, uid_t uid, size_t width, t_uint flag);
+t_result		print_gid(t_lsdata *lsd, gid_t gid, size_t width, t_uint flag);
 t_result		print_link(t_lsdata *lsd, t_fentry *entry);
+t_result		print_size(t_lsdata *lsd, t_fentry *entry, t_maxvals *vals);
 
 t_result		read_dir(t_lsdata *lsd, t_list **root, char *path);
 void			printlst(t_lsdata *lsd, t_list **lst, int is_files);
@@ -205,4 +216,7 @@ t_list			*get_list_by_index(t_list *lst, t_uint flags, int index,
 							int is_file);
 
 int				check_is_dir(t_fentry *entry, t_uint flags);
+
+void			setformat(t_lsdata *lsd, t_uint flag);
+t_uint			get_format(char c);
 #endif

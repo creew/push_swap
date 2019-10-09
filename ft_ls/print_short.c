@@ -12,19 +12,19 @@
 
 #include "ft_ls.h"
 
-t_result		print_short_entry(t_lsdata *lsd, t_fentry *entry,
-	unsigned int flags, t_smaxvals *vals, int islast)
+static t_result	print_short_entry(t_lsdata *lsd, t_fentry *entry,
+						t_smaxvals *vals, int islast)
 {
 	size_t len;
 
 	len = 0;
-	if (flags & F_INODES)
+	if (lsd->flags & F_INODES)
 	{
 		print_ulong(lsd, entry->fs.st_ino, vals->inode, 0);
 		write_cout(lsd, ' ');
 		len += (vals->inode + 1);
 	}
-	if (flags & F_SHOWBLCKSZ)
+	if (lsd->flags & F_SHOWBLCKSZ)
 	{
 		print_ulong(lsd, entry->fs.st_blocks, vals->blocks, 0);
 		write_cout(lsd, ' ');
@@ -40,51 +40,61 @@ t_result		print_short_entry(t_lsdata *lsd, t_fentry *entry,
 	return (RET_OK);
 }
 
-void		print_short(t_lsdata *lsd, t_list *lst, int is_files)
+static void		calc_wind_size(t_window *wind, t_uint termwidth,
+										t_uint maxw, size_t size)
 {
-	t_smaxvals	vls;
-	size_t		size;
-	size_t		count;
-	t_fentry	*entry;
-	int			row;
-	int			col;
+	wind->mcol = termwidth / maxw;
+	if (wind->mcol == 0)
+		wind->mcol = 1;
+	wind->mrow = (size + wind->mcol - 1) / wind->mcol;
+	wind->mcol = (size + wind->mrow - 1) / wind->mrow;
+	wind->crow = 0;
+	wind->ccol = 0;
+}
+
+static void		print_one_short(t_lsdata *lsd, t_window *wind,
+					t_list *lst, int is_files)
+{
 	t_list		*cur_lst;
 	t_list		*newl;
+	t_fentry	*entry;
 
-	get_smaxvals(lst, &vls, lsd->flags);
-	size = get_lst_real_size(lst, lsd->flags, is_files);
-	vls.col = lsd->termwidth / vls.maxw;
-	if (vls.col == 0)
-		vls.col = 1;
-	vls.row = (size + vls.col - 1) / vls.col;
-	vls.col = (size + vls.row - 1) / vls.row;
-	count = 0;
-	row = 0;
-	col = 0;
-	while (count < size)
+	if (wind->crow + wind->ccol * wind->mrow >= wind->size)
+		return ;
+	cur_lst = get_list_by_index(lst, lsd->flags,
+		wind->crow + wind->ccol * wind->mrow, is_files);
+	if (!cur_lst)
+		return ;
+	entry = (t_fentry *)cur_lst->content;
+	if (!is_files && S_ISDIR(entry->fs.st_mode) && (lsd->flags & F_RECURSIVE) &&
+		!is_notadir(entry->name) && is_showed_entry(entry, lsd->flags))
 	{
-		if (row + col * vls.row < size)
-		{
-			cur_lst = get_list_by_index(lst, lsd->flags, row + col * vls.row, is_files);
-			if (cur_lst)
-			{
-				entry = (t_fentry *) cur_lst->content;
-				if (!is_files && S_ISDIR(entry->fs.st_mode) && (lsd->flags & F_RECURSIVE) &&
-					!is_notadir(entry->name) && is_showed_entry(entry, lsd->flags))
-				{
-					newl = create_copy_tlist(cur_lst);
-					if (newl)
-						ft_lstaddrevsorted(&lsd->dirs, newl, &lsd->flags, cmp_callback);
-				}
-				print_short_entry(lsd, entry, lsd->flags, &vls, row + (col + 1) * vls.row >= size);
-			}
-		}
-		col++;
-		if (row + col * vls.row >= size)
+		newl = create_copy_tlist(cur_lst);
+		if (newl)
+			ft_lstaddrevsorted(&lsd->dirs, newl, &lsd->flags, cmp_callback);
+	}
+	print_short_entry(lsd, entry, &wind->vls,
+		wind->crow + (wind->ccol + 1) * wind->mrow >= wind->size);
+}
+
+void			print_short(t_lsdata *lsd, t_list *lst, int is_files)
+{
+	size_t		count;
+	t_window	wind;
+
+	get_smaxvals(lst, &wind.vls, lsd->flags);
+	wind.size = get_lst_real_size(lst, lsd->flags, is_files);
+	calc_wind_size(&wind, lsd->termwidth, wind.vls.maxw, wind.size);
+	count = 0;
+	while (count < wind.size)
+	{
+		print_one_short(lsd, &wind, lst, is_files);
+		wind.ccol++;
+		if (wind.crow + wind.ccol * wind.mrow >= wind.size)
 		{
 			write_cout(lsd, '\n');
-			col = 0;
-			row++;
+			wind.ccol = 0;
+			wind.crow++;
 		}
 		count++;
 	}

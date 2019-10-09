@@ -18,7 +18,7 @@ static void	delone(void *data, size_t content_size)
 	(void)data;
 }
 
-int 	ft_queue_poll(t_ftqueue **queue, void **data)
+int			ft_queue_poll(t_ftqueue **queue, void **data)
 {
 	while (*queue)
 	{

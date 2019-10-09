@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-int 	ft_queue_add(t_ftqueue **queue, void *data)
+int		ft_queue_add(t_ftqueue **queue, void *data)
 {
 	t_ftqueue *newq;
 

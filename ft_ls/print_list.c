@@ -16,8 +16,6 @@ void		print_long(t_lsdata *lsd, t_list *lst, int is_files)
 {
 	t_fentry	*entry;
 	t_maxvals	vals;
-	int			del;
-	t_list		*next;
 	t_list		*newl;
 
 	get_maxvals(lst, &vals, lsd->flags);
@@ -25,8 +23,6 @@ void		print_long(t_lsdata *lsd, t_list *lst, int is_files)
 		write_out_total(lsd, vals.total_blocks);
 	while (lst)
 	{
-		del = 0;
-		next = lst->next;
 		entry = (t_fentry *)(lst->content);
 		if (is_showed_entry(entry, lsd->flags) || is_files)
 		{
@@ -35,11 +31,12 @@ void		print_long(t_lsdata *lsd, t_list *lst, int is_files)
 			{
 				newl = create_copy_tlist(lst);
 				if (newl)
-					ft_lstaddrevsorted(&lsd->dirs, newl, &lsd->flags, cmp_callback);
+					ft_lstaddrevsorted(&lsd->dirs, newl,
+						&lsd->flags, cmp_callback);
 			}
 			print_long_entry(lsd, entry, lsd->flags, &vals);
 		}
-		lst = next;
+		lst = lst->next;
 	}
 }
 

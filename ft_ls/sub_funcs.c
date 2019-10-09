@@ -72,3 +72,8 @@ int		check_is_dir(t_fentry *entry, t_uint flags)
 	}
 	return (S_ISDIR(entry->fs.st_mode));
 }
+
+int		is_showed_entry(t_fentry *entry, t_uint flags)
+{
+	return ((entry->name[0] != '.' || (flags & F_INCLUDE_DIR)));
+}

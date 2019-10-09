@@ -12,61 +12,16 @@
 
 #include "ft_ls.h"
 
-static void		setformat(t_lsdata *lsd, t_uint flag)
+static t_result	check_n_addparam(t_lsdata *lsd, char c)
 {
-	if (flag == F_LONG_FORMAT || flag == F_SIMPLE_OUT ||
-		flag == F_ONECOLUMN || flag == F_GROUP_NAME)
+	if (!ft_strchr(LEGAL_OPTIONS, c))
 	{
-		lsd->flags &= ~F_LONG_FORMAT;
-		lsd->flags &= ~F_SIMPLE_OUT;
-		lsd->flags &= ~F_ONECOLUMN;
-		lsd->flags &= ~F_GROUP_NAME;
+		write_illegal_param(c);
+		write_usage();
+		return (ERR_ILLEGAL_ARGS);
 	}
-	lsd->flags |= flag;
-	lsd->flags |= (flag == F_ID_NUMBERS) ? F_LONG_FORMAT : 0;
-	lsd->flags |= (flag == F_GROUP_NAME) ? F_LONG_FORMAT : 0;
-}
-
-static t_uint	getformat2(char c)
-{
-	if (c == 'n')
-		return (F_ID_NUMBERS);
-	if (c == 'S')
-		return (F_SORTSIZE);
-	if (c == '1')
-		return (F_ONECOLUMN);
-	if (c == 'i')
-		return (F_INODES);
-	if (c == 'C')
-		return (F_SIMPLE_OUT);
-	return (F_ERROR);
-}
-
-static t_uint	get_format(char c)
-{
-	if (c == 'R')
-		return (F_RECURSIVE);
-	if (c == 'a')
-		return (F_INCLUDE_DIR);
-	if (c == 'l')
-		return (F_LONG_FORMAT);
-	if (c == 'r')
-		return (F_REVERSE);
-	if (c == 't')
-		return (F_SORTTIME);
-	if (c == 'u')
-		return (F_SORTATIME);
-	if (c == 'f')
-		return (F_NOT_SORTED);
-	if (c == 'g')
-		return (F_GROUP_NAME);
-	if (c == 'd')
-		return (F_DIR_LIKE_FILE);
-	if (c == 'G')
-		return (F_COLORISED);
-	if (c == 's')
-		return (F_SHOWBLCKSZ);
-	return (getformat2(c));
+	setformat(lsd, get_format(c));
+	return (RET_OK);
 }
 
 static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
@@ -83,13 +38,8 @@ static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 		}
 		while (*++arg)
 		{
-			if (!ft_strchr(LEGAL_OPTIONS, *arg))
-			{
-				write_illegal_param(*arg);
-				write_usage();
-				return (ERR_ILLEGAL_ARGS);
-			}
-			setformat(lsd, get_format(*arg));
+			if ((ret = check_n_addparam(lsd, *arg)) != RET_OK)
+				return (ret);
 		}
 	}
 	else
@@ -100,6 +50,20 @@ static t_result	parse_arg(t_lsdata *lsd, char *arg, int *fls)
 			write_no_such_file(arg);
 		*fls = 0;
 	}
+	return (ret);
+}
+
+static t_result	add_std_dir(t_lsdata *lsd)
+{
+	t_result	ret;
+
+	ret = add_param(lsd, STR_CURRENT_DIR);
+	if (ret != RET_OK)
+		lsd->err = 1;
+	if (ret == ERR_ENOMEM)
+		return (ret);
+	if (ret == ERR_STAT)
+		write_no_such_file(STR_CURRENT_DIR);
 	return (ret);
 }
 
@@ -124,13 +88,8 @@ t_result		parse_args(t_lsdata *lsd, int ac, char *av[])
 		lsd->termwidth = 0;
 	if (!ft_lstsize(lsd->files) && !ft_lstsize(lsd->dirs) && !lsd->err)
 	{
-		ret = add_param(lsd, STR_CURRENT_DIR);
-		if (ret != RET_OK)
-			lsd->err = 1;
-		if (ret == ERR_ENOMEM)
+		if ((ret = add_std_dir(lsd)) == ERR_ENOMEM)
 			return (ret);
-		if (ret == ERR_STAT)
-			write_no_such_file(STR_CURRENT_DIR);
 	}
 	return (RET_OK);
 }
