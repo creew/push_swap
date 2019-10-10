@@ -1,0 +1,4 @@
+#!/bin/sh
+BROADCAST="$(./02a)"
+ping -c2 $BROADCAST >/dev/null
+arp -a | grep -o '([0-9,.]*)' | cut -c2- | rev | cut -c2- | rev
