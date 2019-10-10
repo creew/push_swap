@@ -7,3 +7,4 @@ printf
 pft/
 test
 cmake-build-debug/
+pfunit/

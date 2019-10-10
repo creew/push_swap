@@ -7,3 +7,4 @@ cmake-build-debug
 .idea
 checker/checker
 push_swap/push_swap
+testpushswap.sh
