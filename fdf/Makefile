@@ -10,13 +10,19 @@ SRCS = fdf.c
 
 OBJS = $(SRCS:.c=.o)
 
+INC_DIR = ./libft ./minilibx_macos
+IINC = $(addprefix -I,$(INC_DIR))
+LINC = $(addprefix -L,$(INC_DIR))
+
+FRAMEWORKS = -framework OpenGL -framework AppKit
+
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CC_FLAGS) $(OBJS) -o $@
+	$(CC) $(CC_FLAGS) $(OBJS) $(LINC) -lft -lmlx $(FRAMEWORKS) -o $@
 
 %.o: %.c
-	$(CC) $(CC_FLAGS) -c $< -o $@
+	$(CC) $(CC_FLAGS) $(IINC) -c $< -o $@
 
 clean:
 	rm -f $(OBJS)

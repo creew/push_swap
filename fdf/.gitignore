@@ -1,5 +1,5 @@
 .idea/
 cmake-build-debug/
 fdf
-fdf.o
 *.o
+*.a
