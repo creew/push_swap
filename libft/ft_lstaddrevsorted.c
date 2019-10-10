@@ -1,30 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parse_type.c                                       :+:      :+:    :+:   */
+/*   ft_lstaddrevsorted.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/11 09:05:37 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/26 10:23:15 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/06 18:31:51 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/06 18:31:51 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "libft.h"
 
-int		parse_type(t_print *print, const char *format)
+void	ft_lstaddrevsorted(t_list **root, t_list *node, void *param,
+						int (*cmp)(t_list *, t_list *, void *))
 {
-	char c;
+	t_list **prev;
+	t_list *lst;
 
-	if ((c = *format))
+	if (!root || !node || !cmp)
+		return ;
+	lst = *root;
+	prev = root;
+	while (lst)
 	{
-		print->type = c;
-		if (pf_strchr(DEPRECATED_STR, c))
-		{
-			print->type = pf_tolower(c);
-			print->lenmod = LENMOD_L;
-		}
-		return (1);
+		if (cmp(lst, node, param) < 0)
+			break ;
+		prev = &(lst->next);
+		lst = lst->next;
 	}
-	return (0);
+	node->next = lst;
+	*prev = node;
 }

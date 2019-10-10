@@ -1,24 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memalloc.c                                      :+:      :+:    :+:   */
+/*   ft_stack_pop.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 17:52:21 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/03 17:56:23 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/05 12:52:19 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/05 12:54:39 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-void	*ft_memalloc(size_t size)
+int		ft_stack_pop(t_ftstack *stack, void **data)
 {
-	void	*data;
-
-	data = malloc(size);
-	if (data)
-		ft_bzero(data, size);
-	return (data);
+	if (stack->pos)
+	{
+		*data = stack->data[--stack->pos];
+		return (0);
+	}
+	return (1);
 }

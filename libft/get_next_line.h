@@ -1,29 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnstr.c                                       :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 16:24:54 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/27 11:43:24 by eklompus         ###   ########.fr       */
+/*   Created: 2019/09/05 17:04:29 by eklompus          #+#    #+#             */
+/*   Updated: 2019/09/19 19:29:41 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-char	*ft_strnstr(const char *haystack, const char *needle, size_t len)
+# define BUFF_SIZE (42)
+
+typedef struct	s_fddata
 {
-	size_t	ne_len;
-	size_t	pos;
+	int				fd;
+	int				eof;
+	char			*buf;
+	char			*str;
+	unsigned long	str_len;
+	unsigned long	str_size;
+}				t_fddata;
 
-	pos = 0;
-	ne_len = ft_strlen(needle);
-	while (haystack[pos] && ((pos + ne_len) <= len))
-	{
-		if (ft_strncmp(haystack + pos, needle, ne_len) == 0)
-			return (char *)(haystack + pos);
-		pos++;
-	}
-	return (NULL);
-}
+int				get_next_line(const int fd, char **line);
+
+#endif

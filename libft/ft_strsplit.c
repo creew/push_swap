@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/04 13:07:21 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/25 08:32:50 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/09/27 11:43:24 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,17 +15,17 @@
 
 static int	fill_arr(char **strarr, int count, char const *s, char *sc)
 {
-	int		len;
+	size_t		len;
 
 	if (strarr == NULL)
 		return (0);
-	len = sc == NULL ? ft_strlen(s) : sc - s;
+	len = sc == NULL ? ft_strlen(s) : (size_t)(sc - s);
 	strarr[count] = ft_strnew(len);
 	if (strarr[count] == NULL)
 	{
 		while (count > 0)
 		{
-			free(strarr[count - 1]);
+			ft_strdel(&strarr[count - 1]);
 			count--;
 		}
 		return (-1);

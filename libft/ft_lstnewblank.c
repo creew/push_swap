@@ -1,27 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_intmove.c                                       :+:      :+:    :+:   */
+/*   ft_lstnewblank.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/23 13:51:17 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/27 10:25:55 by eklompus         ###   ########.fr       */
+/*   Created: 2019/09/27 11:06:29 by eklompus          #+#    #+#             */
+/*   Updated: 2019/09/27 11:06:29 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-void	ft_intmove(int *dst, int *src, size_t size)
+t_list		*ft_lstnewblank(size_t content_size)
 {
-	if (dst < src)
+	t_list	*lst;
+
+	lst = (t_list *)ft_memalloc(sizeof(t_list));
+	if (lst == NULL)
+		return (NULL);
+	lst->next = NULL;
+	lst->content_size = content_size;
+	if (content_size)
 	{
-		while (size--)
-			*dst++ = *src++;
+		lst->content = ft_memalloc(content_size);
+		if (lst->content == NULL)
+			ft_memdel((void **)&lst);
 	}
-	else if (dst > src)
-	{
-		while (size--)
-			dst[size] = src[size];
-	}
+	return (lst);
 }

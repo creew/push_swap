@@ -1,24 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memalloc.c                                      :+:      :+:    :+:   */
+/*   ft_lstsize.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 17:52:21 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/03 17:56:23 by eklompus         ###   ########.fr       */
+/*   Created: 2019/09/30 10:56:56 by eklompus          #+#    #+#             */
+/*   Updated: 2019/09/30 10:56:56 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-void	*ft_memalloc(size_t size)
+size_t		ft_lstsize(t_list *lst)
 {
-	void	*data;
+	size_t size;
 
-	data = malloc(size);
-	if (data)
-		ft_bzero(data, size);
-	return (data);
+	size = 0;
+	while (lst)
+	{
+		lst = lst->next;
+		size++;
+	}
+	return (size);
 }

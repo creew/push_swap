@@ -6,7 +6,7 @@
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/09/03 09:48:17 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/23 13:59:58 by eklompus         ###   ########.fr       */
+/*   Updated: 2019/10/06 17:36:48 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,16 @@ typedef struct	s_list
 	size_t			content_size;
 	struct s_list	*next;
 }				t_list;
+
+typedef struct	s_ftstack
+{
+	void	**data;
+	size_t	size;
+	size_t	pos;
+	size_t	init_val;
+}				t_ftstack;
+
+typedef	t_list	t_ftqueue;
 
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
@@ -107,4 +117,20 @@ char			*ft_strrev(char *str);
 int				ft_isspace(int c);
 void			ft_intmove(int *dst, int *src, size_t size);
 int				ft_getc(int fd);
+void			ft_lstaddsorted(t_list **root, t_list *node, void *param,
+							int (*cmp)(t_list *, t_list *, void *));
+void			ft_lstaddrevsorted(t_list **root, t_list *node, void *param,
+						int (*cmp)(t_list *, t_list *, void *));
+t_list			*ft_lstnewblank(size_t content_size);
+size_t			ft_lstsize(t_list *lst);
+t_list			*ft_lstget(t_list *lst, int	index);
+
+int				ft_stack_init(t_ftstack *stack, size_t init_val);
+int				ft_stack_pop(t_ftstack *stack, void **data);
+int				ft_stack_push(t_ftstack *stack, void *data);
+int				ft_stack_delall(t_ftstack *stack, void (*f)(void *));
+size_t			ft_stack_size(t_ftstack *stack);
+
+int				ft_queue_add(t_ftqueue **queue, void *data);
+int				ft_queue_poll(t_ftqueue **queue, void **data);
 #endif

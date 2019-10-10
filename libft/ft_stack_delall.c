@@ -1,24 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memalloc.c                                      :+:      :+:    :+:   */
+/*   ft_stack_delall.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: eklompus <eklompus@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/03 17:52:21 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/03 17:56:23 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/05 12:54:42 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/05 13:22:08 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include <stdlib.h>
 
-void	*ft_memalloc(size_t size)
+int		ft_stack_delall(t_ftstack *stack, void (*f)(void *))
 {
-	void	*data;
-
-	data = malloc(size);
-	if (data)
-		ft_bzero(data, size);
-	return (data);
+	while (stack->pos)
+	{
+		if (f)
+			f(stack->data[stack->pos - 1]);
+		stack->pos--;
+	}
+	ft_memdel((void **)&stack->data);
+	return (0);
 }
