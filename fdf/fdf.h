@@ -1,8 +1,23 @@
-//
-// Created by Edythe Klompus on 10/10/2019.
-//
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fdf.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/11 11:03:20 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/11 11:03:21 by eklompus         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#ifndef FDF_FDF_H
-#define FDF_FDF_H
+#ifndef FDF_H
+# define FDF_H
 
-#endif // FDF_FDF_H
+#define FT_COLOR(r,g,b)	(((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF))
+
+typedef struct	s_fdf
+{
+	void 	*mlx_ptr;
+	void	*wnd_ptr;
+}				t_fdf;
+#endif
