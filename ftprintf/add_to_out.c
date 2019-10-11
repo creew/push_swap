@@ -14,7 +14,7 @@
 
 void	flush_buf(t_print *print)
 {
-	write(1, print->buf, print->buf_len);
+	print->write_func(&print->write_param, print->buf, print->buf_len);
 	print->buf_len = 0;
 }
 

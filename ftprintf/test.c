@@ -23,7 +23,7 @@ int			main(int ac, char *av[])
 	//xren = 0x0001AA00;
 	//char *str = "hello";
 	//long double dr = 3.324233;
-	unsigned int dr = 0xffff4444;
+/*	unsigned int dr = 0xffff4444;
 	//if (ac > 1)
 	//	xren = atoi(av[1]);
 #define VAL "123456789101112131415"
@@ -33,6 +33,9 @@ int			main(int ac, char *av[])
 	len = ft_printf(format, VAL2, VAL3, VAL);
 	printf("len: %d\n", len);
 	len = printf(format, VAL2, VAL3, VAL);
-	printf("len: %d\n", len);
+	printf("len: %d\n", len);*/
+	char buf[64];
+	ft_sprintf(buf, "button: %d, x: %d, y: %d", 34514, 24, 1234);
+	printf(buf);
 	return (0);
 }

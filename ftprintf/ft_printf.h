@@ -76,6 +76,9 @@ typedef struct	s_print
 	char		buf[BUF_SIZE];
 	size_t		buf_len;
 
+	void		(*write_func)(void **, char *, size_t);
+	void		*write_param;
+
 	int			type;
 	int			is_precision;
 	int			flags;
@@ -103,13 +106,14 @@ typedef struct	s_fpoint
 
 typedef struct	s_longb
 {
-	t_uint		val[1825];
+	t_uint		val[100];
 	int			max_size;
 	int			size;
 	size_t		base;
 }				t_longb;
 
 int				ft_printf(const char *format, ...);
+int				ft_sprintf(char *s, const char *format, ...);
 
 int				add_to_out(t_print *print, char c);
 int				addw_to_out(t_print *print, wint_t wc);
@@ -168,4 +172,7 @@ int				calc_digit_pre_len(t_print *print);
 int				parse_cstr(t_print *print, char *str);
 int				get_val_by_pos(t_longb *longb, int pos);
 int				longb_cmpn(t_longb *a, t_longb *b, int n);
+
+void			fp_write_c(void **param, char *data, size_t len);
+void			s_write_c(void **param, char *data, size_t len);
 #endif

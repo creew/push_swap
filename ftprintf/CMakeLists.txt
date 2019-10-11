@@ -27,4 +27,5 @@ add_executable(ftprintf
         parse_unsigned.c
         parse_width.c
         sub_functions.c
-        test.c)
+        test.c
+        callbacks.c)

@@ -42,28 +42,50 @@ static int		parse_str(t_print *print, const char *format, va_list *ptr)
 	return (count);
 }
 
-int				ft_printf(const char *format, ...)
+int				ft_allprintf(const char *format, va_list *ptr,
+								void (f)(void **, char *, size_t), void *param)
 {
 	t_print		print;
-	va_list		ptr;
 	int			out;
 
 	out = 0;
-	va_start(ptr, format);
 	pf_memset(&print, 0, sizeof(t_print));
+	print.write_func = f;
+	print.write_param = param;
 	while (*format)
 	{
 		if (*format == '%')
 		{
 			clear_tprint(&print);
 			format++;
-			format += parse_str(&print, format, &ptr);
-			out += parse_format(&print, &ptr);
+			format += parse_str(&print, format, ptr);
+			out += parse_format(&print, ptr);
 		}
 		else
 			out += add_to_out(&print, *format++);
 	}
 	flush_buf(&print);
+	return (out);
+}
+
+int				ft_printf(const char *format, ...)
+{
+	va_list		ptr;
+	int			out;
+
+	va_start(ptr, format);
+	out = ft_allprintf(format, &ptr, fp_write_c, 0);
+	va_end(ptr);
+	return (out);
+}
+
+int				ft_sprintf(char *s, const char *format, ...)
+{
+	va_list		ptr;
+	int			out;
+
+	va_start(ptr, format);
+	out = ft_allprintf(format, &ptr, s_write_c, s);
 	va_end(ptr);
 	return (out);
 }
