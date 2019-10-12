@@ -24,7 +24,7 @@ LIBFT_LIB = ft
 LIBFT_DIR = ./libft
 
 
-INC_DIR = $(LIBFT_DIR))
+INC_DIR = $(LIBFT_DIR)
 
 IINC = $(addprefix -I,$(INC_DIR))
 LINC = $(addprefix -L,$(INC_DIR))
@@ -33,7 +33,7 @@ LLIBS = $(addprefix -l,$(LIBFT_LIB))
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	make - C $(LIBFT_DIR)
+	make -C $(LIBFT_DIR)
 	$(CC) $(CC_FLAGS) $(OBJS) $(LINC) $(LLIBS) -o $@
 
 %.o: %.c
