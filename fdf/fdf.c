@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "fdf.h"
 #include "mlx.h"
 #include "ft_printf.h"
@@ -23,7 +24,7 @@ int		key_hook(int key, void *param)
 	if (key == 12)  // q
 	{
 		mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
-		return (0);
+		exit(0);
 	}
 	ft_sprintf(buf, "key: %d", key);
 	mlx_clear_window(fdf->mlx_ptr, fdf->wnd_ptr);
