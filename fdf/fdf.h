@@ -13,7 +13,23 @@
 #ifndef FDF_H
 # define FDF_H
 
-#define FT_COLOR(r,g,b)	(((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF))
+# define FT_COLOR(r,g,b)	(((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF))
+
+# ifdef __APPLE__
+#  define FT_MLX_KEY_DOWN	(2)
+#  define FT_MLX_KEY_UP		(3)
+#  define FT_MLX_MOUSE_DOWN	(4)
+#  define FT_MLX_MOUSE_UP	(5)
+#  define FT_MLX_MOUSE_MOVED	(6)
+#  define FT_MLX_MOUSE_MOVED	(6)
+#  define FT_MLX_EXP_NOTIFY	(12)
+#  define FT_CLOSE_NOTIFY	(17)
+# elif __linux__
+
+
+
+# endif
+
 
 typedef struct	s_fdf
 {

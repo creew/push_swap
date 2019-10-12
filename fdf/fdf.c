@@ -45,12 +45,32 @@ int		mouse_hook(int button, int x, int y, void *param)
 	return (0);
 }
 
+int		mouse_move(int x, int y, void *param)
+{
+	t_fdf *fdf;
+	char buf[64];
+
+	ft_sprintf(buf, "mouse move x: %d, y: %d", x, y);
+
+	fdf = (t_fdf *)param;
+	mlx_clear_window(fdf->mlx_ptr, fdf->wnd_ptr);
+	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 600, 20, FT_COLOR(255, 0,0), buf);
+	return (0);
+}
+
 int		expose_hook(void *param)
 {
 	(void)param;
 	return (0);
 }
 
+int		close_notify(void *param)
+{
+	t_fdf *fdf;
+	fdf = (t_fdf *)param;
+	mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
+	exit(0);
+}
 
 int		main(int ac, char *av[])
 {
@@ -67,6 +87,8 @@ int		main(int ac, char *av[])
 			mlx_key_hook(fdf.wnd_ptr, key_hook, &fdf);
 			mlx_mouse_hook(fdf.wnd_ptr, mouse_hook, &fdf);
 			mlx_expose_hook(fdf.wnd_ptr, expose_hook, &fdf);
+			mlx_hook(fdf.wnd_ptr, 6, 0, mouse_move, &fdf);
+			mlx_hook(fdf.wnd_ptr, 17, 0, close_notify, &fdf);
 			mlx_loop(fdf.mlx_ptr);
 		}
 	}
