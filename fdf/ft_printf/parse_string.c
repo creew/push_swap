@@ -72,9 +72,7 @@ int				parse_string(char type, t_print *print, va_list *ptr)
 {
 	wchar_t		*wstr;
 	char		*cstr;
-	int			count;
 
-	count = 0;
 	if (type == 's' && print->lenmod != LENMOD_L)
 	{
 		cstr = va_arg(*ptr, char *);
