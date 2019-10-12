@@ -12,33 +12,31 @@
 
 #include "libft.h"
 
-static int			get_base(const char **nptr, int base)
+static int	get_base(const char **nptr, int base)
 {
 	const char *ptr;
 
-	if (base == 0)
+	ptr = *nptr;
+	if ((base == 0 || base == 16) &&
+		(ptr[0] == '0' && (ptr[1] == 'x' || ptr[1] == 'X')))
 	{
-		ptr = *nptr;
-		if (ptr[0] == '0' && (ptr[1] == 'x' || ptr[1] == 'X'))
-		{
-			base = 16;
-			*nptr = ptr + 2;
-		}
-		else if (ptr[0] == '0')
-		{
-			base = 8;
-			*nptr = ptr + 1;
-		}
-		else
-			base = 10;
+		base = 16;
+		*nptr = ptr + 2;
 	}
+	else if ((base == 0 || base == 8) && (ptr[0] == '0'))
+	{
+		base  = 8;
+		*nptr = ptr + 1;
+	}
+	else
+		base = 10;
 	return (base);
 }
 
 static int	get_char_in_range(int c, int base)
 {
 	if (c >= '0' && c <= '9')
-		c -= 10;
+		c -= '0';
 	else if (c >= 'a' && c <= 'z')
 		c = c - 'a' + 10;
 	else if (c >= 'A' && c <= 'Z')
@@ -50,33 +48,59 @@ static int	get_char_in_range(int c, int base)
 	return (-1);
 }
 
-long				ft_strtol(const char *nptr, char **endptr, int base)
+static int	get_sign(const char **nptr)
+{
+	int			isneg;
+	const char	*ptr;
+
+	isneg = 0;
+	ptr = *nptr;
+	if (*ptr == '+' || *ptr == '-')
+	{
+		if (*ptr == '-')
+			isneg = 1;
+		*nptr = ptr + 1;
+	}
+	return (isneg);
+}
+
+static long	calc_val(long val, int num, int base, int *flow)
+{
+	long prev_val;
+
+	prev_val = val;
+	val *= base;
+	val += num;
+	if (prev_val > 0 && val < prev_val)
+	{
+		val = FT_LMAX;
+		*flow = 1;
+	}
+	if (prev_val < 0 && val > prev_val)
+	{
+		val = -FT_LMIN;
+		*flow = 1;
+	}
+	return (val);
+}
+
+long		ft_strtol(const char *nptr, char **endptr, int base)
 {
 	int		isneg;
 	long 	res;
 	int		val;
-	long	prev_val;
+	int		flow;
 
-	isneg = 1;
 	res = 0;
+	flow = 0;
 	while (ft_isspace(*nptr))
 		nptr++;
-	if (*nptr == '+' || *nptr == '-')
-	{
-		if (*nptr == '-')
-			isneg = -1;
-		nptr++;
-	}
+	isneg = get_sign(&nptr);
 	base = get_base(&nptr, base);
 	while ((val = get_char_in_range(*nptr, base)) != -1)
 	{
-		prev_val = res;
-		res *= base;
-		res += isneg > 0 ? val : -val;
-		if (isneg > 0 && res < prev_val)
-			return (FT_LMAX);
-		if (isneg < 0 && res > prev_val)
-			return (-FT_LMIN);
+		if (!flow)
+			res = calc_val(res, isneg ? -val : val, base, &flow);
 		nptr++;
 	}
 	if (endptr)
