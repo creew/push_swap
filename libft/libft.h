@@ -133,4 +133,6 @@ size_t			ft_stack_size(t_ftstack *stack);
 
 int				ft_queue_add(t_ftqueue **queue, void *data);
 int				ft_queue_poll(t_ftqueue **queue, void **data);
+
+long			ft_strtol(const char *nptr, char **endptr, int base);
 #endif
