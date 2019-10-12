@@ -13,21 +13,25 @@
 #ifndef FDF_H
 # define FDF_H
 
+#include "libft.h"
 # define FT_COLOR(r,g,b)	(((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF))
 
 # ifdef __APPLE__
-#  define FT_MLX_KEY_DOWN	(2)
-#  define FT_MLX_KEY_UP		(3)
-#  define FT_MLX_MOUSE_DOWN	(4)
-#  define FT_MLX_MOUSE_UP	(5)
-#  define FT_MLX_MOUSE_MOVED	(6)
-#  define FT_MLX_MOUSE_MOVED	(6)
-#  define FT_MLX_EXP_NOTIFY	(12)
-#  define FT_CLOSE_NOTIFY	(17)
+#  define KeyPress			(2)
+#  define KeyRelease		(3)
+#  define ButtonPress		(4)
+#  define ButtonRelease		(5)
+#  define MotionNotify		(6)
+#  define Expose			(12)
+#  define GraphicsExpose	(17)
+
+#  define PointerMotionMask	(0)
+#  define ButtonPressMask	(0)
+#  define ButtonReleaseMask	(0)
 # elif __linux__
+#  include <X11/Xlib.h>
 
-
-
+#define ESC_KEY		(65307)
 # endif
 
 

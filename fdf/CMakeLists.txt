@@ -3,13 +3,27 @@ project(fdf C)
 
 set(CMAKE_C_STANDARD 11)
 
-include_directories(. ./minilibx_macos ./libft ./ft_printf)
+if(UNIX AND NOT APPLE)
+    set(LINUX TRUE)
+endif()
 
 add_executable(fdf
         fdf.c
         fdf.h)
 
+include_directories(. ./libft ./ft_printf)
+if (LINUX)
+    include_directories(./minilibx)
+    find_library(MLX mlx ./minilibx)
+    find_library(XEXT Xext /usr/lib/x86_64-linux-gnu/)
+    find_library(X11 X11 /usr/lib/x86_64-linux-gnu/)
+    target_link_libraries(fdf PUBLIC ${XEXT} ${X11})
+else()
+    include_directories(./minilibx_macos)
+    find_library(MLX mlx ./minilibx_macos)
+    target_link_libraries(fdf PUBLIC "-framework AppKit" "-framework OpenGL")
+endif()
+
 find_library(FT ft ./libft)
-find_library(MLX mlx ./minilibx_macos)
 find_library(FTPF ftprintf ./ft_printf)
-target_link_libraries(fdf PUBLIC ${FT} ${MLX} ${FTPF} "-framework AppKit" "-framework OpenGL")
+target_link_libraries(fdf PUBLIC ${FT} ${MLX} ${FTPF})
