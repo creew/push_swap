@@ -24,10 +24,7 @@ static int	get_base(const char **nptr, int base)
 		*nptr = ptr + 2;
 	}
 	else if ((base == 0 || base == 8) && (ptr[0] == '0'))
-	{
 		base = 8;
-		*nptr = ptr + 1;
-	}
 	else if (base == 0)
 		base = 10;
 	return (base);
