@@ -25,10 +25,10 @@ static int	get_base(const char **nptr, int base)
 	}
 	else if ((base == 0 || base == 8) && (ptr[0] == '0'))
 	{
-		base  = 8;
+		base = 8;
 		*nptr = ptr + 1;
 	}
-	else
+	else if (base == 0)
 		base = 10;
 	return (base);
 }
@@ -87,7 +87,7 @@ static long	calc_val(long val, int num, int base, int *flow)
 long		ft_strtol(const char *nptr, char **endptr, int base)
 {
 	int		isneg;
-	long 	res;
+	long	res;
 	int		val;
 	int		flow;
 
