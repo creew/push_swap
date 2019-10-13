@@ -93,15 +93,19 @@ long		ft_strtol(const char *nptr, char **endptr, int base)
 
 	res = 0;
 	flow = 0;
+	if (endptr)
+		*endptr = (char *)nptr;
 	while (ft_isspace(*nptr))
 		nptr++;
 	isneg = get_sign(&nptr);
 	base = get_base(&nptr, base);
-	while ((val = get_char_in_range(*nptr, base)) != -1)
+	if ((val = get_char_in_range(*nptr, base)) == -1)
+		return (res);
+	while (val != -1)
 	{
 		if (!flow)
 			res = calc_val(res, isneg ? -val : val, base, &flow);
-		nptr++;
+		val = get_char_in_range(*(++nptr), base);
 	}
 	if (endptr)
 		*endptr = (char *)nptr;
