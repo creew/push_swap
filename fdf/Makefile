@@ -6,7 +6,10 @@ CC = gcc
 CC_FLAGS = -Wall -Wextra $(CC_FLAG_ERR)
 
 CC_FLAG_ERR = #-Werror
-SRCS = fdf.c
+SRCS =	fdf.c \
+		read_map.c \
+		init_images.c \
+		draw_main.c
 
 OBJS = $(SRCS:.c=.o)
 
@@ -18,7 +21,7 @@ LIBFT_DIR = ./libft
 MMINILIBX_DIR = ./minilibx_macos
 UMINILIBX_DIR = ./minilibx
 FT_PRINTF_DIR = ./ft_printf
-INC_DIR = $(LIBFT_DIR) $(UMINILIBX_DIR) $(FT_PRINTF_DIR)
+INC_DIR = $(LIBFT_DIR) $(MMINILIBX_DIR) $(FT_PRINTF_DIR)
 
 IINC = $(addprefix -I,$(INC_DIR))
 LINC = $(addprefix -L,$(INC_DIR))
@@ -33,7 +36,7 @@ $(NAME): $(OBJS)
 	make -C $(LIBFT_DIR)
 	#make -C $(MINILIBX_DIR)
 	make -C $(FT_PRINTF_DIR)
-	$(CC) $(CC_FLAGS) $(OBJS) $(LINC) $(LLIBS) $(UFRAMEWORKS) -o $@
+	$(CC) $(CC_FLAGS) $(OBJS) $(LINC) $(LLIBS) $(MFRAMEWORKS) -o $@
 
 %.o: %.c ./fdf.h
 	$(CC) $(CC_FLAGS) $(IINC) -c $< -o $@

@@ -14,6 +14,7 @@
 # define LIBFT_H
 
 # include <string.h>
+# include "get_next_line.h"
 
 # define ABS(a) ((a) < 0 ? -(a) : (a))
 # define MIN(a, b) ((a) < (b) ? (a) : (b))

@@ -15,7 +15,7 @@
 #include "libft.h"
 #include "get_next_line.h"
 
-int		find_in_list(t_list *data, void *cmp)
+static int		find_in_list(t_list *data, void *cmp)
 {
 	t_fddata	*fd_list;
 
@@ -25,7 +25,7 @@ int		find_in_list(t_list *data, void *cmp)
 	return (0);
 }
 
-int		parse_read(ssize_t readed, t_fddata *fdlist, char **line)
+static int		parse_read(ssize_t readed, t_fddata *fdlist, char **line)
 {
 	if (readed < 0)
 		return (-1);
@@ -54,7 +54,7 @@ int		parse_read(ssize_t readed, t_fddata *fdlist, char **line)
 	return (0);
 }
 
-int		remove_data(t_list **root, int fd, int ret)
+static int		remove_data(t_list **root, int fd, int ret)
 {
 	t_list		*list;
 	t_list		**prev;
@@ -80,7 +80,7 @@ int		remove_data(t_list **root, int fd, int ret)
 	return (ret);
 }
 
-int		alloc_and_move(t_fddata *data, char **line)
+static int		alloc_and_move(t_fddata *data, char **line)
 {
 	char	*strbuf;
 	char	*s;
@@ -102,7 +102,7 @@ int		alloc_and_move(t_fddata *data, char **line)
 	return (0);
 }
 
-int		get_next_line(const int fd, char **line)
+int				get_next_line(const int fd, char **line)
 {
 	static t_list	*root = NULL;
 	t_list			*data;

@@ -24,11 +24,8 @@ static int	get_base(const char **nptr, int base)
 		*nptr = ptr + 2;
 	}
 	else if ((base == 0 || base == 8) && (ptr[0] == '0'))
-	{
-		base  = 8;
-		*nptr = ptr + 1;
-	}
-	else
+		base = 8;
+	else if (base == 0)
 		base = 10;
 	return (base);
 }
@@ -87,21 +84,25 @@ static long	calc_val(long val, int num, int base, int *flow)
 long		ft_strtol(const char *nptr, char **endptr, int base)
 {
 	int		isneg;
-	long 	res;
+	long	res;
 	int		val;
 	int		flow;
 
 	res = 0;
 	flow = 0;
+	if (endptr)
+		*endptr = (char *)nptr;
 	while (ft_isspace(*nptr))
 		nptr++;
 	isneg = get_sign(&nptr);
 	base = get_base(&nptr, base);
-	while ((val = get_char_in_range(*nptr, base)) != -1)
+	if ((val = get_char_in_range(*nptr, base)) == -1)
+		return (res);
+	while (val != -1)
 	{
 		if (!flow)
 			res = calc_val(res, isneg ? -val : val, base, &flow);
-		nptr++;
+		val = get_char_in_range(*(++nptr), base);
 	}
 	if (endptr)
 		*endptr = (char *)nptr;

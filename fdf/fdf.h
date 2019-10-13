@@ -14,7 +14,18 @@
 # define FDF_H
 
 #include "libft.h"
+#include "mlx.h"
+#include "ft_printf.h"
+
 # define FT_COLOR(r,g,b)	(((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF))
+
+# define FT_32COLOR(r,g,b,a)	(((a & 0xFFu) << 24u) | ((r & 0xFFu) << 16u) | \
+									((g & 0xFFu) << 8u) | (b & 0xFFu))
+
+# define FT_32COLOR_GET_R(c)	((c >> 16u) & 0xFFu)
+# define FT_32COLOR_GET_G(c)	((c >> 8u) & 0xFFu)
+# define FT_32COLOR_GET_B(c)	((c) & 0xFFu)
+# define FT_32COLOR_GET_A(c)	((c >> 24u) & 0xFFu)
 
 # ifdef __APPLE__
 #  define KeyPress			(2)
@@ -28,16 +39,60 @@
 #  define PointerMotionMask	(0)
 #  define ButtonPressMask	(0)
 #  define ButtonReleaseMask	(0)
+
+#  define ESC_KEY		(53)
 # elif __linux__
 #  include <X11/Xlib.h>
 
-#define ESC_KEY		(65307)
+#  define ESC_KEY		(65307)
 # endif
 
+# define WND_WIDTH				(800)
+# define WND_HEIGHT				(400)
+# define UB_WIDTH				(WND_WIDTH)
+# define UB_HEIGHT				(WND_HEIGHT / 6)
+
+# define BB_YPOS				(WND_HEIGHT - (WND_HEIGHT / 6))
+# define BB_WIDTH				(WND_WIDTH)
+# define BB_HEIGHT				(WND_HEIGHT / 6)
+
+# define RET_OK					(0)
+# define ERR_CAN_T_OPEN_FILE	(-1)
+# define ERR_NOT_EQUAL_WIDTH	(-2)
+# define ERR_ENOMEM				(-3)
+
+typedef	unsigned int	t_uint;
+typedef struct	s_img_param {
+	int		sizeline;
+	int		endian;
+	int 	bits_per_pixel;
+	int		height;
+	int 	width;
+}				t_img_param;
+
+typedef struct	s_point
+{
+	int		z;
+	int 	color;
+}				t_point;
 
 typedef struct	s_fdf
 {
-	void 	*mlx_ptr;
-	void	*wnd_ptr;
+	t_point		*map;
+	int			map_width;
+	int 		map_height;
+	int			wnd_width;
+	int			wnd_height;
+	void 		*mlx_ptr;
+	void		*wnd_ptr;
+
+	char		str_out[64];
+	void		*upper_border;
+	void		*bottom_border;
 }				t_fdf;
+
+int				read_file(char *name, t_fdf *fdf);
+int				redraw_main_screen(t_fdf *fdf);
+int				init_upper_border(t_fdf *fdf);
+int				init_bottom_border(t_fdf *fdf);
 #endif

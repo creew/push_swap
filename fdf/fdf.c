@@ -12,13 +12,11 @@
 
 #include <stdlib.h>
 #include "fdf.h"
-#include "mlx.h"
-#include "ft_printf.h"
+
 
 int		key_hook(int key, void *param)
 {
 	t_fdf *fdf;
-	char   buf[64];
 
 	fdf = (t_fdf *)param;
 	if (key == ESC_KEY)  // q
@@ -26,67 +24,49 @@ int		key_hook(int key, void *param)
 		mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
 		exit(0);
 	}
-	ft_sprintf(buf, "key: %d", key);
-	mlx_clear_window(fdf->mlx_ptr, fdf->wnd_ptr);
-	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 600, 20, FT_COLOR(255, 0,0), buf);
-	return (0);
-}
-
-int		mouse_hook(int button, int x, int y, void *param)
-{
-	t_fdf *fdf;
-	char buf[64];
-
-	ft_sprintf(buf, "button: %d, x: %d, y: %d", button, x, y);
-
-	fdf = (t_fdf *)param;
-	mlx_clear_window(fdf->mlx_ptr, fdf->wnd_ptr);
-	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 600, 20, FT_COLOR(255, 0,0), buf);
+	ft_sprintf(fdf->str_out, "key: %d", key);
+	ft_printf("%s\n", fdf->str_out);
+	redraw_main_screen(fdf);
 	return (0);
 }
 
 int		button_pressed(int button, int x, int y, void *param)
 {
 	t_fdf *fdf;
-	char buf[64];
-
-	ft_sprintf(buf, "button pressed: %d, x: %d, y: %d", button, x, y);
 
 	fdf = (t_fdf *)param;
-	mlx_clear_window(fdf->mlx_ptr, fdf->wnd_ptr);
-	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 600, 20, FT_COLOR(255, 0,0), buf);
+	ft_sprintf(fdf->str_out, "button pressed: %d, x: %d, y: %d", button, x, y);
+	ft_printf("%s\n", fdf->str_out);
+	redraw_main_screen(fdf);
 	return (0);
 }
 
 int		button_released(int button, int x, int y, void *param)
 {
 	t_fdf *fdf;
-	char buf[64];
-
-	ft_sprintf(buf, "button released: %d, x: %d, y: %d", button, x, y);
 
 	fdf = (t_fdf *)param;
-	mlx_clear_window(fdf->mlx_ptr, fdf->wnd_ptr);
-	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 600, 20, FT_COLOR(255, 0,0), buf);
+	ft_sprintf(fdf->str_out, "button released: %d, x: %d, y: %d", button, x, y);
+	ft_printf("%s\n", fdf->str_out);
+	redraw_main_screen(fdf);
 	return (0);
 }
 
 int		mouse_move(int x, int y, void *param)
 {
 	t_fdf *fdf;
-	char buf[64];
-
-	ft_sprintf(buf, "mouse move x: %d, y: %d", x, y);
 
 	fdf = (t_fdf *)param;
-	mlx_clear_window(fdf->mlx_ptr, fdf->wnd_ptr);
-	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 600, 20, FT_COLOR(255, 0,0), buf);
+	ft_sprintf(fdf->str_out, "mouse move x: %d, y: %d", x, y);
+	redraw_main_screen(fdf);
 	return (0);
 }
 
 int		expose_hook(void *param)
 {
-	(void)param;
+	t_fdf *fdf;
+	fdf = (t_fdf *)param;
+	redraw_main_screen(fdf);
 	return (0);
 }
 
@@ -98,17 +78,38 @@ int		close_notify(void *param)
 	exit(0);
 }
 
+void	initfdf(t_fdf *fdf)
+{
+	fdf->map = 0;
+	fdf->map_height = 0;
+	fdf->map_width = 0;
+	fdf->wnd_width = WND_WIDTH;
+	fdf->wnd_height = WND_HEIGHT;
+	fdf->upper_border = 0;
+	fdf->bottom_border = 0;
+	fdf->str_out[0] = '\0';
+}
+
 int		main(int ac, char *av[])
 {
 	(void)ac;
 	(void)av;
 	t_fdf fdf;
-	char *end;
 
+	initfdf(&fdf);
 	fdf.mlx_ptr = mlx_init();
+	read_file("./fdf_demo/maps/elem-col.fdf", &fdf);
+	for (int i = 0; i < fdf.map_height; i++)
+	{
+		for (int j = 0; j < fdf.map_width; j++)
+			ft_printf("%d ", fdf.map[i * fdf.map_width + j]);
+		ft_printf("\n");
+	}
+	init_upper_border(&fdf);
+	init_bottom_border(&fdf);
 	if (fdf.mlx_ptr)
 	{
-		fdf.wnd_ptr = mlx_new_window(fdf.mlx_ptr, 1000,500, "Превед!");
+		fdf.wnd_ptr = mlx_new_window(fdf.mlx_ptr, fdf.wnd_width, fdf.wnd_height, "Превед!");
 		if (fdf.wnd_ptr)
 		{
 			mlx_key_hook(fdf.wnd_ptr, key_hook, &fdf);

@@ -9,7 +9,7 @@ endif()
 
 add_executable(fdf
         fdf.c
-        fdf.h)
+        fdf.h read_map.c draw_main.c init_images.c)
 
 include_directories(. ./libft ./ft_printf)
 if (LINUX)

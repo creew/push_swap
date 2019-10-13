@@ -14,7 +14,7 @@ NAME = libft.a
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -Werror
+CC_FLAGS = -Wall -Wextra -Werror -g
 
 OBJ = $(SRCS:.c=.o)
 
