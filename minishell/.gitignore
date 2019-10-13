@@ -1,0 +1,6 @@
+*.o
+cmake-build-debug
+
+*.a
+minishell
+.idea/
