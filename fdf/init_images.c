@@ -53,6 +53,7 @@ int		init_upper_border(t_fdf *fdf)
 			fill_color(img_data, &img, FT_32COLOR(255u,0u,0u,10u));
 		}
 	}
+	return (RET_OK);
 }
 
 int		init_bottom_border(t_fdf *fdf)
@@ -72,4 +73,5 @@ int		init_bottom_border(t_fdf *fdf)
 			fill_color(img_data, &img, FT_32COLOR(0u,255u,0u,10u));
 		}
 	}
+	return (RET_OK);
 }

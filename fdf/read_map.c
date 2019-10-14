@@ -14,7 +14,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 
-static int		calc_str_width(char *str, t_point *tp)
+static int		calc_str_width(char *str, t_point *tp, int y)
 {
 	int		count;
 	char	*end;
@@ -25,7 +25,11 @@ static int		calc_str_width(char *str, t_point *tp)
 	while (str != end)
 	{
 		if (tp)
-			tp[count].z = (int)val;
+		{
+			tp[count].z = (int) val;
+			tp[count].x = count;
+			tp[count].y = y;
+		}
 		str = end;
 		while (*str != '\0' && *str != ' ')
 		{
@@ -65,7 +69,7 @@ int				read_file(char *name, t_fdf *fdf)
 		return (ERR_CAN_T_OPEN_FILE);
 	while (get_next_line(fd, &str) == 1)
 	{
-		width = calc_str_width(str, 0);
+		width = calc_str_width(str, 0, fdf->map_height);
 		if (isfirst)
 		{
 			fdf->map_width = width;
@@ -75,7 +79,7 @@ int				read_file(char *name, t_fdf *fdf)
 			return (ERR_NOT_EQUAL_WIDTH);
 		if ((fdf->map = realloc_map(fdf)) == NULL)
 			return (ERR_ENOMEM);
-		calc_str_width(str, fdf->map + fdf->map_height * fdf->map_width);
+		calc_str_width(str, fdf->map + fdf->map_height * fdf->map_width, fdf->map_height);
 		fdf->map_height++;
 	}
 	close(fd);

@@ -13,6 +13,7 @@
 #ifndef FDF_H
 # define FDF_H
 
+#include <math.h>
 #include "libft.h"
 #include "mlx.h"
 #include "ft_printf.h"
@@ -34,21 +35,35 @@
 #  define ButtonRelease		(5)
 #  define MotionNotify		(6)
 #  define Expose			(12)
-#  define GraphicsExpose	(17)
+#  define DestroyNotify		(17)
 
 #  define PointerMotionMask	(0)
 #  define ButtonPressMask	(0)
 #  define ButtonReleaseMask	(0)
+#  define ExposureMask		(0)
 
-#  define ESC_KEY		(53)
+#  define ESC_KEY			(53)
+#  define ZERO_KEY			(29)
+#  define ZERO_NUM_KEY		(82)
+#  define PLUS_KEY			(24)
+#  define PLUS_NUM_KEY		(69)
+#  define MINUS_KEY			(27)
+#  define MINUS_NUM_KEY		(78)
+#  define ARROW_LEFT_KEY	(123)
+#  define ARROW_RIGHT_KEY	(124)
+
+#  define WND_WIDTH			(1500)
+#  define WND_HEIGHT		(800)
 # elif __linux__
 #  include <X11/Xlib.h>
 
-#  define ESC_KEY		(65307)
+#  define ESC_KEY			(65307)
+
+#  define WND_WIDTH			(800)
+#  define WND_HEIGHT		(400)
 # endif
 
-# define WND_WIDTH				(800)
-# define WND_HEIGHT				(400)
+# define DEG_RAD_30				(M_PI/6)
 # define UB_WIDTH				(WND_WIDTH)
 # define UB_HEIGHT				(WND_HEIGHT / 6)
 
@@ -72,6 +87,8 @@ typedef struct	s_img_param {
 
 typedef struct	s_point
 {
+	int		x;
+	int		y;
 	int		z;
 	int 	color;
 }				t_point;
@@ -85,14 +102,31 @@ typedef struct	s_fdf
 	int			wnd_height;
 	void 		*mlx_ptr;
 	void		*wnd_ptr;
+	t_list		*point_list;
+	double		scale;
+	long		z_rotate;
+
+	int			but1_pressed;
+	int 		but2_pressed;
+
+	int 		press2_x;
+	int			press2_y;
+	int 		press1_x;
+	int			press1_y;
+
+	int 		shift_x;
+	int 		shift_y;
 
 	char		str_out[64];
 	void		*upper_border;
 	void		*bottom_border;
+
 }				t_fdf;
 
 int				read_file(char *name, t_fdf *fdf);
 int				redraw_main_screen(t_fdf *fdf);
 int				init_upper_border(t_fdf *fdf);
 int				init_bottom_border(t_fdf *fdf);
+
+int				point_list_add(t_list **lst, t_point *point);
 #endif
