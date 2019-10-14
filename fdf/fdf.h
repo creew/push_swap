@@ -63,14 +63,15 @@
 #  define WND_HEIGHT		(400)
 # endif
 
-# define DEG_RAD_30				(M_PI/6)
+# define FT_COS30				(0.86602540378443870761)
+# define FT_SIN30				(0.5)
 
 # define UB_WIDTH				(WND_WIDTH)
-# define UB_HEIGHT				(WND_HEIGHT / 8)
+# define UB_HEIGHT				(WND_HEIGHT / 10)
 
-# define BB_YPOS				(WND_HEIGHT - (WND_HEIGHT / 8))
+# define BB_YPOS				(WND_HEIGHT - (WND_HEIGHT / 10))
 # define BB_WIDTH				(WND_WIDTH)
-# define BB_HEIGHT				(WND_HEIGHT / 8)
+# define BB_HEIGHT				(WND_HEIGHT / 10)
 
 # define RET_OK					(0)
 # define ERR_CAN_T_OPEN_FILE	(-1)
@@ -79,19 +80,26 @@
 
 typedef	unsigned int	t_uint;
 typedef struct	s_img_param {
-	int		sizeline;
-	int		endian;
-	int 	bits_per_pixel;
-	int		height;
-	int 	width;
+	int			sizeline;
+	int			endian;
+	int 		bits_per_pixel;
+	int			height;
+	int 		width;
 }				t_img_param;
+
+typedef struct	s_dpoint
+{
+	double		x;
+	double		y;
+	double		z;
+}				t_dpoint;
 
 typedef struct	s_point
 {
-	int		x;
-	int		y;
-	int		z;
-	int 	color;
+	int			x;
+	int			y;
+	int			z;
+	int 		color;
 }				t_point;
 
 typedef struct	s_mousekeys
@@ -108,7 +116,8 @@ typedef struct	s_mousekeys
 
 typedef struct	s_fdf
 {
-	t_point		*map;
+	t_point		*srcmap;
+	t_point		*mapout;
 	int			map_width;
 	int 		map_height;
 	int			wnd_width;
@@ -120,6 +129,11 @@ typedef struct	s_fdf
 	long		z_rotate;
 	long		xy_rotate;
 
+	long		z_rotate_add;
+	long		xy_rotate_add;
+	int 		shift_x_add;
+	int 		shift_y_add;
+
 	t_mousekeys	mouse_keys;
 
 	int 		shift_x;
@@ -128,9 +142,6 @@ typedef struct	s_fdf
 	char		str_out[64];
 	void		*upper_border;
 	void		*bottom_border;
-
-	double		sin30;
-	double		cos30;
 }				t_fdf;
 
 int				read_file(char *name, t_fdf *fdf);
@@ -144,4 +155,8 @@ void			set_key_pressed(t_mousekeys *keys, int button, int x, int y);
 void			set_key_released(t_mousekeys *keys, int button, int x, int y);
 void			get_key_diff(t_mousekeys *keys, int button, int *x, int *y);
 void			set_current_xy(t_mousekeys *keys, int x, int y);
+int				is_key_pressed(t_mousekeys *keys, int button);
+void			cp_array(t_point *dst, t_point *src, int width, int height);
+void			set_iso(t_point *arr, int x, int y);
+void			set_xy_transform(t_point *arr, int width, int height, long xy_rotate);
 #endif

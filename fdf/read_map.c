@@ -29,6 +29,7 @@ static int		calc_str_width(char *str, t_point *tp, int y)
 			tp[count].z = (int) val;
 			tp[count].x = count;
 			tp[count].y = y;
+			tp[count].color = FT_COLOR(0,0,255);
 		}
 		str = end;
 		while (*str != '\0' && *str != ' ')
@@ -53,7 +54,7 @@ static t_point	*realloc_map(t_fdf *fdf)
 	old_size = fdf->map_height * fdf->map_width * sizeof(t_point);
 	new_size = (fdf->map_height + 1) * fdf->map_width * sizeof(t_point);
 
-	data = (t_point *)ft_memrealloc(fdf->map, old_size, new_size);
+	data = (t_point *)ft_memrealloc(fdf->srcmap, old_size, new_size);
 	return (data);
 }
 
@@ -70,17 +71,16 @@ int				read_file(char *name, t_fdf *fdf)
 	while (get_next_line(fd, &str) == 1)
 	{
 		width = calc_str_width(str, 0, fdf->map_height);
-		if (isfirst)
-		{
+		if (isfirst && !(isfirst = 0))
 			fdf->map_width = width;
-			isfirst = 0;
-		}
 		if (width != fdf->map_width)
 			return (ERR_NOT_EQUAL_WIDTH);
-		if ((fdf->map = realloc_map(fdf)) == NULL)
+		if ((fdf->srcmap = realloc_map(fdf)) == NULL)
 			return (ERR_ENOMEM);
-		calc_str_width(str, fdf->map + fdf->map_height * fdf->map_width, fdf->map_height);
+		calc_str_width(str, fdf->srcmap + fdf->map_height * fdf->map_width,
+			fdf->map_height);
 		fdf->map_height++;
+		ft_strdel(&str);
 	}
 	close(fd);
 	return (RET_OK);

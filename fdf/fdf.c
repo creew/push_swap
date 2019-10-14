@@ -59,26 +59,32 @@ int		button_pressed(int button, int x, int y, void *param)
 
 int		button_released(int button, int x, int y, void *param)
 {
-	t_fdf *fdf;
+	t_fdf	*fdf;
+	int		diffx;
+	int		diffy;
 
 	fdf = (t_fdf *)param;
 	set_key_released(&fdf->mouse_keys, button, x, y);
-	if (button == 1)
+	if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
 	{
-		if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
+		if (button == 1)
 		{
-			fdf->z_rotate += (x - fdf->press1_x)/10;
+			get_key_diff(&fdf->mouse_keys, 1, &diffx, &diffy);
+			fdf->z_rotate += (diffx)/10;
 			fdf->z_rotate %= 360;
-			fdf->xy_rotate += (y - fdf->press1_y)/10;
+			fdf->xy_rotate += (diffy)/10;
 			fdf->xy_rotate %= 360;
+			fdf->z_rotate_add = 0;
+			fdf->xy_rotate_add = 0;
+
 		}
-	}
-	else if (button == 2)
-	{
-		if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
+		else if (button == 2)
 		{
-			fdf->shift_x += x - fdf->press2_x;
-			fdf->shift_y += y - fdf->press2_y;
+			get_key_diff(&fdf->mouse_keys, 2, &diffx, &diffy);
+			fdf->shift_x += diffx;
+			fdf->shift_y += diffy;
+			fdf->shift_y_add = 0;
+			fdf->shift_x_add = 0;
 		}
 	}
 	ft_sprintf(fdf->str_out, "button released: %d, x: %d, y: %d", button, x, y);
@@ -89,26 +95,27 @@ int		button_released(int button, int x, int y, void *param)
 
 int		mouse_move(int x, int y, void *param)
 {
-	t_fdf *fdf;
+	t_fdf 	*fdf;
+	int		diffx;
+	int		diffy;
 
 	fdf = (t_fdf *)param;
-	set_current_xy(&fdf->mouse_keys, x, y);
 	if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
 	{
-		if (fdf->but1_pressed)
+		set_current_xy(&fdf->mouse_keys, x, y);
+		if (is_key_pressed(&fdf->mouse_keys, 1))
 		{
-			fdf->z_rotate += (x - fdf->press1_x) / 10;
-			fdf->z_rotate %= 360;
-			fdf->xy_rotate += (y - fdf->press1_y) / 10;
-			fdf->xy_rotate %= 360;
+			get_key_diff(&fdf->mouse_keys, 1, &diffx, &diffy);
+			fdf->z_rotate_add = (diffx)/10;
+			fdf->z_rotate_add %= 360;
+			fdf->xy_rotate_add = (diffy)/10;
+			fdf->xy_rotate_add %= 360;
 		}
-	}
-	if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
-	{
-		if (fdf->but2_pressed)
+		else if (is_key_pressed(&fdf->mouse_keys, 2))
 		{
-			fdf->shift_x += x - fdf->press2_x;
-			fdf->shift_y += y - fdf->press2_y;
+			get_key_diff(&fdf->mouse_keys, 2, &diffx, &diffy);
+			fdf->shift_x_add = diffx;
+			fdf->shift_y_add = diffy;
 		}
 	}
 	ft_sprintf(fdf->str_out, "mouse move x: %d, y: %d", x, y);
@@ -139,8 +146,6 @@ void	initfdf(t_fdf *fdf)
 	fdf->wnd_width = WND_WIDTH;
 	fdf->wnd_height = WND_HEIGHT;
 	fdf->scale = 1;
-	fdf->cos30 = cos(DEG_RAD_30);
-	fdf->sin30 = sin(DEG_RAD_30);
 }
 
 int		main(int ac, char *av[])
@@ -152,11 +157,12 @@ int		main(int ac, char *av[])
 	initfdf(&fdf);
 	fdf.mlx_ptr = mlx_init();
 	read_file("./fdf_demo/maps/42.fdf", &fdf);
+	fdf.mapout = malloc(sizeof(t_point) * fdf.map_width * fdf.map_height);
 	for (int i = 0; i < fdf.map_height; i++)
 	{
 		for (int j = 0; j < fdf.map_width; j++)
 		{
-			ft_printf("%d ", fdf.map[i * fdf.map_width + j].z);
+			ft_printf("%d ", fdf.srcmap[i * fdf.map_width + j].z);
 		}
 		ft_printf("\n");
 	}

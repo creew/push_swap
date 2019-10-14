@@ -12,6 +12,15 @@
 
 #include "fdf.h"
 
+int		is_key_pressed(t_mousekeys *keys, int button)
+{
+	if (button == 1)
+		return (keys->but1_pressed);
+	else if (button == 2)
+		return (keys->but2_pressed);
+	return (0);
+}
+
 void	set_current_xy(t_mousekeys *keys, int x, int y)
 {
 	keys->cur_x = x;

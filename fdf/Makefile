@@ -9,7 +9,9 @@ CC_FLAG_ERR = #-Werror
 SRCS =	fdf.c \
 		read_map.c \
 		init_images.c \
-		draw_main.c
+		draw_main.c \
+		mouse_moves.c \
+		rotate_arrays.c
 
 OBJS = $(SRCS:.c=.o)
 
