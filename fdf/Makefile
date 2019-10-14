@@ -12,7 +12,8 @@ SRCS =	fdf.c \
 		draw_main.c \
 		mouse_moves.c \
 		transforms.c \
-		getters.c
+		getters.c \
+		draw_line.c
 
 OBJS = $(SRCS:.c=.o)
 

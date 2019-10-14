@@ -10,7 +10,7 @@ endif()
 add_executable(fdf
         fdf.c
         fdf.h read_map.c draw_main.c init_images.c point_list.c
-        mouse_moves.c rotate_arrays.c getters.c transforms.c)
+        mouse_moves.c rotate_arrays.c getters.c transforms.c draw_line.c)
 
 include_directories(. ./libft ./ft_printf)
 if (LINUX)
