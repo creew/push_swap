@@ -27,19 +27,34 @@ static void	draw_points(t_fdf *fdf)
 {
 	double x;
 	double y;
+	double z;
 	double cosf;
 	double sinf;
+	double new_x;
+	double new_y;
+	double cos_xy;
+	double sin_xy;
+
+	cos_xy = cos((double)fdf->xy_rotate * M_PI / 180);
+	sin_xy = sin((double)fdf->xy_rotate * M_PI / 180);
 
 	cosf =  cos((double)fdf->z_rotate * M_PI / 180) * fdf->scale;
 	sinf =  sin((double)fdf->z_rotate * M_PI / 180) * fdf->scale;
+
 	for (int i = 0; i < fdf->map_height; i++)
 	{
 		for (int j = 0; j < fdf->map_width; j++)
 		{
-			x = j * cosf - i * sinf;
-			y = j * sinf + i * cosf;
-			x = x * cos(DEG_RAD_30);
-			y = -fdf->map[i * fdf->map_width + j].z*fdf->scale + y * sin(DEG_RAD_30);
+			z = fdf->map[i * fdf->map_width + j].z;
+			x = j * cos_xy - i * sin_xy * sin_xy + z * cos_xy * sin_xy;
+			y = i * cos_xy + z * sin_xy;
+			z = -j * sin_xy - i * sin_xy * cos_xy + z * cos_xy * cos_xy;
+
+			new_x = x * cosf - y * sinf;
+			new_y = x * sinf + y * cosf;
+
+			x = (new_x - new_y) * fdf->cos30;
+			y = -z*fdf->scale + (new_x + new_y) * fdf->sin30;
 			mlx_pixel_put(fdf->mlx_ptr, fdf->wnd_ptr, x + get_start_x(fdf), y + get_start_y(fdf), FT_COLOR(255, 255,255));
 		}
 	}

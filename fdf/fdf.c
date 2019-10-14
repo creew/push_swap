@@ -45,25 +45,9 @@ int		button_pressed(int button, int x, int y, void *param)
 
 	fdf = (t_fdf *)param;
 
-	if (button == 2)
-	{
-		if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
-		{
-			fdf->but2_pressed = 1;
-			fdf->press2_x = x;
-			fdf->press2_y = y;
-		}
-	}
-	else if (button == 1)
-	{
-		if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
-		{
-			fdf->but1_pressed = 1;
-			fdf->press1_x = x;
-			fdf->press1_y = y;
-		}
-	}
-	else if (button == 4)
+	if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
+		set_key_pressed(&fdf->mouse_keys, button, x, y);
+	if (button == 4)
 		fdf->scale += 0.2;
 	else if (button == 5)
 		fdf->scale -= 0.2;
@@ -78,18 +62,19 @@ int		button_released(int button, int x, int y, void *param)
 	t_fdf *fdf;
 
 	fdf = (t_fdf *)param;
+	set_key_released(&fdf->mouse_keys, button, x, y);
 	if (button == 1)
 	{
-		fdf->but1_pressed = 0;
 		if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
 		{
 			fdf->z_rotate += (x - fdf->press1_x)/10;
 			fdf->z_rotate %= 360;
+			fdf->xy_rotate += (y - fdf->press1_y)/10;
+			fdf->xy_rotate %= 360;
 		}
 	}
 	else if (button == 2)
 	{
-		fdf->but2_pressed = 0;
 		if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
 		{
 			fdf->shift_x += x - fdf->press2_x;
@@ -107,12 +92,15 @@ int		mouse_move(int x, int y, void *param)
 	t_fdf *fdf;
 
 	fdf = (t_fdf *)param;
+	set_current_xy(&fdf->mouse_keys, x, y);
 	if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
 	{
 		if (fdf->but1_pressed)
 		{
-			fdf->z_rotate += (x - fdf->press1_x)/10;
+			fdf->z_rotate += (x - fdf->press1_x) / 10;
 			fdf->z_rotate %= 360;
+			fdf->xy_rotate += (y - fdf->press1_y) / 10;
+			fdf->xy_rotate %= 360;
 		}
 	}
 	if (x >= 0 && y >= 0 && x < fdf->wnd_width && y < fdf->wnd_height)
@@ -123,8 +111,6 @@ int		mouse_move(int x, int y, void *param)
 			fdf->shift_y += y - fdf->press2_y;
 		}
 	}
-	fdf->press2_x = x;
-	fdf->press2_y = y;
 	ft_sprintf(fdf->str_out, "mouse move x: %d, y: %d", x, y);
 	redraw_main_screen(fdf);
 	return (0);
@@ -152,6 +138,9 @@ void	initfdf(t_fdf *fdf)
 	bzero(fdf, sizeof(*fdf));
 	fdf->wnd_width = WND_WIDTH;
 	fdf->wnd_height = WND_HEIGHT;
+	fdf->scale = 1;
+	fdf->cos30 = cos(DEG_RAD_30);
+	fdf->sin30 = sin(DEG_RAD_30);
 }
 
 int		main(int ac, char *av[])

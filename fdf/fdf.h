@@ -64,12 +64,13 @@
 # endif
 
 # define DEG_RAD_30				(M_PI/6)
-# define UB_WIDTH				(WND_WIDTH)
-# define UB_HEIGHT				(WND_HEIGHT / 6)
 
-# define BB_YPOS				(WND_HEIGHT - (WND_HEIGHT / 6))
+# define UB_WIDTH				(WND_WIDTH)
+# define UB_HEIGHT				(WND_HEIGHT / 8)
+
+# define BB_YPOS				(WND_HEIGHT - (WND_HEIGHT / 8))
 # define BB_WIDTH				(WND_WIDTH)
-# define BB_HEIGHT				(WND_HEIGHT / 6)
+# define BB_HEIGHT				(WND_HEIGHT / 8)
 
 # define RET_OK					(0)
 # define ERR_CAN_T_OPEN_FILE	(-1)
@@ -93,6 +94,18 @@ typedef struct	s_point
 	int 	color;
 }				t_point;
 
+typedef struct	s_mousekeys
+{
+	int			but1_pressed;
+	int 		but2_pressed;
+	int 		press2_x;
+	int			press2_y;
+	int 		press1_x;
+	int			press1_y;
+	int 		cur_x;
+	int 		cur_y;
+}				t_mousekeys;
+
 typedef struct	s_fdf
 {
 	t_point		*map;
@@ -105,14 +118,9 @@ typedef struct	s_fdf
 	t_list		*point_list;
 	double		scale;
 	long		z_rotate;
+	long		xy_rotate;
 
-	int			but1_pressed;
-	int 		but2_pressed;
-
-	int 		press2_x;
-	int			press2_y;
-	int 		press1_x;
-	int			press1_y;
+	t_mousekeys	mouse_keys;
 
 	int 		shift_x;
 	int 		shift_y;
@@ -121,6 +129,8 @@ typedef struct	s_fdf
 	void		*upper_border;
 	void		*bottom_border;
 
+	double		sin30;
+	double		cos30;
 }				t_fdf;
 
 int				read_file(char *name, t_fdf *fdf);
@@ -129,4 +139,9 @@ int				init_upper_border(t_fdf *fdf);
 int				init_bottom_border(t_fdf *fdf);
 
 int				point_list_add(t_list **lst, t_point *point);
+
+void			set_key_pressed(t_mousekeys *keys, int button, int x, int y);
+void			set_key_released(t_mousekeys *keys, int button, int x, int y);
+void			get_key_diff(t_mousekeys *keys, int button, int *x, int *y);
+void			set_current_xy(t_mousekeys *keys, int x, int y);
 #endif
