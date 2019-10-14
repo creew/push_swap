@@ -157,6 +157,14 @@ void			get_key_diff(t_mousekeys *keys, int button, int *x, int *y);
 void			set_current_xy(t_mousekeys *keys, int x, int y);
 int				is_key_pressed(t_mousekeys *keys, int button);
 void			cp_array(t_point *dst, t_point *src, int width, int height);
+
+void			set_size_transform(t_point *arr, int width, int height, double scale);
+void	 		set_z_transform(t_point *arr, int width, int height, long z);
 void			set_iso(t_point *arr, int x, int y);
 void			set_xy_transform(t_point *arr, int width, int height, long xy_rotate);
+
+int				get_start_x(t_fdf *fdf);
+int 			get_start_y(t_fdf *fdf);
+long			get_z_offset(t_fdf *fdf);
+long			get_xy_offset(t_fdf *fdf);
 #endif
