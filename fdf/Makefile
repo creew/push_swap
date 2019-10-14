@@ -29,7 +29,7 @@ INC_DIR = $(LIBFT_DIR) $(MMINILIBX_DIR) $(FT_PRINTF_DIR)
 IINC = $(addprefix -I,$(INC_DIR))
 LINC = $(addprefix -L,$(INC_DIR))
 
-UFRAMEWORKS = -lmlx -lXext -lX11
+UFRAMEWORKS = -lmlx -lXext -lX11 -lm
 LLIBS = $(addprefix -l,$(LIBFT_LIB) $(MINILIBX_LIB) $(FT_PRINTF_LIB))
 MFRAMEWORKS = -framework OpenGL -framework AppKit
 

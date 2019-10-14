@@ -56,7 +56,14 @@
 #  define WND_HEIGHT		(800)
 # elif __linux__
 #  include <X11/Xlib.h>
-
+#  define ZERO_KEY			(48)
+#  define ZERO_NUM_KEY		(48)
+#  define PLUS_KEY			(61)
+#  define PLUS_NUM_KEY		(61)
+#  define MINUS_KEY			(45)
+#  define MINUS_NUM_KEY		(45)
+#  define ARROW_LEFT_KEY	(65361)
+#  define ARROW_RIGHT_KEY	(65363)
 #  define ESC_KEY			(65307)
 
 #  define WND_WIDTH			(800)
