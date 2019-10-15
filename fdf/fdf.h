@@ -193,7 +193,7 @@ int				mouse_move(int x, int y, void *param);
 int				key_hook(int key, void *param);
 
 void			set_point(char *data, t_img_param *img, int x, int y, int color);
-void			draw_line(char *data, t_img_param *img, int x1, int y1, int x2, int y2, int color);
+void			draw_line(char *data, t_img_param *img, int x1, int y1, int x2, int y2, int color1, int color2);
 
 void			do_transformations(t_fdf *fdf);
 void			calc_optimal_size(t_fdf *fdf);

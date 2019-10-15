@@ -48,7 +48,7 @@ static void	draw_lines(t_fdf *fdf, char *data, t_img_param *img)
 						  point[i * fdf->map_width + j].y + + get_start_y(fdf),
 						  point[(i + 1) * fdf->map_width + j].x + get_start_x(fdf),
 						  point[(i + 1) * fdf->map_width + j].y + + get_start_y(fdf),
-						  point[i * fdf->map_width + j].color);
+						  point[i * fdf->map_width + j].color, point[(i + 1) * fdf->map_width + j].color);
 			}
 			if (j != (fdf->map_width - 1))
 			{
@@ -56,7 +56,7 @@ static void	draw_lines(t_fdf *fdf, char *data, t_img_param *img)
 						  point[i * fdf->map_width + j].y + get_start_y(fdf),
 						  point[i * fdf->map_width + j + 1].x + get_start_x(fdf),
 						  point[i * fdf->map_width + j + 1].y + get_start_y(fdf),
-						  point[i * fdf->map_width + j].color);
+						  point[i * fdf->map_width + j].color, point[i * fdf->map_width + j + 1].color);
 			}
 		}
 	}
@@ -115,6 +115,10 @@ int 		redraw_main_screen(t_fdf *fdf)
 		mlx_put_image_to_window(fdf->mlx_ptr, fdf->wnd_ptr, fdf->bottom_border, 0, BB_YPOS);
 	if (fdf->main_image)
 		mlx_put_image_to_window(fdf->mlx_ptr, fdf->wnd_ptr, fdf->main_image, 0, MAIN_YPOS);
-	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, WND_HEIGHT - 300, 20, FT_COLOR(255, 255,255), fdf->str_out);
+	ft_sprintf(fdf->str_out, "scale: %d%%", (int)(fdf->scale * 100));
+	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 20, 10, FT_COLOR(255, 255,255), fdf->str_out);
+	ft_sprintf(fdf->str_out, "z scale: %d%%", (int)(fdf->z_scale * 100));
+	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 20, 50, FT_COLOR(255, 255,255), fdf->str_out);
+	//mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, WND_HEIGHT - 300, 20, FT_COLOR(255, 255,255), fdf->str_out);
 	return (RET_OK);
 }
