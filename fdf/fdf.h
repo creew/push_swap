@@ -65,6 +65,14 @@
 #  define WND_HEIGHT		(800)
 # elif __linux__
 #  include <X11/Xlib.h>
+#  define A_KEY				(97)
+#  define Z_KEY				(122)
+#  define ONE_KEY			(49)
+#  define ONE_NUM_KEY		(49)
+#  define TWO_KEY			(50)
+#  define TWO_NUM_KEY		(50)
+#  define THREE_KEY			(51)
+#  define THREE_NUM_KEY		(51)
 #  define ZERO_KEY			(48)
 #  define ZERO_NUM_KEY		(48)
 #  define PLUS_KEY			(61)
