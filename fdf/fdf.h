@@ -13,6 +13,7 @@
 #ifndef FDF_H
 # define FDF_H
 
+#include <stdlib.h>
 #include <math.h>
 #include "libft.h"
 #include "mlx.h"
@@ -42,6 +43,8 @@
 #  define ButtonReleaseMask	(0)
 #  define ExposureMask		(0)
 
+#  define A_KEY				(0)
+#  define Z_KEY				(6)
 #  define ESC_KEY			(53)
 #  define ZERO_KEY			(29)
 #  define ZERO_NUM_KEY		(82)
@@ -80,12 +83,17 @@
 # define BB_WIDTH				(WND_WIDTH)
 # define BB_HEIGHT				(WND_HEIGHT / 10)
 
+# define MAIN_YPOS				(UB_HEIGHT)
+# define MAIN_WIDTH				(WND_WIDTH)
+# define MAIN_HEIGHT			(WND_HEIGHT - UB_HEIGHT - BB_HEIGHT)
+
 # define RET_OK					(0)
 # define ERR_CAN_T_OPEN_FILE	(-1)
 # define ERR_NOT_EQUAL_WIDTH	(-2)
 # define ERR_ENOMEM				(-3)
 
 typedef	unsigned int	t_uint;
+
 typedef struct	s_img_param {
 	int			sizeline;
 	int			endian;
@@ -131,8 +139,8 @@ typedef struct	s_fdf
 	int			wnd_height;
 	void 		*mlx_ptr;
 	void		*wnd_ptr;
-	t_list		*point_list;
 	double		scale;
+	double		z_scale;
 	long		z_rotate;
 	long		xy_rotate;
 
@@ -149,14 +157,17 @@ typedef struct	s_fdf
 	char		str_out[64];
 	void		*upper_border;
 	void		*bottom_border;
+	void		*main_image;
 }				t_fdf;
 
 int				read_file(char *name, t_fdf *fdf);
 int				redraw_main_screen(t_fdf *fdf);
 int				init_upper_border(t_fdf *fdf);
 int				init_bottom_border(t_fdf *fdf);
+int				init_main_image(t_fdf *fdf);
+void			fill_color(char *data, t_img_param *img, t_uint setcolor);
 
-int				point_list_add(t_list **lst, t_point *point);
+void			redraw_image(t_fdf *fdf);
 
 void			set_key_pressed(t_mousekeys *keys, int button, int x, int y);
 void			set_key_released(t_mousekeys *keys, int button, int x, int y);
@@ -165,7 +176,7 @@ void			set_current_xy(t_mousekeys *keys, int x, int y);
 int				is_key_pressed(t_mousekeys *keys, int button);
 void			cp_array(t_point *dst, t_point *src, int width, int height);
 
-void			set_size_transform(t_point *arr, int width, int height, double scale);
+void			set_size_transform(t_point *arr, int size, double scale, double zscale);
 void	 		set_z_transform(t_point *arr, int width, int height, long z);
 void			set_iso(t_point *arr, int x, int y);
 void			set_xy_transform(t_point *arr, int width, int height, long xy_rotate);
@@ -174,4 +185,16 @@ int				get_start_x(t_fdf *fdf);
 int 			get_start_y(t_fdf *fdf);
 long			get_z_offset(t_fdf *fdf);
 long			get_xy_offset(t_fdf *fdf);
+
+int				button_pressed(int button, int x, int y, void *param);
+int				button_released(int button, int x, int y, void *param);
+int				mouse_move(int x, int y, void *param);
+
+int				key_hook(int key, void *param);
+
+void			set_point(char *data, t_img_param *img, int x, int y, int color);
+void			draw_line(char *data, t_img_param *img, int x1, int y1, int x2, int y2, int color);
+
+void			do_transformations(t_fdf *fdf);
+void			calc_optimal_size(t_fdf *fdf);
 #endif

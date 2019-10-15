@@ -13,7 +13,9 @@ SRCS =	fdf.c \
 		mouse_moves.c \
 		transforms.c \
 		getters.c \
-		draw_line.c
+		draw_line.c \
+		mouse_hook.c \
+		key_hook.c
 
 OBJS = $(SRCS:.c=.o)
 

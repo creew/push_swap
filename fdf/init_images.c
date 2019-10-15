@@ -75,3 +75,23 @@ int		init_bottom_border(t_fdf *fdf)
 	}
 	return (RET_OK);
 }
+
+int		init_main_image(t_fdf *fdf)
+{
+	char			*img_data;
+	t_img_param		img;
+
+	img.height = MAIN_HEIGHT;
+	img.width = MAIN_WIDTH;
+	fdf->main_image = mlx_new_image(fdf->mlx_ptr, img.width, img.height);
+	if (fdf->main_image)
+	{
+		img_data = mlx_get_data_addr(fdf->main_image, &img.bits_per_pixel,
+									 &img.sizeline, &img.endian);
+		if (img_data)
+		{
+			fill_color(img_data, &img, FT_32COLOR(0u,0u,0u,0u));
+		}
+	}
+	return (RET_OK);
+}

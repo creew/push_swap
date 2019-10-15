@@ -12,19 +12,16 @@
 
 #include "fdf.h"
 
-void	set_size_transform(t_point *arr, int width, int height, double scale)
+void	set_size_transform(t_point *arr, int size, double scale, double zscale)
 {
 	int			i;
-	int			j;
-	int			size;
 
-	size = width * height;
 	i = -1;
 	while (++i < size)
 	{
 		arr->x = (int)(arr->x * scale);
 		arr->y = (int)(arr->y * scale);
-		arr->z = (int)(arr->z * scale);
+		arr->z = (int)(arr->z * scale * zscale);
 		arr++;
 	}
 }
@@ -68,9 +65,11 @@ void	set_xy_transform(t_point *arr, int width, int height, long xy_rotate)
 	i = -1;
 	while (++i < size)
 	{
-		dp.x = arr->x * cos_xy - arr->y * sin_xy * sin_xy + arr->z * cos_xy * sin_xy;
+		dp.x = arr->x * cos_xy - arr->y * sin_xy * sin_xy +
+			arr->z * cos_xy * sin_xy;
 		dp.y = arr->y * cos_xy + arr->z * sin_xy;
-		dp.z = -arr->x * sin_xy - arr->y * sin_xy * cos_xy + arr->z * cos_xy * cos_xy;
+		dp.z = -arr->x * sin_xy - arr->y * sin_xy * cos_xy +
+			arr->z * cos_xy * cos_xy;
 		arr->x = (int)dp.x;
 		arr->y = (int)dp.y;
 		arr->z = (int)dp.z;
