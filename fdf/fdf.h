@@ -45,6 +45,12 @@
 
 #  define A_KEY				(0)
 #  define Z_KEY				(6)
+#  define ONE_KEY			(18)
+#  define ONE_NUM_KEY		(83)
+#  define TWO_KEY			(19)
+#  define TWO_NUM_KEY		(84)
+#  define THREE_KEY			(20)
+#  define THREE_NUM_KEY		(85)
 #  define ESC_KEY			(53)
 #  define ZERO_KEY			(29)
 #  define ZERO_NUM_KEY		(82)
@@ -139,6 +145,9 @@ typedef struct	s_fdf
 	int			wnd_height;
 	void 		*mlx_ptr;
 	void		*wnd_ptr;
+
+	int			parallel;
+
 	double		scale;
 	double		z_scale;
 	long		z_rotate;
@@ -197,4 +206,8 @@ void			draw_line(char *data, t_img_param *img, int x1, int y1, int x2, int y2, i
 
 void			do_transformations(t_fdf *fdf);
 void			calc_optimal_size(t_fdf *fdf);
+
+int				get_color(int color1, int color2, int total, int step);
+void			colorize_not(t_point *point, int size);
+void			colorise_map(t_point *point, int size);
 #endif

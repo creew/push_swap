@@ -29,8 +29,6 @@ int		close_notify(void *param)
 	exit(0);
 }
 
-
-
 void	calc_limits(t_point *map, int size, t_point *wh, t_point *start)
 {
 	int		i;
@@ -90,6 +88,28 @@ void	initfdf(t_fdf *fdf)
 	fdf->z_scale = 0.2;
 }
 
+void	shift_map(t_point *point, int width, int height)
+{
+	int i;
+	int j;
+	int	hw;
+	int hh;
+
+	hw = width / 2;
+	hh = height /2;
+	i = -1;
+	while (++i < height)
+	{
+		j = -1;
+		while (++j < width)
+		{
+			point->x = j - hw;
+			point->y = i - hh;
+			point++;
+		}
+	}
+}
+
 int		main(int ac, char *av[])
 {
 	t_fdf fdf;
@@ -104,6 +124,8 @@ int		main(int ac, char *av[])
 	{
 		exit(0);
 	}
+	shift_map(fdf.srcmap, fdf.map_width, fdf.map_height);
+	colorize_not(fdf.srcmap, fdf.map_width * fdf.map_height);
 	fdf.mlx_ptr = mlx_init();
 	fdf.mapout = malloc(sizeof(t_point) * fdf.map_width * fdf.map_height);
 	init_upper_border(&fdf);

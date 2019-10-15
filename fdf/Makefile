@@ -15,7 +15,8 @@ SRCS =	fdf.c \
 		getters.c \
 		draw_line.c \
 		mouse_hook.c \
-		key_hook.c
+		key_hook.c \
+		colorize_map.c
 
 OBJS = $(SRCS:.c=.o)
 

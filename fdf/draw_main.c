@@ -86,8 +86,11 @@ void		do_transformations(t_fdf *fdf)
 	set_size_transform(fdf->mapout, fdf->map_width * fdf->map_height, fdf->scale, fdf->z_scale);
 	set_z_transform(fdf->mapout, fdf->map_width, fdf->map_height, get_z_offset(fdf));
 	set_xy_transform(fdf->mapout, fdf->map_width, fdf->map_height, get_xy_offset(fdf));
-	set_iso(fdf->mapout, fdf->map_width, fdf->map_height);
+	if (!fdf->parallel)
+		set_iso(fdf->mapout, fdf->map_width, fdf->map_height);
+	colorize_not(fdf->mapout, fdf->map_width * fdf->map_height);
 }
+
 void		redraw_image(t_fdf *fdf)
 {
 	char			*img_data;
@@ -119,6 +122,8 @@ int 		redraw_main_screen(t_fdf *fdf)
 	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 20, 10, FT_COLOR(255, 255,255), fdf->str_out);
 	ft_sprintf(fdf->str_out, "z scale: %d%%", (int)(fdf->z_scale * 100));
 	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 20, 50, FT_COLOR(255, 255,255), fdf->str_out);
+	ft_sprintf(fdf->str_out, "z angle: %d degree", (fdf->z_rotate + fdf->z_rotate_add) % 360);
+	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 200, 50, FT_COLOR(255, 255,255), fdf->str_out);
 	//mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, WND_HEIGHT - 300, 20, FT_COLOR(255, 255,255), fdf->str_out);
 	return (RET_OK);
 }

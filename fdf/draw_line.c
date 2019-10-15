@@ -25,16 +25,7 @@ void set_point(char *data, t_img_param *img, int x, int y, int color)
 	}
 }
 
-void swap_int(int *a, int *b)
-{
-	int c;
-
-	c = *a;
-	*a = *b;
-	*b = c;
-}
-
-int	get_color(int color1, int color2, int total, int step, int is_back)
+int	get_color(int color1, int color2, int total, int step)
 {
 	int r;
 	int g;
@@ -57,7 +48,7 @@ int	get_color(int color1, int color2, int total, int step, int is_back)
 	else{
 		r = 0;
 		g = 255;
-		b =0;
+		b = 0;
 	}
 	return (FT_COLOR(r,g,b));
 }
@@ -86,7 +77,7 @@ void draw_line(char *data, t_img_param *img, int x1, int y1, int x2, int y2, int
 		length = lengthX + 1;
 		while(length--)
 		{
-			set_point(data, img, x, y, get_color(color1, color2, lengthX + 1, lengthX + 1 - length, dx));
+			set_point(data, img, x, y, get_color(color1, color2, lengthX + 1, lengthX + 1 - length));
 			x += dx;
 			d += 2 * lengthY;
 			if (d > 0) {
@@ -106,7 +97,7 @@ void draw_line(char *data, t_img_param *img, int x1, int y1, int x2, int y2, int
 		length = lengthY + 1;
 		while(length--)
 		{
-			set_point(data, img, x, y, get_color(color1, color2, lengthY + 1, lengthY + 1 - length, dy));
+			set_point(data, img, x, y, get_color(color1, color2, lengthY + 1, lengthY + 1 - length));
 			y += dy;
 			d += 2 * lengthX;
 			if (d > 0) {
