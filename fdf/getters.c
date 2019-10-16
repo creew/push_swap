@@ -17,7 +17,7 @@ int			get_start_x(t_fdf *fdf)
 	return (fdf->shift_x + fdf->shift_x_add);
 }
 
-int 		get_start_y(t_fdf *fdf)
+int			get_start_y(t_fdf *fdf)
 {
 	return (fdf->shift_y + fdf->shift_y_add);
 }

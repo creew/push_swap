@@ -16,7 +16,9 @@ SRCS =	fdf.c \
 		draw_line.c \
 		mouse_hook.c \
 		key_hook.c \
-		colorize_map.c
+		colorize_map.c \
+		normalize_map.c \
+		do_transform.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -23,7 +23,22 @@ void		set_mode(t_fdf *fdf, int mode)
 	calc_optimal_size(fdf);
 }
 
-static int 	process_key(t_fdf *fdf, int key)
+static int	process_key2(t_fdf *fdf, int key)
+{
+	if (key == ONE_KEY || key == ONE_NUM_KEY)
+		set_mode(fdf, 0);
+	else if (key == TWO_KEY || key == TWO_NUM_KEY)
+		set_mode(fdf, 1);
+	else if (key == THREE_KEY || key == THREE_NUM_KEY)
+	{
+		colorise_map(fdf->mapout, fdf->map_height * fdf->map_width);
+		redraw_main_screen(fdf);
+		return (0);
+	}
+	return (1);
+}
+
+static int	process_key(t_fdf *fdf, int key)
 {
 	if (key == ESC_KEY)
 	{
@@ -44,15 +59,10 @@ static int 	process_key(t_fdf *fdf, int key)
 		fdf->scale += 0.2;
 	else if (key == MINUS_KEY || key == MINUS_NUM_KEY)
 		fdf->scale -= 0.2;
-	else if (key == ONE_KEY || key == ONE_NUM_KEY)
-		set_mode(fdf, 0);
-	else if (key == TWO_KEY || key == TWO_NUM_KEY)
-		set_mode(fdf, 1);
-	else if (key == THREE_KEY || key == THREE_NUM_KEY)
+	else
 	{
-		colorise_map(fdf->mapout, fdf->map_height * fdf->map_width);
-		redraw_main_screen(fdf);
-		return (0);
+		if (process_key2(fdf, key) == 0)
+			return (0);
 	}
 	return (1);
 }

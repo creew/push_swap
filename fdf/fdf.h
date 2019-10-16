@@ -19,7 +19,8 @@
 #include "mlx.h"
 #include "ft_printf.h"
 
-# define FT_COLOR(r,g,b)	(((r & 0xFF) << 16) | ((g & 0xFF) << 8) | (b & 0xFF))
+# define FT_COLOR(r,g,b)		(((r & 0xFFu) << 16u) | ((g & 0xFFu) << 8u) | \
+									(b & 0xFFu))
 
 # define FT_32COLOR(r,g,b,a)	(((a & 0xFFu) << 24u) | ((r & 0xFFu) << 16u) | \
 									((g & 0xFFu) << 8u) | (b & 0xFFu))
@@ -28,6 +29,11 @@
 # define FT_32COLOR_GET_G(c)	((c >> 8u) & 0xFFu)
 # define FT_32COLOR_GET_B(c)	((c) & 0xFFu)
 # define FT_32COLOR_GET_A(c)	((c >> 24u) & 0xFFu)
+
+# define WHITE_COLOR		(0xFFFFFF)
+# define BLACK_COLOR		(0)
+# define GREEN_COLOR		(0x00FF00)
+# define BROWN_COLOR		(0x964B00)
 
 # ifdef __APPLE__
 #  define KeyPress			(2)
@@ -38,6 +44,7 @@
 #  define Expose			(12)
 #  define DestroyNotify		(17)
 
+#  define KeyPressMask		(0)
 #  define PointerMotionMask	(0)
 #  define ButtonPressMask	(0)
 #  define ButtonReleaseMask	(0)
@@ -91,11 +98,12 @@
 # define FT_SIN30				(0.5)
 
 # define UB_WIDTH				(WND_WIDTH)
-# define UB_HEIGHT				(WND_HEIGHT / 10)
+# define UB_HEIGHT				(WND_HEIGHT / 20)
 
-# define BB_YPOS				(WND_HEIGHT - (WND_HEIGHT / 10))
 # define BB_WIDTH				(WND_WIDTH)
-# define BB_HEIGHT				(WND_HEIGHT / 10)
+# define BB_HEIGHT				(WND_HEIGHT / 20)
+# define BB_YPOS				(WND_HEIGHT - BB_HEIGHT)
+
 
 # define MAIN_YPOS				(UB_HEIGHT)
 # define MAIN_WIDTH				(WND_WIDTH)
@@ -183,7 +191,7 @@ int				redraw_main_screen(t_fdf *fdf);
 int				init_upper_border(t_fdf *fdf);
 int				init_bottom_border(t_fdf *fdf);
 int				init_main_image(t_fdf *fdf);
-void			fill_color(char *data, t_img_param *img, t_uint setcolor);
+void			fill_color(t_img_param *img, t_uint setcolor);
 
 void			redraw_image(t_fdf *fdf);
 
@@ -216,7 +224,9 @@ void			set_point(t_img_param *img, int x, int y, int color);
 void			draw_line(t_img_param *img, t_point *p1, t_point *p2);
 
 void			do_transformations(t_fdf *fdf);
+
 void			calc_optimal_size(t_fdf *fdf);
+void			normalize_map(t_point *point, int width, int height);
 
 int				get_color(int color1, int color2, int total, int step);
 void			colorize_not(t_point *point, int size);

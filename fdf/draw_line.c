@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void set_point(t_img_param *img, int x, int y, int color)
+void	set_point(t_img_param *img, int x, int y, int color)
 {
 	char *data;
 
@@ -28,13 +28,13 @@ void set_point(t_img_param *img, int x, int y, int color)
 	}
 }
 
-int	get_color(int color1, int color2, int total, int step)
+int		get_color(int color1, int color2, int total, int step)
 {
-	int r;
-	int g;
-	int b;
-	int c1;
-	int c2;
+	t_uint	r;
+	t_uint	g;
+	t_uint	b;
+	int		c1;
+	int		c2;
 
 	if (total != 0)
 	{
@@ -49,21 +49,17 @@ int	get_color(int color1, int color2, int total, int step)
 		b = c1 + (c2 - c1) * step / total;
 	}
 	else
-	{
-		r = 0;
-		g = 255;
-		b = 0;
-	}
-	return (FT_COLOR(r,g,b));
+		return (color1);
+	return ((int)(FT_COLOR(r, g, b)));
 }
 
-void draw_line(t_img_param *img, t_point *p1, t_point *p2)
+void	draw_line(t_img_param *img, t_point *p1, t_point *p2)
 {
 	t_point		len;
 	t_point		d;
 	t_point		xy;
 	int			length;
-	int 		delta;
+	int			delta;
 
 	len.x = p2->x - p1->x;
 	len.y = p2->y - p1->y;
@@ -75,17 +71,17 @@ void draw_line(t_img_param *img, t_point *p1, t_point *p2)
 		set_point(img, p1->x, p1->y, get_color(p1->color, p2->color, 2, 1));
 	xy.x = p1->x;
 	xy.y = p1->y;
-
 	if (len.y <= len.x)
 	{
 		delta = -len.x;
 		length = len.x + 1;
-		while(length--)
+		while (length--)
 		{
 			set_point(img, xy.x, xy.y, get_color(p1->color, p2->color, len.x + 1, len.x + 1 - length));
 			xy.x += d.x;
 			delta += 2 * len.y;
-			if (delta > 0) {
+			if (delta > 0)
+			{
 				delta -= 2 * len.x;
 				xy.y += d.y;
 			}
@@ -95,12 +91,13 @@ void draw_line(t_img_param *img, t_point *p1, t_point *p2)
 	{
 		delta = -len.y;
 		length = len.y + 1;
-		while(length--)
+		while (length--)
 		{
 			set_point(img, xy.x, xy.y, get_color(p1->color, p2->color, len.y + 1, len.y + 1 - length));
 			xy.y += d.y;
 			delta += 2 * len.x;
-			if (delta > 0) {
+			if (delta > 0)
+			{
 				delta -= 2 * len.y;
 				xy.x += d.x;
 			}

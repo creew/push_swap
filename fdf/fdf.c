@@ -15,6 +15,7 @@
 int		expose_hook(void *param)
 {
 	t_fdf *fdf;
+
 	fdf = (t_fdf *)param;
 	ft_sprintf(fdf->str_out, "exposure");
 	redraw_main_screen(fdf);
@@ -24,53 +25,10 @@ int		expose_hook(void *param)
 int		close_notify(void *param)
 {
 	t_fdf *fdf;
+
 	fdf = (t_fdf *)param;
 	mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
 	exit(0);
-}
-
-void	calc_limits(t_point *map, int size, t_point *wh, t_point *start)
-{
-	int		i;
-
-	start->x = 2147483647;
-	start->y = start->x;
-	wh->x = -2147483648;
-	wh->y = wh->x;
-	i = -1;
-	while (++i < size)
-	{
-		start->x = MIN(start->x, map->x);
-		start->y = MIN(start->y, map->y);
-		wh->x = MAX(wh->x, map->x);
-		wh->y = MAX(wh->y, map->y);
-		map++;
-	}
-	wh->x = ABS(wh->x - start->x);
-	wh->y = ABS(wh->y - start->y);
-}
-
-void	calc_optimal_size(t_fdf *fdf)
-{
-	t_point		start;
-	t_point		wh;
-	double		main_height;
-	double		main_width;
-
-	main_height = MAIN_HEIGHT;
-	main_width = MAIN_WIDTH;
-	fdf->scale = 1;
-	fdf->shift_x = 0;
-	fdf->shift_y = 0;
-	fdf->xy_rotate = 0;
-	fdf->z_rotate = 0;
-	do_transformations(fdf);
-	calc_limits(fdf->mapout, fdf->map_width * fdf->map_height, &wh, &start);
-	fdf->scale = MIN(main_height / wh.y, main_width / wh.x) * 0.99;
-	do_transformations(fdf);
-	calc_limits(fdf->mapout, fdf->map_width * fdf->map_height, &wh, &start);
-	fdf->shift_x = MAIN_WIDTH / 2 - start.x - wh.x / 2;
-	fdf->shift_y = MAIN_HEIGHT / 2 - start.y - wh.y / 2;
 }
 
 void	print_usage()
@@ -99,28 +57,6 @@ void	initfdf(t_fdf *fdf)
 	fdf->z_scale = 0.2;
 }
 
-void	shift_map(t_point *point, int width, int height)
-{
-	int i;
-	int j;
-	int	hw;
-	int hh;
-
-	hw = width / 2;
-	hh = height /2;
-	i = -1;
-	while (++i < height)
-	{
-		j = -1;
-		while (++j < width)
-		{
-			point->x = j - hw;
-			point->y = i - hh;
-			point++;
-		}
-	}
-}
-
 int		main(int ac, char *av[])
 {
 	t_fdf fdf;
@@ -135,7 +71,7 @@ int		main(int ac, char *av[])
 	{
 		exit(0);
 	}
-	shift_map(fdf.srcmap, fdf.map_width, fdf.map_height);
+	normalize_map(fdf.srcmap, fdf.map_width, fdf.map_height);
 	colorize_not(fdf.srcmap, fdf.map_width * fdf.map_height);
 	fdf.mlx_ptr = mlx_init();
 	fdf.mapout = malloc(sizeof(t_point) * fdf.map_width * fdf.map_height);
@@ -149,7 +85,7 @@ int		main(int ac, char *av[])
 		fdf.wnd_ptr = mlx_new_window(fdf.mlx_ptr, fdf.wnd_width, fdf.wnd_height, "Превед!");
 		if (fdf.wnd_ptr)
 		{
-			mlx_key_hook(fdf.wnd_ptr, key_hook, &fdf);
+			mlx_hook(fdf.wnd_ptr, KeyPress, KeyPressMask, key_hook, &fdf);
 			mlx_hook(fdf.wnd_ptr, Expose, ExposureMask , expose_hook, &fdf);
 			mlx_hook(fdf.wnd_ptr, MotionNotify, PointerMotionMask, mouse_move, &fdf);
 			mlx_hook(fdf.wnd_ptr, DestroyNotify, 0, close_notify, &fdf);

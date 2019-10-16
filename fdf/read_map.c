@@ -26,8 +26,8 @@ static int		calc_str_width(char *str, t_point *tp, int y)
 	{
 		if (tp)
 		{
-			tp[count].z = (int) val;
-			tp[count].color = FT_COLOR(0,0,255);
+			tp[count].z = (int)val;
+			tp[count].color = FT_COLOR(0, 0, 255);
 		}
 		str = end;
 		while (*str != '\0' && *str != ' ')
@@ -51,7 +51,6 @@ static t_point	*realloc_map(t_fdf *fdf)
 
 	old_size = fdf->map_height * fdf->map_width * sizeof(t_point);
 	new_size = (fdf->map_height + 1) * fdf->map_width * sizeof(t_point);
-
 	data = (t_point *)ft_memrealloc(fdf->srcmap, old_size, new_size);
 	return (data);
 }
@@ -59,11 +58,12 @@ static t_point	*realloc_map(t_fdf *fdf)
 int				read_file(char *name, t_fdf *fdf)
 {
 	char	*str;
-	int 	width;
-	int 	isfirst;
+	int		width;
+	int		isfirst;
+	int		fd;
 
 	isfirst = 1;
-	int fd = open(name, O_RDONLY);
+	fd = open(name, O_RDONLY);
 	if (fd == -1)
 		return (ERR_CAN_T_OPEN_FILE);
 	while (get_next_line(fd, &str) == 1)

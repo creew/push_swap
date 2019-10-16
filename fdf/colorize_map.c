@@ -59,17 +59,19 @@ void	colorise_map(t_point *point, int size)
 	int		i;
 	int		maxz;
 	int		minz;
+	int		middle;
 
 	i = -1;
 	find_min_max(point, size, &minz, &maxz);
+	middle = (maxz - minz) / 2;
 	while (++i < size)
 	{
-		if (point->z == 0)
-			point->color = 0x964B00;
-		else if (point->z > 0)
-			point->color = get_color(0x964B00, 0xFFFFFF, maxz, point->z);
+		if (point->z > minz && point->z <= middle)
+			point->color = get_color(GREEN_COLOR, BROWN_COLOR,
+				middle - minz, point->z - minz);
 		else
-			point->color = get_color(0x00FF00, 0xFFFFFF, -minz, -point->z);
+			point->color = get_color(BROWN_COLOR, WHITE_COLOR,
+				maxz - middle, point->z - middle);
 		point++;
 	}
 }

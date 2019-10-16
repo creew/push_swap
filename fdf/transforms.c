@@ -33,8 +33,8 @@ void	set_z_transform(t_point *arr, int size, long z)
 	double		cosf;
 	double		sinf;
 
-	cosf =  cos((double)(z) * M_PI / 180);
-	sinf =  sin((double)(z) * M_PI / 180);
+	cosf = cos((double)(z) * M_PI / 180);
+	sinf = sin((double)(z) * M_PI / 180);
 	i = -1;
 	while (++i < size)
 	{
