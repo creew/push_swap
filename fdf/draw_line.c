@@ -12,8 +12,11 @@
 
 #include "fdf.h"
 
-void set_point(char *data, t_img_param *img, int x, int y, int color)
+void set_point(t_img_param *img, int x, int y, int color)
 {
+	char *data;
+
+	data = img->data;
 	if (x >= 0 && y >= 0 && x < img->width && y < img->height)
 	{
 		data += y * img->sizeline;
@@ -45,7 +48,8 @@ int	get_color(int color1, int color2, int total, int step)
 		c2 = (color2) & 0xFF;
 		b = c1 + (c2 - c1) * step / total;
 	}
-	else{
+	else
+	{
 		r = 0;
 		g = 255;
 		b = 0;
@@ -53,56 +57,52 @@ int	get_color(int color1, int color2, int total, int step)
 	return (FT_COLOR(r,g,b));
 }
 
-void draw_line(char *data, t_img_param *img, int x1, int y1, int x2, int y2, int color1, int color2)
+void draw_line(t_img_param *img, t_point *p1, t_point *p2)
 {
-	int dx = (x2 - x1 >= 0 ? 1 : -1);
-	int dy = (y2 - y1 >= 0 ? 1 : -1);
+	t_point		len;
+	t_point		d;
+	t_point		xy;
+	int			length;
+	int 		delta;
 
-	int lengthX = ABS(x2 - x1);
-	int lengthY = ABS(y2 - y1);
+	len.x = p2->x - p1->x;
+	len.y = p2->y - p1->y;
+	d.x = len.x >= 0 ? 1 : -1;
+	d.y = len.y >= 0 ? 1 : -1;
+	len.x = len.x < 0 ? -len.x : len.x;
+	len.y = len.y < 0 ? -len.y : len.y;
+	if (len.x == 0 && len.y == 0)
+		set_point(img, p1->x, p1->y, get_color(p1->color, p2->color, 2, 1));
+	xy.x = p1->x;
+	xy.y = p1->y;
 
-	int length;
-
-	if (lengthX == 0 && lengthY == 0)
-		set_point(data, img, x1, y1, color1);
-
-	if (lengthY <= lengthX)
+	if (len.y <= len.x)
 	{
-		// Начальные значения
-		int x = x1;
-		int y = y1;
-		int d = -lengthX;
-
-		// Основной цикл
-		length = lengthX + 1;
+		delta = -len.x;
+		length = len.x + 1;
 		while(length--)
 		{
-			set_point(data, img, x, y, get_color(color1, color2, lengthX + 1, lengthX + 1 - length));
-			x += dx;
-			d += 2 * lengthY;
-			if (d > 0) {
-				d -= 2 * lengthX;
-				y += dy;
+			set_point(img, xy.x, xy.y, get_color(p1->color, p2->color, len.x + 1, len.x + 1 - length));
+			xy.x += d.x;
+			delta += 2 * len.y;
+			if (delta > 0) {
+				delta -= 2 * len.x;
+				xy.y += d.y;
 			}
 		}
 	}
 	else
 	{
-		// Начальные значения
-		int x = x1;
-		int y = y1;
-		int d = - lengthY;
-
-		// Основной цикл
-		length = lengthY + 1;
+		delta = -len.y;
+		length = len.y + 1;
 		while(length--)
 		{
-			set_point(data, img, x, y, get_color(color1, color2, lengthY + 1, lengthY + 1 - length));
-			y += dy;
-			d += 2 * lengthX;
-			if (d > 0) {
-				d -= 2 * lengthY;
-				x += dx;
+			set_point(img, xy.x, xy.y, get_color(p1->color, p2->color, len.y + 1, len.y + 1 - length));
+			xy.y += d.y;
+			delta += 2 * len.x;
+			if (delta > 0) {
+				delta -= 2 * len.y;
+				xy.x += d.x;
 			}
 		}
 	}

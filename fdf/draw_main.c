@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-static void	draw_points(t_fdf *fdf, char *data, t_img_param *img)
+static void	draw_points(t_fdf *fdf, t_img_param *img)
 {
 	int		i;
 	int		size;
@@ -23,17 +23,19 @@ static void	draw_points(t_fdf *fdf, char *data, t_img_param *img)
 	point = fdf->mapout;
 	while (++i < size)
 	{
-		set_point(data, img, point->x + get_start_x(fdf),
-					  point->y + get_start_y(fdf), point->color);
+		set_point(img, point->x + get_start_x(fdf),
+			point->y + get_start_y(fdf), point->color);
 		point++;
 	}
 }
 
-static void	draw_lines(t_fdf *fdf, char *data, t_img_param *img)
+static void	draw_lines(t_fdf *fdf, t_img_param *img)
 {
 	int		i;
 	int 	j;
 	t_point	*point;
+	t_point p1;
+	t_point p2;
 
 	point = fdf->mapout;
 	i = -1;
@@ -44,34 +46,36 @@ static void	draw_lines(t_fdf *fdf, char *data, t_img_param *img)
 		{
 			if (i != (fdf->map_height - 1))
 			{
-				draw_line(data, img, point[i * fdf->map_width + j].x + get_start_x(fdf),
-						  point[i * fdf->map_width + j].y + + get_start_y(fdf),
-						  point[(i + 1) * fdf->map_width + j].x + get_start_x(fdf),
-						  point[(i + 1) * fdf->map_width + j].y + + get_start_y(fdf),
-						  point[i * fdf->map_width + j].color, point[(i + 1) * fdf->map_width + j].color);
+				p1.x = point[i * fdf->map_width + j].x + get_start_x(fdf);
+				p1.y = point[i * fdf->map_width + j].y + get_start_y(fdf);
+				p1.color = point[i * fdf->map_width + j].color;
+				p2.x = point[(i + 1) * fdf->map_width + j].x + get_start_x(fdf);
+				p2.y = point[(i + 1) * fdf->map_width + j].y + get_start_y(fdf);
+				p2.color =  point[(i + 1) * fdf->map_width + j].color;
+				draw_line(img, &p1, &p2);
 			}
 			if (j != (fdf->map_width - 1))
 			{
-				draw_line(data, img, point[i * fdf->map_width + j].x + get_start_x(fdf),
-						  point[i * fdf->map_width + j].y + get_start_y(fdf),
-						  point[i * fdf->map_width + j + 1].x + get_start_x(fdf),
-						  point[i * fdf->map_width + j + 1].y + get_start_y(fdf),
-						  point[i * fdf->map_width + j].color, point[i * fdf->map_width + j + 1].color);
+				p1.x = point[i * fdf->map_width + j].x + get_start_x(fdf);
+				p1.y = point[i * fdf->map_width + j].y + get_start_y(fdf);
+				p1.color = point[i * fdf->map_width + j].color;
+				p2.x = point[i * fdf->map_width + j + 1].x + get_start_x(fdf);
+				p2.y = point[i * fdf->map_width + j + 1].y + get_start_y(fdf);
+				p2.color =  point[i * fdf->map_width + j + 1].color;
+				draw_line(img, &p1, &p2);
 			}
 		}
 	}
 }
 
-void		cp_array(t_point *dst, t_point *src, int width, int height)
+void		cp_array(t_point *dst, t_point *src, int size)
 {
 	int		i;
-	int		size;
 
 	i = -1;
-	size = width * height;
 	while (++i < size)
 	{
-		dst->x = src->x;
+		dst->x = src->x;w
 		dst->y = src->y;
 		dst->z = src->z;
 		dst->color = src->color;
@@ -82,30 +86,33 @@ void		cp_array(t_point *dst, t_point *src, int width, int height)
 
 void		do_transformations(t_fdf *fdf)
 {
-	cp_array(fdf->mapout, fdf->srcmap, fdf->map_width, fdf->map_height);
-	set_size_transform(fdf->mapout, fdf->map_width * fdf->map_height, fdf->scale, fdf->z_scale);
-	set_z_transform(fdf->mapout, fdf->map_width, fdf->map_height, get_z_offset(fdf));
-	set_xy_transform(fdf->mapout, fdf->map_width, fdf->map_height, get_xy_offset(fdf));
+	int size;
+
+	size = fdf->map_width * fdf->map_height;
+	cp_array(fdf->mapout, fdf->srcmap, size);
+	set_size_transform(fdf->mapout, size, fdf->scale, fdf->z_scale);
+	set_z_transform(fdf->mapout, size, get_z_offset(fdf));
+	set_x_transform(fdf->mapout, size, get_xy_offset(fdf));
+	set_y_transform(fdf->mapout, size, get_xy_offset(fdf));
 	if (!fdf->parallel)
-		set_iso(fdf->mapout, fdf->map_width, fdf->map_height);
-	colorize_not(fdf->mapout, fdf->map_width * fdf->map_height);
+		set_iso(fdf->mapout, size);
+	colorize_not(fdf->mapout, size);
 }
 
 void		redraw_image(t_fdf *fdf)
 {
-	char			*img_data;
 	t_img_param		img;
 
 	img.height = MAIN_HEIGHT;
 	img.width = MAIN_WIDTH;
-	img_data = mlx_get_data_addr(fdf->main_image, &img.bits_per_pixel,
+	img.data = mlx_get_data_addr(fdf->main_image, &img.bits_per_pixel,
 								 &img.sizeline, &img.endian);
-	if (img_data)
+	if (img.data)
 	{
-		fill_color(img_data, &img, FT_32COLOR(0u,0u,0u,0u));
+		fill_color(img.data, &img, FT_32COLOR(0u,0u,0u,0u));
 		do_transformations(fdf);
-		draw_points(fdf, img_data, &img);
-		draw_lines(fdf, img_data, &img);
+		//draw_points(fdf, &img);
+		draw_lines(fdf, &img);
 	}
 }
 

@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	set_mode(t_fdf *fdf, int mode)
+void		set_mode(t_fdf *fdf, int mode)
 {
 	fdf->z_scale = 0.2;
 	fdf->z_rotate = 0;
@@ -23,11 +23,8 @@ void	set_mode(t_fdf *fdf, int mode)
 	calc_optimal_size(fdf);
 }
 
-int		key_hook(int key, void *param)
+static int 	process_key(t_fdf *fdf, int key)
 {
-	t_fdf *fdf;
-
-	fdf = (t_fdf *)param;
 	if (key == ESC_KEY)
 	{
 		mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
@@ -36,9 +33,9 @@ int		key_hook(int key, void *param)
 	else if (key == ZERO_NUM_KEY || key == ZERO_KEY)
 		calc_optimal_size(fdf);
 	else if (key == ARROW_LEFT_KEY)
-		fdf->z_rotate -=5;
+		fdf->z_rotate -= 5;
 	else if (key == ARROW_RIGHT_KEY)
-		fdf->z_rotate +=5;
+		fdf->z_rotate += 5;
 	else if (key == Z_KEY)
 		fdf->z_scale -= 0.1;
 	else if (key == A_KEY)
@@ -57,7 +54,16 @@ int		key_hook(int key, void *param)
 		redraw_main_screen(fdf);
 		return (0);
 	}
+	return (1);
+}
 
+int			key_hook(int key, void *param)
+{
+	t_fdf *fdf;
+
+	fdf = (t_fdf *)param;
+	if (process_key(fdf, key) == 0)
+		return (0);
 	redraw_image(fdf);
 	ft_sprintf(fdf->str_out, "key: %d", key);
 	ft_printf("%s\n", fdf->str_out);

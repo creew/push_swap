@@ -59,8 +59,8 @@ void	colorise_map(t_point *point, int size)
 	int		i;
 	int		maxz;
 	int		minz;
-	i = -1;
 
+	i = -1;
 	find_min_max(point, size, &minz, &maxz);
 	while (++i < size)
 	{
@@ -70,7 +70,6 @@ void	colorise_map(t_point *point, int size)
 			point->color = get_color(0x964B00, 0xFFFFFF, maxz, point->z);
 		else
 			point->color = get_color(0x00FF00, 0xFFFFFF, -minz, -point->z);
-
 		point++;
 	}
 }

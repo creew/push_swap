@@ -75,8 +75,19 @@ void	calc_optimal_size(t_fdf *fdf)
 
 void	print_usage()
 {
-
-
+	ft_putendl("Usage: program fdfmap");
+	ft_putendl("   Use your mouse with pushed left button for rotate map,");
+	ft_putendl("   or with pushed right button for moving map.");
+	ft_putendl("   Scrolling mouse wheel for changing scale.");
+	ft_putendl("");
+	ft_putendl("Keyboard:");
+	ft_putendl("   A - increment Z scale.");
+	ft_putendl("   Z - decrement Z scale.");
+	ft_putendl("   + - increment common scale.");
+	ft_putendl("   - - decrement common scale.");
+	ft_putendl("   -> - rotate map right.");
+	ft_putendl("   <- - rotate map left.");
+	ft_putendl("   0 - zeroes scale rotate and position.");
 }
 
 void	initfdf(t_fdf *fdf)

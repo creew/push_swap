@@ -26,10 +26,9 @@ void	set_size_transform(t_point *arr, int size, double scale, double zscale)
 	}
 }
 
-void	set_z_transform(t_point *arr, int width, int height, long z)
+void	set_z_transform(t_point *arr, int size, long z)
 {
 	int			i;
-	int			j;
 	t_dpoint	dp;
 	double		cosf;
 	double		sinf;
@@ -37,64 +36,69 @@ void	set_z_transform(t_point *arr, int width, int height, long z)
 	cosf =  cos((double)(z) * M_PI / 180);
 	sinf =  sin((double)(z) * M_PI / 180);
 	i = -1;
-	while (++i < height)
+	while (++i < size)
 	{
-		j = -1;
-		while (++j < width)
-		{
-			dp.x = arr->x * cosf - arr->y * sinf;
-			dp.y = arr->x * sinf + arr->y * cosf;
-			arr->x = (int)(dp.x);
-			arr->y = (int)(dp.y);
-			arr++;
-		}
+		dp.x = arr->x * cosf - arr->y * sinf;
+		dp.y = arr->x * sinf + arr->y * cosf;
+		arr->x = (int)(dp.x);
+		arr->y = (int)(dp.y);
+		arr++;
 	}
 }
 
-void	set_xy_transform(t_point *arr, int width, int height, long xy_rotate)
+void	set_x_transform(t_point *arr, int size, long x_rotate)
 {
 	int			i;
-	int			size;
-	double		cos_xy;
-	double		sin_xy;
+	double		cosf;
+	double		sinf;
 	t_dpoint	dp;
 
-	cos_xy = cos((double)(xy_rotate) * M_PI / 180);
-	sin_xy = sin((double)(xy_rotate) * M_PI / 180);
-	size = width * height;
+	cosf = cos((double)(x_rotate) * M_PI / 180);
+	sinf = sin((double)(x_rotate) * M_PI / 180);
 	i = -1;
 	while (++i < size)
 	{
-		dp.x = arr->x * cos_xy - arr->y * sin_xy * sin_xy +
-			arr->z * cos_xy * sin_xy;
-		dp.y = arr->y * cos_xy + arr->z * sin_xy;
-		dp.z = -arr->x * sin_xy - arr->y * sin_xy * cos_xy +
-			arr->z * cos_xy * cos_xy;
-		arr->x = (int)dp.x;
+		dp.y = arr->y * cosf + arr->z * sinf;
+		dp.z = -arr->y * sinf + arr->z * cosf;
 		arr->y = (int)dp.y;
 		arr->z = (int)dp.z;
 		arr++;
 	}
 }
 
-void	set_iso(t_point *arr, int width, int height)
+void	set_y_transform(t_point *arr, int size, long y_rotate)
+{
+	int			i;
+	double		cosf;
+	double		sinf;
+	t_dpoint	dp;
+
+	cosf = cos((double)(y_rotate) * M_PI / 180);
+	sinf = sin((double)(y_rotate) * M_PI / 180);
+	i = -1;
+	while (++i < size)
+	{
+		dp.x = arr->x * cosf + arr->z * sinf;
+		dp.z = -arr->x * sinf + arr->z * cosf;
+		arr->x = (int)dp.x;
+		arr->z = (int)dp.z;
+		arr++;
+	}
+}
+
+void	set_iso(t_point *arr, int size)
 {
 	int		i;
-	int		j;
 	double	x1;
 	double	y1;
 
 	i = -1;
-	while (++i < height)
+	while (++i < size)
 	{
-		j = -1;
-		while (++j < width)
-		{
-			x1 = (arr->x - arr->y) * FT_COS30;
-			y1 = -arr->z + (arr->x + arr->y) * FT_SIN30;
-			arr->x = (int)x1;
-			arr->y = (int)y1;
-			arr++;
-		}
+		x1 = (arr->x - arr->y) * FT_COS30;
+		y1 = -arr->z + (arr->x + arr->y) * FT_SIN30;
+		arr->x = (int)x1;
+		arr->y = (int)y1;
+		arr++;
 	}
 }

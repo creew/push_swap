@@ -109,6 +109,7 @@
 typedef	unsigned int	t_uint;
 
 typedef struct	s_img_param {
+	char 		*data;
 	int			sizeline;
 	int			endian;
 	int 		bits_per_pixel;
@@ -191,12 +192,14 @@ void			set_key_released(t_mousekeys *keys, int button, int x, int y);
 void			get_key_diff(t_mousekeys *keys, int button, int *x, int *y);
 void			set_current_xy(t_mousekeys *keys, int x, int y);
 int				is_key_pressed(t_mousekeys *keys, int button);
-void			cp_array(t_point *dst, t_point *src, int width, int height);
+void			cp_array(t_point *dst, t_point *src, int size);
 
 void			set_size_transform(t_point *arr, int size, double scale, double zscale);
-void	 		set_z_transform(t_point *arr, int width, int height, long z);
-void			set_iso(t_point *arr, int x, int y);
-void			set_xy_transform(t_point *arr, int width, int height, long xy_rotate);
+void			set_x_transform(t_point *arr, int size, long x_rotate);
+void			set_y_transform(t_point *arr, int size, long y_rotate);
+void	 		set_z_transform(t_point *arr, int size, long z);
+void			set_iso(t_point *arr, int size);
+
 
 int				get_start_x(t_fdf *fdf);
 int 			get_start_y(t_fdf *fdf);
@@ -209,8 +212,8 @@ int				mouse_move(int x, int y, void *param);
 
 int				key_hook(int key, void *param);
 
-void			set_point(char *data, t_img_param *img, int x, int y, int color);
-void			draw_line(char *data, t_img_param *img, int x1, int y1, int x2, int y2, int color1, int color2);
+void			set_point(t_img_param *img, int x, int y, int color);
+void			draw_line(t_img_param *img, t_point *p1, t_point *p2);
 
 void			do_transformations(t_fdf *fdf);
 void			calc_optimal_size(t_fdf *fdf);
