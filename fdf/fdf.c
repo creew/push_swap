@@ -20,13 +20,14 @@ void	print_usage(void)
 	ft_putendl("   Scrolling mouse wheel for changing scale.");
 	ft_putendl("");
 	ft_putendl("Keyboard:");
-	ft_putendl("   A - increment Z scale.");
-	ft_putendl("   Z - decrement Z scale.");
-	ft_putendl("   + - increment common scale.");
-	ft_putendl("   - - decrement common scale.");
+	ft_putendl("   A/Z - increment/decrement Z angle.");
+	ft_putendl("   S/X - increment/decrement X angle.");
+	ft_putendl("   D/C - increment/decrement Y angle.");
+	ft_putendl("   +/- - increment/decrement common scale.");
+	ft_putendl("   up/down - increment/decrement z scale.");
 	ft_putendl("   -> - rotate map right.");
 	ft_putendl("   <- - rotate map left.");
-	ft_putendl("   0 - zeroes scale rotate and position.");
+	ft_putendl("   0 - set iso");
 	ft_putendl("   . - toggle woo/bresenham.");
 }
 
@@ -41,10 +42,14 @@ void	initfdf(t_fdf *fdf)
 
 void	destroy_all_exit(t_fdf *fdf)
 {
-	mlx_destroy_image(fdf->mlx_ptr, fdf->upper_border);
-	mlx_destroy_image(fdf->mlx_ptr, fdf->bottom_border);
-	mlx_destroy_image(fdf->mlx_ptr, fdf->main_image);
-	mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
+	if (fdf->mlx_ptr && fdf->upper_border)
+		mlx_destroy_image(fdf->mlx_ptr, fdf->upper_border);
+	if (fdf->mlx_ptr && fdf->bottom_border)
+		mlx_destroy_image(fdf->mlx_ptr, fdf->bottom_border);
+	if (fdf->mlx_ptr && fdf->main_image)
+		mlx_destroy_image(fdf->mlx_ptr, fdf->main_image);
+	if (fdf->mlx_ptr && fdf->wnd_ptr)
+		mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
 	ft_memdel((void **)&fdf->srcmap);
 	ft_memdel((void **)&fdf->mapout);
 	exit(0);

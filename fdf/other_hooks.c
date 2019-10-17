@@ -31,7 +31,7 @@ int				close_notify(void *param)
 	return (0);
 }
 
-static void 	set_name(char *dst, size_t size, char *src)
+static void		set_name(char *dst, size_t size, char *src)
 {
 	int		len;
 
@@ -45,24 +45,24 @@ static void 	set_name(char *dst, size_t size, char *src)
 
 int				set_hooks(t_fdf *fdf, char *filename)
 {
-	char	buf[64];
+	char	buf[128];
 
 	set_name(buf, sizeof(buf), filename);
 	if (fdf->mlx_ptr)
 	{
 		fdf->wnd_ptr = mlx_new_window(fdf->mlx_ptr, fdf->wnd_width,
-									  fdf->wnd_height, buf);
+			fdf->wnd_height, buf);
 		if (fdf->wnd_ptr)
 		{
-			mlx_hook(fdf->wnd_ptr, KeyPress, KeyPressMask, key_hook, fdf);
-			mlx_hook(fdf->wnd_ptr, Expose, ExposureMask, expose_hook, fdf);
-			mlx_hook(fdf->wnd_ptr, MotionNotify, PointerMotionMask,
-					 mouse_move, fdf);
-			mlx_hook(fdf->wnd_ptr, DestroyNotify, 0, close_notify, fdf);
-			mlx_hook(fdf->wnd_ptr, ButtonPress, ButtonPressMask,
-					 button_pressed, fdf);
-			mlx_hook(fdf->wnd_ptr, ButtonRelease, ButtonReleaseMask,
-					 button_released, fdf);
+			mlx_hook(fdf->wnd_ptr, KEYPRESS, KEYPRESSMASK, key_hook, fdf);
+			mlx_hook(fdf->wnd_ptr, EXPOSE, EXPOSUREMASK, expose_hook, fdf);
+			mlx_hook(fdf->wnd_ptr, MOTIONNOTIFY, POINTERMOTIONMASK,
+				mouse_move, fdf);
+			mlx_hook(fdf->wnd_ptr, DESTROYNOTIFY, 0, close_notify, fdf);
+			mlx_hook(fdf->wnd_ptr, BUTTONPRESS, BUTTONPRESSMASK,
+				button_pressed, fdf);
+			mlx_hook(fdf->wnd_ptr, BUTTONRELEASE, BUTTONRELEASEMASK,
+				button_released, fdf);
 			mlx_do_key_autorepeaton(fdf->mlx_ptr);
 			mlx_loop(fdf->mlx_ptr);
 		}

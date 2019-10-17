@@ -13,17 +13,11 @@
 #ifndef FDF_H
 # define FDF_H
 
-#include <stdlib.h>
-#include <math.h>
-#include "libft.h"
-#include "mlx.h"
-#include "ft_printf.h"
-
-# define FT_COLOR(r,g,b)		(((r & 0xFFu) << 16u) | ((g & 0xFFu) << 8u) | \
-									(b & 0xFFu))
-
-# define FT_32COLOR(r,g,b,a)	(((a & 0xFFu) << 24u) | ((r & 0xFFu) << 16u) | \
-									((g & 0xFFu) << 8u) | (b & 0xFFu))
+# include <stdlib.h>
+# include <math.h>
+# include "libft.h"
+# include "mlx.h"
+# include "ft_printf.h"
 
 # define FT_32COLOR_GET_R(c)	((c >> 16u) & 0xFFu)
 # define FT_32COLOR_GET_G(c)	((c >> 8u) & 0xFFu)
@@ -37,22 +31,26 @@
 # define BROWN_COLOR		(0x964B00)
 
 # ifdef __APPLE__
-#  define KeyPress			(2)
-#  define KeyRelease		(3)
-#  define ButtonPress		(4)
-#  define ButtonRelease		(5)
-#  define MotionNotify		(6)
-#  define Expose			(12)
-#  define DestroyNotify		(17)
+#  define KEYPRESS			(2)
+#  define KEYRELEASE		(3)
+#  define BUTTONPRESS		(4)
+#  define BUTTONRELEASE		(5)
+#  define MOTIONNOTIFY		(6)
+#  define EXPOSE			(12)
+#  define DESTROYNOTIFY		(17)
 
-#  define KeyPressMask		(0)
-#  define PointerMotionMask	(0)
-#  define ButtonPressMask	(0)
-#  define ButtonReleaseMask	(0)
-#  define ExposureMask		(0)
+#  define KEYPRESSMASK		(0)
+#  define POINTERMOTIONMASK	(0)
+#  define BUTTONPRESSMASK	(0)
+#  define BUTTONRELEASEMASK	(0)
+#  define EXPOSUREMASK		(0)
 
 #  define A_KEY				(0)
 #  define Z_KEY				(6)
+#  define S_KEY				(1)
+#  define X_KEY				(7)
+#  define D_KEY				(2)
+#  define C_KEY				(8)
 #  define ONE_KEY			(18)
 #  define ONE_NUM_KEY		(83)
 #  define TWO_KEY			(19)
@@ -70,6 +68,8 @@
 #  define MINUS_NUM_KEY		(78)
 #  define ARROW_LEFT_KEY	(123)
 #  define ARROW_RIGHT_KEY	(124)
+#  define ARROW_UP_KEY		(126)
+#  define ARROW_DOWN_KEY	(125)
 
 #  define WND_WIDTH			(1500)
 #  define WND_HEIGHT		(800)
@@ -107,7 +107,6 @@
 # define BB_HEIGHT				(WND_HEIGHT / 20)
 # define BB_YPOS				(WND_HEIGHT - BB_HEIGHT)
 
-
 # define MAIN_YPOS				(UB_HEIGHT)
 # define MAIN_WIDTH				(WND_WIDTH)
 # define MAIN_HEIGHT			(WND_HEIGHT - UB_HEIGHT - BB_HEIGHT)
@@ -120,12 +119,12 @@
 typedef	unsigned int	t_uint;
 
 typedef struct	s_img_param {
-	char 		*data;
+	char		*data;
 	int			sizeline;
 	int			endian;
-	int 		bits_per_pixel;
+	int			bits_per_pixel;
 	int			height;
-	int 		width;
+	int			width;
 }				t_img_param;
 
 typedef struct	s_dpoint
@@ -140,19 +139,19 @@ typedef struct	s_point
 	int			x;
 	int			y;
 	int			z;
-	int 		color;
+	int			color;
 }				t_point;
 
 typedef struct	s_mousekeys
 {
 	int			but1_pressed;
-	int 		but2_pressed;
-	int 		press2_x;
+	int			but2_pressed;
+	int			press2_x;
 	int			press2_y;
-	int 		press1_x;
+	int			press1_x;
 	int			press1_y;
-	int 		cur_x;
-	int 		cur_y;
+	int			cur_x;
+	int			cur_y;
 }				t_mousekeys;
 
 typedef struct	s_fdf
@@ -160,10 +159,10 @@ typedef struct	s_fdf
 	t_point		*srcmap;
 	t_point		*mapout;
 	int			map_width;
-	int 		map_height;
+	int			map_height;
 	int			wnd_width;
 	int			wnd_height;
-	void 		*mlx_ptr;
+	void		*mlx_ptr;
 	void		*wnd_ptr;
 
 	int			parallel;
@@ -178,13 +177,13 @@ typedef struct	s_fdf
 	long		z_rotate_add;
 	long		x_rotate_add;
 	long		y_rotate_add;
-	int 		shift_x_add;
-	int 		shift_y_add;
+	int			shift_x_add;
+	int			shift_y_add;
 
 	t_mousekeys	mouse_keys;
 
-	int 		shift_x;
-	int 		shift_y;
+	int			shift_x;
+	int			shift_y;
 
 	char		str_out[64];
 	void		*upper_border;
@@ -208,15 +207,15 @@ void			set_current_xy(t_mousekeys *keys, int x, int y);
 int				is_key_pressed(t_mousekeys *keys, int button);
 void			cp_array(t_point *dst, t_point *src, int size);
 
-void			set_size_transform(t_point *arr, int size, double scale, double zscale);
+void			set_size_transform(t_point *arr, int size, double scale,
+						double zscale);
 void			set_x_transform(t_point *arr, int size, long x_rotate);
 void			set_y_transform(t_point *arr, int size, long y_rotate);
-void	 		set_z_transform(t_point *arr, int size, long z);
+void			set_z_transform(t_point *arr, int size, long z);
 void			set_iso(t_point *arr, int size);
 
-
 int				get_start_x(t_fdf *fdf);
-int 			get_start_y(t_fdf *fdf);
+int				get_start_y(t_fdf *fdf);
 long			get_z_offset(t_fdf *fdf);
 long			get_x_offset(t_fdf *fdf);
 long			get_y_offset(t_fdf *fdf);

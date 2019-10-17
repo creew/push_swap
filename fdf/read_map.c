@@ -27,7 +27,7 @@ static int		calc_str_width(char *str, t_point *tp)
 		if (tp)
 		{
 			tp[count].z = (int)val;
-			tp[count].color = FT_COLOR(0, 0, 255);
+			tp[count].color = BLUE_COLOR;
 		}
 		str = end;
 		while (*str != '\0' && *str != ' ')

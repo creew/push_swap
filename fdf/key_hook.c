@@ -18,13 +18,31 @@ void		set_mode(t_fdf *fdf, int mode)
 	fdf->z_rotate = 0;
 	fdf->x_rotate = 0;
 	fdf->y_rotate = 0;
-	fdf->parallel = mode;
-	if (fdf->parallel)
-	{
-		fdf->x_rotate = 60;
-		fdf->y_rotate = 60;
-	}
+	fdf->parallel = 1;
+	if (mode == 0)
+		fdf->x_rotate = 90;
+	if (mode == 1)
+		fdf->y_rotate = 90;
 	calc_optimal_size(fdf, 0);
+}
+
+static int	process_key3(t_fdf *fdf, int key)
+{
+	if (key == Z_KEY)
+		add_rotate(fdf, 0, 0, -5);
+	else if (key == A_KEY)
+		add_rotate(fdf, 0, 0, 5);
+	else if (key == S_KEY)
+		add_rotate(fdf, 5, 0, 0);
+	else if (key == X_KEY)
+		add_rotate(fdf, -5, 0, 0);
+	else if (key == D_KEY)
+		add_rotate(fdf, 0, 5, 0);
+	else if (key == C_KEY)
+		add_rotate(fdf, 0, -5, 0);
+	else
+		return (0);
+	return (1);
 }
 
 static int	process_key2(t_fdf *fdf, int key)
@@ -34,33 +52,31 @@ static int	process_key2(t_fdf *fdf, int key)
 	else if (key == TWO_KEY || key == TWO_NUM_KEY)
 		set_mode(fdf, 1);
 	else if (key == THREE_KEY || key == THREE_NUM_KEY)
-	{
-		colorise_map(fdf->mapout, fdf->map_height * fdf->map_width);
-		redraw_main_screen(fdf);
-		return (0);
-	}
+		set_mode(fdf, 2);
 	else if (key == POINT_KEY || key == POINT_NUM_KEY)
 		fdf->woo = !fdf->woo;
+	else
+		process_key3(fdf, key);
 	return (1);
 }
 
 static int	process_key(t_fdf *fdf, int key)
 {
 	if (key == ESC_KEY)
-	{
-		//mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
 		destroy_all_exit(fdf);
-	}
 	else if (key == ZERO_NUM_KEY || key == ZERO_KEY)
+	{
+		fdf->parallel = 0;
 		calc_optimal_size(fdf, 1);
+	}
 	else if (key == ARROW_LEFT_KEY)
-		fdf->z_rotate -= 5;
+		add_rotate(fdf, 0, 0, -5);
 	else if (key == ARROW_RIGHT_KEY)
-		fdf->z_rotate += 5;
-	else if (key == Z_KEY)
-		fdf->z_scale -= 0.1;
-	else if (key == A_KEY)
+		add_rotate(fdf, 0, 0, 5);
+	else if (key == ARROW_UP_KEY)
 		fdf->z_scale += 0.1;
+	else if (key == ARROW_DOWN_KEY)
+		fdf->z_scale -= 0.1;
 	else if (key == PLUS_KEY || key == PLUS_NUM_KEY)
 		fdf->scale += 0.2;
 	else if (key == MINUS_KEY || key == MINUS_NUM_KEY)

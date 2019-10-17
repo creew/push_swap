@@ -12,7 +12,13 @@
 
 #include "fdf.h"
 
-void	fill_color(t_img_param *img, t_uint setcolor)
+static int	combine_color32(int r, int g, int b, int a)
+{
+	return ((int)(((a & 0xFFu) << 24u) | ((r & 0xFFu) << 16u) |
+	((g & 0xFFu) << 8u) | (b & 0xFFu)));
+}
+
+void		fill_color(t_img_param *img, t_uint setcolor)
 {
 	char	*color;
 	char	*data;
@@ -37,7 +43,7 @@ void	fill_color(t_img_param *img, t_uint setcolor)
 	}
 }
 
-int		init_upper_border(t_fdf *fdf)
+int			init_upper_border(t_fdf *fdf)
 {
 	t_img_param		img;
 
@@ -49,12 +55,12 @@ int		init_upper_border(t_fdf *fdf)
 		img.data = mlx_get_data_addr(fdf->upper_border, &img.bits_per_pixel,
 			&img.sizeline, &img.endian);
 		if (img.data)
-			fill_color(&img, FT_32COLOR(255u, 0u, 0u, 10u));
+			fill_color(&img, combine_color32(255u, 0u, 0u, 10u));
 	}
 	return (RET_OK);
 }
 
-int		init_bottom_border(t_fdf *fdf)
+int			init_bottom_border(t_fdf *fdf)
 {
 	t_img_param		img;
 
@@ -66,12 +72,12 @@ int		init_bottom_border(t_fdf *fdf)
 		img.data = mlx_get_data_addr(fdf->bottom_border, &img.bits_per_pixel,
 			&img.sizeline, &img.endian);
 		if (img.data)
-			fill_color(&img, FT_32COLOR(0u, 255u, 0u, 10u));
+			fill_color(&img, combine_color32(0u, 255u, 0u, 10u));
 	}
 	return (RET_OK);
 }
 
-int		init_main_image(t_fdf *fdf)
+int			init_main_image(t_fdf *fdf)
 {
 	t_img_param		img;
 
@@ -83,7 +89,7 @@ int		init_main_image(t_fdf *fdf)
 		img.data = mlx_get_data_addr(fdf->main_image, &img.bits_per_pixel,
 			&img.sizeline, &img.endian);
 		if (img.data)
-			fill_color(&img, FT_32COLOR(0u, 0u, 0u, 0u));
+			fill_color(&img, combine_color32(0u, 0u, 0u, 0u));
 	}
 	return (RET_OK);
 }

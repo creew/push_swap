@@ -50,7 +50,7 @@ int			get_color(int color1, int color2, int total, int step)
 	}
 	else
 		return (color1);
-	return ((int)(FT_COLOR(r, g, b)));
+	return ((int)((r & 0xFFu) << 16u | (g & 0xFFu) << 8u | (b & 0xFFu)));
 }
 
 static void	draw_point_st(t_img_param *img, int st, t_point *p)
