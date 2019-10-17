@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-void	set_point(t_img_param *img, int x, int y, int color)
+void		set_point(t_img_param *img, int x, int y, int color)
 {
 	char *data;
 
@@ -28,7 +28,7 @@ void	set_point(t_img_param *img, int x, int y, int color)
 	}
 }
 
-int		get_color(int color1, int color2, int total, int step)
+int			get_color(int color1, int color2, int total, int step)
 {
 	t_uint	r;
 	t_uint	g;
@@ -53,55 +53,60 @@ int		get_color(int color1, int color2, int total, int step)
 	return ((int)(FT_COLOR(r, g, b)));
 }
 
-void	draw_line(t_img_param *img, t_point *p1, t_point *p2)
+static void	draw_point_st(t_img_param *img, int st, t_point *p)
 {
-	t_point		len;
-	t_point		d;
-	t_point		xy;
-	int			length;
-	int			delta;
-
-	len.x = p2->x - p1->x;
-	len.y = p2->y - p1->y;
-	d.x = len.x >= 0 ? 1 : -1;
-	d.y = len.y >= 0 ? 1 : -1;
-	len.x = len.x < 0 ? -len.x : len.x;
-	len.y = len.y < 0 ? -len.y : len.y;
-	if (len.x == 0 && len.y == 0)
-		set_point(img, p1->x, p1->y, get_color(p1->color, p2->color, 2, 1));
-	xy.x = p1->x;
-	xy.y = p1->y;
-	if (len.y <= len.x)
-	{
-		delta = -len.x;
-		length = len.x + 1;
-		while (length--)
-		{
-			set_point(img, xy.x, xy.y, get_color(p1->color, p2->color, len.x + 1, len.x + 1 - length));
-			xy.x += d.x;
-			delta += 2 * len.y;
-			if (delta > 0)
-			{
-				delta -= 2 * len.x;
-				xy.y += d.y;
-			}
-		}
-	}
+	if (st & 1)
+		set_point(img, p->y, p->x, p->color);
 	else
+		set_point(img, p->x, p->y, p->color);
+}
+
+static void	process_line(t_img_param *img, t_point *p1, t_point *p2, int st)
+{
+	t_point		lp;
+	int			delta;
+	int			len_x;
+	int			len_y;
+
+	len_x = p2->x - p1->x;
+	len_y = ft_abs(p2->y - p1->y);
+	delta = -len_x;
+	lp.y = p1->y;
+	lp.x = p1->x;
+	while (lp.x <= p2->x)
 	{
-		delta = -len.y;
-		length = len.y + 1;
-		while (length--)
+		lp.color = get_color(st & 2 ? p2->color : p1->color, st & 2 ?
+			p1->color : p2->color, p2->x - p1->x, lp.x - p1->x);
+		draw_point_st(img, st, &lp);
+		delta += 2 * len_y;
+		if (delta > 0)
 		{
-			set_point(img, xy.x, xy.y, get_color(p1->color, p2->color, len.y + 1, len.y + 1 - length));
-			xy.y += d.y;
-			delta += 2 * len.x;
-			if (delta > 0)
-			{
-				delta -= 2 * len.y;
-				xy.x += d.x;
-			}
+			delta -= 2 * len_x;
+			lp.y += p2->y >= p1->y ? 1 : -1;
 		}
+		lp.x++;
 	}
 }
 
+void		draw_line(t_img_param *img, t_point *p1, t_point *p2)
+{
+	int			st;
+	t_point		lp1;
+	t_point		lp2;
+
+	st = ft_abs(p2->y - p1->y) > ft_abs(p2->x - p1->x) ? 1 : 0;
+	tpoint_copy(&lp1, p1);
+	tpoint_copy(&lp2, p2);
+	if (st)
+	{
+		swap_int(&lp1.x, &lp1.y);
+		swap_int(&lp2.x, &lp2.y);
+	}
+	if (lp1.x > lp2.x)
+	{
+		swap_int(&lp1.x, &lp2.x);
+		swap_int(&lp1.y, &lp2.y);
+		st |= 2;
+	}
+	process_line(img, &lp1, &lp2, st);
+}

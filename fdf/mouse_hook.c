@@ -12,7 +12,7 @@
 
 #include "fdf.h"
 
-int		button_pressed(int button, int x, int y, void *param)
+int			button_pressed(int button, int x, int y, void *param)
 {
 	t_fdf *fdf;
 
@@ -29,13 +29,11 @@ int		button_pressed(int button, int x, int y, void *param)
 		fdf->scale -= 0.2;
 		redraw_image(fdf);
 	}
-	ft_sprintf(fdf->str_out, "button pressed: %d, x: %d, y: %d", button, x, y);
-	ft_printf("%s\n", fdf->str_out);
 	redraw_main_screen(fdf);
 	return (0);
 }
 
-int		button_released(int button, int x, int y, void *param)
+int			button_released(int button, int x, int y, void *param)
 {
 	t_fdf	*fdf;
 	int		diffx;
@@ -48,31 +46,22 @@ int		button_released(int button, int x, int y, void *param)
 		if (button == 1)
 		{
 			get_key_diff(&fdf->mouse_keys, 1, &diffx, &diffy);
-			fdf->z_rotate += (diffx) / 10 % 360;
-			fdf->x_rotate += (diffy) / 10 % 360;
-			fdf->y_rotate += (diffy) / 10 % 360;
-			fdf->z_rotate_add = 0;
-			fdf->x_rotate_add = 0;
-			fdf->y_rotate_add = 0;
-			redraw_image(fdf);
+			add_rotate(fdf, diffy / 10, diffy / 10, diffx / 10);
+			set_rotate_add(fdf, 0, 0, 0);
 		}
 		else if (button == 2)
 		{
 			get_key_diff(&fdf->mouse_keys, 2, &diffx, &diffy);
-			fdf->shift_x += diffx;
-			fdf->shift_y += diffy;
-			fdf->shift_y_add = 0;
-			fdf->shift_x_add = 0;
-			redraw_image(fdf);
+			add_shift(fdf, diffx, diffy);
+			set_shift_add(fdf, 0, 0);
 		}
+		redraw_image(fdf);
 	}
-	ft_sprintf(fdf->str_out, "button released: %d, x: %d, y: %d", button, x, y);
-	ft_printf("%s\n", fdf->str_out);
 	redraw_main_screen(fdf);
 	return (0);
 }
 
-int		mouse_move(int x, int y, void *param)
+int			mouse_move(int x, int y, void *param)
 {
 	t_fdf	*fdf;
 	int		diffx;
@@ -85,20 +74,15 @@ int		mouse_move(int x, int y, void *param)
 		if (is_key_pressed(&fdf->mouse_keys, 1))
 		{
 			get_key_diff(&fdf->mouse_keys, 1, &diffx, &diffy);
-			fdf->z_rotate_add = diffx / 10 % 360;
-			fdf->x_rotate_add = diffy / 10 % 360;
-			fdf->y_rotate_add = diffy / 10 % 360;
+			set_rotate_add(fdf, diffy / 10, diffy / 10, diffx / 10);
 			redraw_image(fdf);
 		}
 		if (is_key_pressed(&fdf->mouse_keys, 2))
 		{
 			get_key_diff(&fdf->mouse_keys, 2, &diffx, &diffy);
-			fdf->shift_x_add = diffx;
-			fdf->shift_y_add = diffy;
+			set_shift_add(fdf, diffx, diffy);
 			redraw_image(fdf);
 		}
 	}
-	ft_sprintf(fdf->str_out, "mouse move x: %d, y: %d", x, y);
-	redraw_main_screen(fdf);
 	return (0);
 }

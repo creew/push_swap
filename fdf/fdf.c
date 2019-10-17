@@ -12,26 +12,7 @@
 
 #include "fdf.h"
 
-int		expose_hook(void *param)
-{
-	t_fdf *fdf;
-
-	fdf = (t_fdf *)param;
-	ft_sprintf(fdf->str_out, "exposure");
-	redraw_main_screen(fdf);
-	return (0);
-}
-
-int		close_notify(void *param)
-{
-	t_fdf *fdf;
-
-	fdf = (t_fdf *)param;
-	mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
-	exit(0);
-}
-
-void	print_usage()
+void	print_usage(void)
 {
 	ft_putendl("Usage: program fdfmap");
 	ft_putendl("   Use your mouse with pushed left button for rotate map,");
@@ -58,6 +39,30 @@ void	initfdf(t_fdf *fdf)
 	fdf->z_scale = 0.2;
 }
 
+int		set_hooks(t_fdf *fdf)
+{
+	if (fdf->mlx_ptr)
+	{
+		fdf->wnd_ptr = mlx_new_window(fdf->mlx_ptr, fdf->wnd_width,
+			fdf->wnd_height, "Превед!");
+		if (fdf->wnd_ptr)
+		{
+			mlx_hook(fdf->wnd_ptr, KeyPress, KeyPressMask, key_hook, fdf);
+			mlx_hook(fdf->wnd_ptr, Expose, ExposureMask, expose_hook, fdf);
+			mlx_hook(fdf->wnd_ptr, MotionNotify, PointerMotionMask,
+				mouse_move, fdf);
+			mlx_hook(fdf->wnd_ptr, DestroyNotify, 0, close_notify, fdf);
+			mlx_hook(fdf->wnd_ptr, ButtonPress, ButtonPressMask,
+				button_pressed, fdf);
+			mlx_hook(fdf->wnd_ptr, ButtonRelease, ButtonReleaseMask,
+				button_released, fdf);
+			mlx_do_key_autorepeaton(fdf->mlx_ptr);
+			mlx_loop(fdf->mlx_ptr);
+		}
+	}
+	return (RET_OK);
+}
+
 int		main(int ac, char *av[])
 {
 	t_fdf fdf;
@@ -79,22 +84,8 @@ int		main(int ac, char *av[])
 	init_upper_border(&fdf);
 	init_bottom_border(&fdf);
 	init_main_image(&fdf);
-	calc_optimal_size(&fdf);
+	calc_optimal_size(&fdf, 1);
 	redraw_image(&fdf);
-	if (fdf.mlx_ptr)
-	{
-		fdf.wnd_ptr = mlx_new_window(fdf.mlx_ptr, fdf.wnd_width, fdf.wnd_height, "Превед!");
-		if (fdf.wnd_ptr)
-		{
-			mlx_hook(fdf.wnd_ptr, KeyPress, KeyPressMask, key_hook, &fdf);
-			mlx_hook(fdf.wnd_ptr, Expose, ExposureMask , expose_hook, &fdf);
-			mlx_hook(fdf.wnd_ptr, MotionNotify, PointerMotionMask, mouse_move, &fdf);
-			mlx_hook(fdf.wnd_ptr, DestroyNotify, 0, close_notify, &fdf);
-			mlx_hook(fdf.wnd_ptr, ButtonPress, ButtonPressMask, button_pressed, &fdf);
-			mlx_hook(fdf.wnd_ptr, ButtonRelease, ButtonReleaseMask, button_released, &fdf);
-			mlx_do_key_autorepeaton(fdf.mlx_ptr);
-			mlx_loop(fdf.mlx_ptr);
-		}
-	}
+	set_hooks(&fdf);
 	return (0);
 }

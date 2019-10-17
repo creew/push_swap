@@ -41,7 +41,7 @@ static void	calc_limits(t_point *map, int size, t_point *wh, t_point *start)
 	wh->y = ft_abs(wh->y - start->y);
 }
 
-void		calc_optimal_size(t_fdf *fdf)
+void		calc_optimal_size(t_fdf *fdf, int clear)
 {
 	t_point		start;
 	t_point		wh;
@@ -53,9 +53,12 @@ void		calc_optimal_size(t_fdf *fdf)
 	fdf->scale = 1;
 	fdf->shift_x = 0;
 	fdf->shift_y = 0;
-	fdf->x_rotate = 0;
-	fdf->y_rotate = 0;
-	fdf->z_rotate = 0;
+	if (clear)
+	{
+		fdf->x_rotate = 0;
+		fdf->y_rotate = 0;
+		fdf->z_rotate = 0;
+	}
 	do_transformations(fdf);
 	calc_limits(fdf->mapout, fdf->map_width * fdf->map_height, &wh, &start);
 	fdf->scale = MIN(main_height / wh.y, main_width / wh.x) * 0.99;

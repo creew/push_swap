@@ -12,34 +12,34 @@
 
 #include "fdf.h"
 
-void 	tpoint_copy(t_point *dst, t_point *src)
+void		tpoint_copy(t_point *dst, t_point *src)
 {
 	ft_memcpy(dst, src, sizeof(*src));
 }
 
-void 	swap_int(int *a, int *b)
+void		swap_int(int *a, int *b)
 {
-	int 	c;
+	int		c;
 
 	c = *a;
 	*a = *b;
 	*b = c;
 }
 
-void 	draw_point_st(t_img_param *img, int st, t_point *p, double intens)
+static void	draw_point_st(t_img_param *img, int st, t_point *p, double intens)
 {
-	int color;
+	unsigned int color;
 
 	color = ((t_uint)(((p->color >> 16) & 0xFF) * intens) << 16) +
 		((t_uint)(((p->color >> 8) & 0xFF) * intens) << 8) +
 		((t_uint)(((p->color) & 0xFF) * intens));
 	if (st & 1)
-		set_point(img, p->y, p->x, color);
+		set_point(img, p->y, p->x, (int)color);
 	else
-		set_point(img, p->x, p->y, color);
+		set_point(img, p->x, p->y, (int)color);
 }
 
-void 	process_woo(t_img_param *img, t_point *p1, t_point *p2, int st)
+static void	process_woo(t_img_param *img, t_point *p1, t_point *p2, int st)
 {
 	t_point		lp;
 	double		dx;
@@ -54,10 +54,8 @@ void 	process_woo(t_img_param *img, t_point *p1, t_point *p2, int st)
 	lp.x = p1->x + 1;
 	while (lp.x <= (p2->x - 1))
 	{
-		if (st == 0 || st == 1)
-			lp.color = get_color(p1->color, p2->color, p2->x - p1->x - 2, lp.x - p1->x - 1);
-		else
-			lp.color = get_color(p2->color, p1->color, p2->x - p1->x - 2, lp.x - p1->x - 1);
+		lp.color = get_color(st & 2 ? p2->color : p1->color, st & 2 ?
+			p1->color : p2->color, p2->x - p1->x - 2, lp.x - p1->x - 1);
 		lp.y = (int)y;
 		draw_point_st(img, st, &lp, 1 - (y - (int)y));
 		lp.y = (int)y + 1;
@@ -67,7 +65,7 @@ void 	process_woo(t_img_param *img, t_point *p1, t_point *p2, int st)
 	}
 }
 
-void	draw_woo(t_img_param *img, t_point *p1, t_point *p2)
+void		draw_woo(t_img_param *img, t_point *p1, t_point *p2)
 {
 	int			st;
 	t_point		lp1;
@@ -87,7 +85,7 @@ void	draw_woo(t_img_param *img, t_point *p1, t_point *p2)
 		swap_int(&lp1.y, &lp2.y);
 		st |= 2;
 	}
-	draw_point_st(img, st, &lp1, 1); // Эта функция автоматом меняет координаты местами в зависимости от переменной steep
-	draw_point_st(img, st, &lp2, 1); // Последний аргумент — интенсивность в долях единицы
+	draw_point_st(img, st, &lp1, 1);
+	draw_point_st(img, st, &lp2, 1);
 	process_woo(img, &lp1, &lp2, st);
 }

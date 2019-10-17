@@ -24,7 +24,7 @@ void		set_mode(t_fdf *fdf, int mode)
 		fdf->x_rotate = 60;
 		fdf->y_rotate = 60;
 	}
-	calc_optimal_size(fdf);
+	calc_optimal_size(fdf, 0);
 }
 
 static int	process_key2(t_fdf *fdf, int key)
@@ -52,7 +52,7 @@ static int	process_key(t_fdf *fdf, int key)
 		exit(0);
 	}
 	else if (key == ZERO_NUM_KEY || key == ZERO_KEY)
-		calc_optimal_size(fdf);
+		calc_optimal_size(fdf, 1);
 	else if (key == ARROW_LEFT_KEY)
 		fdf->z_rotate -= 5;
 	else if (key == ARROW_RIGHT_KEY)

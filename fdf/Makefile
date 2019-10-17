@@ -19,7 +19,9 @@ SRCS =	fdf.c \
 		colorize_map.c \
 		normalize_map.c \
 		do_transform.c \
-		draw_woo.c
+		draw_woo.c \
+		other_hooks.c \
+		setters.c
 
 OBJS = $(SRCS:.c=.o)
 

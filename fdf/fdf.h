@@ -232,10 +232,21 @@ void			draw_line(t_img_param *img, t_point *p1, t_point *p2);
 void			draw_woo(t_img_param *img, t_point *p1, t_point *p2);
 void			do_transformations(t_fdf *fdf);
 
-void			calc_optimal_size(t_fdf *fdf);
+void			calc_optimal_size(t_fdf *fdf, int clear);
 void			normalize_map(t_point *point, int width, int height);
 
 int				get_color(int color1, int color2, int total, int step);
 void			colorize_not(t_point *point, int size);
 void			colorise_map(t_point *point, int size);
+
+void			tpoint_copy(t_point *dst, t_point *src);
+void			swap_int(int *a, int *b);
+
+int				expose_hook(void *param);
+int				close_notify(void *param);
+
+void			add_rotate(t_fdf *fdf, int x, int y, int z);
+void			set_rotate_add(t_fdf *fdf, int x, int y, int z);
+void			add_shift(t_fdf *fdf, int x, int y);
+void			set_shift_add(t_fdf *fdf, int x, int y);
 #endif
