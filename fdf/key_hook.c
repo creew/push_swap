@@ -20,7 +20,7 @@ void		set_mode(t_fdf *fdf, int mode)
 	fdf->y_rotate = 0;
 	fdf->parallel = 1;
 	if (mode == 0)
-		fdf->x_rotate = 90;
+		fdf->x_rotate = 270;
 	if (mode == 1)
 		fdf->y_rotate = 90;
 	calc_optimal_size(fdf, 0);
