@@ -136,4 +136,8 @@ int				ft_queue_add(t_ftqueue **queue, void *data);
 int				ft_queue_poll(t_ftqueue **queue, void **data);
 
 long			ft_strtol(const char *nptr, char **endptr, int base);
+
+int				ft_abs(int a);
+int				ft_min(int a, int b);
+int				ft_max(int a, int b);
 #endif

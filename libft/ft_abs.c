@@ -1,30 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_abs.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/09/05 17:04:29 by eklompus          #+#    #+#             */
-/*   Updated: 2019/09/19 19:29:41 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/17 09:00:14 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/17 09:00:15 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# define BUFF_SIZE (256)
-
-typedef struct	s_fddata
+int		ft_abs(int a)
 {
-	int				fd;
-	int				eof;
-	char			*buf;
-	char			*str;
-	unsigned long	str_len;
-	unsigned long	str_size;
-}				t_fddata;
-
-int				get_next_line(const int fd, char **line);
-
-#endif
+	return (a < 0 ? -a : a);
+}
