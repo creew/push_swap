@@ -37,6 +37,6 @@ void	add_shift(t_fdf *fdf, int x, int y)
 
 void	set_shift_add(t_fdf *fdf, int x, int y)
 {
-	fdf->x_rotate_add = x;
-	fdf->y_rotate_add = y;
+	fdf->shift_x_add = x;
+	fdf->shift_y_add = y;
 }

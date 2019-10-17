@@ -242,6 +242,7 @@ void			colorise_map(t_point *point, int size);
 void			tpoint_copy(t_point *dst, t_point *src);
 void			swap_int(int *a, int *b);
 
+int				set_hooks(t_fdf *fdf, char *filename);
 int				expose_hook(void *param);
 int				close_notify(void *param);
 
@@ -249,4 +250,6 @@ void			add_rotate(t_fdf *fdf, int x, int y, int z);
 void			set_rotate_add(t_fdf *fdf, int x, int y, int z);
 void			add_shift(t_fdf *fdf, int x, int y);
 void			set_shift_add(t_fdf *fdf, int x, int y);
+
+void			destroy_all_exit(t_fdf *fdf);
 #endif

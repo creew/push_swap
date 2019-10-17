@@ -5,7 +5,8 @@ CC = gcc
 
 CC_FLAGS = -Wall -Wextra $(CC_FLAG_ERR)
 
-CC_FLAG_ERR = #-Werror
+CC_FLAG_ERR = -Werror
+
 SRCS =	fdf.c \
 		read_map.c \
 		init_images.c \
@@ -46,7 +47,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	make -C $(LIBFT_DIR)
-	#make -C $(MINILIBX_DIR)
+	make -C $(MMINILIBX_DIR)
 	make -C $(FT_PRINTF_DIR)
 	$(CC) $(CC_FLAGS) $(OBJS) $(LINC) $(LLIBS) $(MFRAMEWORKS) -o $@
 
@@ -55,13 +56,13 @@ $(NAME): $(OBJS)
 
 clean:
 	make clean -C $(LIBFT_DIR)
-	#make clean -C $(MINILIBX_DIR)
+	make clean -C $(MMINILIBX_DIR)
 	make clean -C $(FT_PRINTF_DIR)
 	rm -f $(OBJS)
 
 fclean: clean
 	rm -f $(LIBFT_DIR)/lib$(LIBFT_LIB).a
-	#rm -f $(MINILIBX_DIR)/lib$(MINILIBX_LIB).a
+	rm -f $(MMINILIBX_DIR)/lib$(MINILIBX_LIB).a
 	rm -f $(FT_PRINTF_DIR)/lib$(FT_PRINTF_LIB).a
 	rm -f $(NAME)
 

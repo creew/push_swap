@@ -84,5 +84,6 @@ int			mouse_move(int x, int y, void *param)
 			redraw_image(fdf);
 		}
 	}
+	redraw_main_screen(fdf);
 	return (0);
 }

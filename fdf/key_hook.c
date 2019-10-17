@@ -48,8 +48,8 @@ static int	process_key(t_fdf *fdf, int key)
 {
 	if (key == ESC_KEY)
 	{
-		mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
-		exit(0);
+		//mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
+		destroy_all_exit(fdf);
 	}
 	else if (key == ZERO_NUM_KEY || key == ZERO_KEY)
 		calc_optimal_size(fdf, 1);

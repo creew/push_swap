@@ -33,7 +33,7 @@ static void	draw_point_st(t_img_param *img, int st, t_point *p, double intens)
 	color = ((t_uint)(((p->color >> 16) & 0xFF) * intens) << 16) +
 		((t_uint)(((p->color >> 8) & 0xFF) * intens) << 8) +
 		((t_uint)(((p->color) & 0xFF) * intens));
-	if (st & 1)
+	if (st)
 		set_point(img, p->y, p->x, (int)color);
 	else
 		set_point(img, p->x, p->y, (int)color);
@@ -54,8 +54,8 @@ static void	process_woo(t_img_param *img, t_point *p1, t_point *p2, int st)
 	lp.x = p1->x + 1;
 	while (lp.x <= (p2->x - 1))
 	{
-		lp.color = get_color(st & 2 ? p2->color : p1->color, st & 2 ?
-			p1->color : p2->color, p2->x - p1->x - 2, lp.x - p1->x - 1);
+		lp.color = get_color(p1->color, p2->color, p2->x - p1->x - 2,
+			lp.x - p1->x - 1);
 		lp.y = (int)y;
 		draw_point_st(img, st, &lp, 1 - (y - (int)y));
 		lp.y = (int)y + 1;
@@ -71,7 +71,7 @@ void		draw_woo(t_img_param *img, t_point *p1, t_point *p2)
 	t_point		lp1;
 	t_point		lp2;
 
-	st = ft_abs(p2->y - p1->y) > ft_abs(p2->x - p1->x) ? 1 : 0;
+	st = ft_abs(p2->y - p1->y) > ft_abs(p2->x - p1->x);
 	tpoint_copy(&lp1, p1);
 	tpoint_copy(&lp2, p2);
 	if (st)
@@ -83,7 +83,7 @@ void		draw_woo(t_img_param *img, t_point *p1, t_point *p2)
 	{
 		swap_int(&lp1.x, &lp2.x);
 		swap_int(&lp1.y, &lp2.y);
-		st |= 2;
+		swap_int(&lp1.color, &lp2.color);
 	}
 	draw_point_st(img, st, &lp1, 1);
 	draw_point_st(img, st, &lp2, 1);

@@ -39,33 +39,44 @@ void	initfdf(t_fdf *fdf)
 	fdf->z_scale = 0.2;
 }
 
-int		set_hooks(t_fdf *fdf)
+void	destroy_all_exit(t_fdf *fdf)
 {
-	if (fdf->mlx_ptr)
+	mlx_destroy_image(fdf->mlx_ptr, fdf->upper_border);
+	mlx_destroy_image(fdf->mlx_ptr, fdf->bottom_border);
+	mlx_destroy_image(fdf->mlx_ptr, fdf->main_image);
+	mlx_destroy_window(fdf->mlx_ptr, fdf->wnd_ptr);
+	ft_memdel((void **)&fdf->srcmap);
+	ft_memdel((void **)&fdf->mapout);
+	exit(0);
+}
+
+void	process_file(t_fdf *fdf, char *name)
+{
+	int		ret;
+
+	if ((ret = read_file(name, fdf)) != RET_OK)
 	{
-		fdf->wnd_ptr = mlx_new_window(fdf->mlx_ptr, fdf->wnd_width,
-			fdf->wnd_height, "Превед!");
-		if (fdf->wnd_ptr)
+		if (ret == ERR_CAN_T_OPEN_FILE)
 		{
-			mlx_hook(fdf->wnd_ptr, KeyPress, KeyPressMask, key_hook, fdf);
-			mlx_hook(fdf->wnd_ptr, Expose, ExposureMask, expose_hook, fdf);
-			mlx_hook(fdf->wnd_ptr, MotionNotify, PointerMotionMask,
-				mouse_move, fdf);
-			mlx_hook(fdf->wnd_ptr, DestroyNotify, 0, close_notify, fdf);
-			mlx_hook(fdf->wnd_ptr, ButtonPress, ButtonPressMask,
-				button_pressed, fdf);
-			mlx_hook(fdf->wnd_ptr, ButtonRelease, ButtonReleaseMask,
-				button_released, fdf);
-			mlx_do_key_autorepeaton(fdf->mlx_ptr);
-			mlx_loop(fdf->mlx_ptr);
+			ft_putstr("Can't open file: ");
+			ft_putendl(name);
 		}
+		else if (ret == ERR_NOT_EQUAL_WIDTH)
+		{
+			ft_putstr("Wrong file format file: ");
+			ft_putendl(name);
+		}
+		else if (ret == ERR_ENOMEM)
+			ft_putendl("Can't allocate memory");
+		else
+			ft_putendl("Unknown error");
+		destroy_all_exit(fdf);
 	}
-	return (RET_OK);
 }
 
 int		main(int ac, char *av[])
 {
-	t_fdf fdf;
+	t_fdf	fdf;
 
 	if (ac < 2)
 	{
@@ -73,12 +84,8 @@ int		main(int ac, char *av[])
 		exit(0);
 	}
 	initfdf(&fdf);
-	if (read_file(av[1], &fdf) != RET_OK)
-	{
-		exit(0);
-	}
+	process_file(&fdf, av[1]);
 	normalize_map(fdf.srcmap, fdf.map_width, fdf.map_height);
-	colorize_not(fdf.srcmap, fdf.map_width * fdf.map_height);
 	fdf.mlx_ptr = mlx_init();
 	fdf.mapout = malloc(sizeof(t_point) * fdf.map_width * fdf.map_height);
 	init_upper_border(&fdf);
@@ -86,6 +93,6 @@ int		main(int ac, char *av[])
 	init_main_image(&fdf);
 	calc_optimal_size(&fdf, 1);
 	redraw_image(&fdf);
-	set_hooks(&fdf);
+	set_hooks(&fdf, av[1]);
 	return (0);
 }
