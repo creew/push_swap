@@ -17,7 +17,6 @@ int				expose_hook(void *param)
 	t_fdf *fdf;
 
 	fdf = (t_fdf *)param;
-	ft_sprintf(fdf->str_out, "exposure");
 	redraw_main_screen(fdf);
 	return (0);
 }

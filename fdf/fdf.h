@@ -185,7 +185,6 @@ typedef struct	s_fdf
 	int			shift_x;
 	int			shift_y;
 
-	char		str_out[64];
 	void		*upper_border;
 	void		*bottom_border;
 	void		*main_image;

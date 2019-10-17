@@ -97,8 +97,6 @@ int			key_hook(int key, void *param)
 	if (process_key(fdf, key) == 0)
 		return (0);
 	redraw_image(fdf);
-	ft_sprintf(fdf->str_out, "key: %d", key);
-	ft_printf("%s\n", fdf->str_out);
 	redraw_main_screen(fdf);
 	return (0);
 }
