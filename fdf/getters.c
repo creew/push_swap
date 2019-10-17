@@ -27,7 +27,12 @@ long		get_z_offset(t_fdf *fdf)
 	return (fdf->z_rotate + fdf->z_rotate_add);
 }
 
-long		get_xy_offset(t_fdf *fdf)
+long		get_x_offset(t_fdf *fdf)
 {
-	return (fdf->xy_rotate + fdf->xy_rotate_add);
+	return (fdf->x_rotate + fdf->x_rotate_add);
+}
+
+long		get_y_offset(t_fdf *fdf)
+{
+	return (fdf->y_rotate + fdf->y_rotate_add);
 }

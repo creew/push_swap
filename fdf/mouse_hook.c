@@ -49,9 +49,11 @@ int		button_released(int button, int x, int y, void *param)
 		{
 			get_key_diff(&fdf->mouse_keys, 1, &diffx, &diffy);
 			fdf->z_rotate += (diffx) / 10 % 360;
-			fdf->xy_rotate += (diffy) / 10 % 360;
+			fdf->x_rotate += (diffy) / 10 % 360;
+			fdf->y_rotate += (diffy) / 10 % 360;
 			fdf->z_rotate_add = 0;
-			fdf->xy_rotate_add = 0;
+			fdf->x_rotate_add = 0;
+			fdf->y_rotate_add = 0;
 			redraw_image(fdf);
 		}
 		else if (button == 2)
@@ -84,7 +86,8 @@ int		mouse_move(int x, int y, void *param)
 		{
 			get_key_diff(&fdf->mouse_keys, 1, &diffx, &diffy);
 			fdf->z_rotate_add = diffx / 10 % 360;
-			fdf->xy_rotate_add = diffy / 10 % 360;
+			fdf->x_rotate_add = diffy / 10 % 360;
+			fdf->y_rotate_add = diffy / 10 % 360;
 			redraw_image(fdf);
 		}
 		if (is_key_pressed(&fdf->mouse_keys, 2))

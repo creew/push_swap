@@ -46,6 +46,7 @@ void	print_usage()
 	ft_putendl("   -> - rotate map right.");
 	ft_putendl("   <- - rotate map left.");
 	ft_putendl("   0 - zeroes scale rotate and position.");
+	ft_putendl("   . - toggle woo/bresenham.");
 }
 
 void	initfdf(t_fdf *fdf)

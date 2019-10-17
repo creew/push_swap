@@ -16,10 +16,14 @@ void		set_mode(t_fdf *fdf, int mode)
 {
 	fdf->z_scale = 0.2;
 	fdf->z_rotate = 0;
-	fdf->xy_rotate = 0;
+	fdf->x_rotate = 0;
+	fdf->y_rotate = 0;
 	fdf->parallel = mode;
 	if (fdf->parallel)
-		fdf->xy_rotate = 60;
+	{
+		fdf->x_rotate = 60;
+		fdf->y_rotate = 60;
+	}
 	calc_optimal_size(fdf);
 }
 
@@ -35,6 +39,8 @@ static int	process_key2(t_fdf *fdf, int key)
 		redraw_main_screen(fdf);
 		return (0);
 	}
+	else if (key == POINT_KEY || key == POINT_NUM_KEY)
+		fdf->woo = !fdf->woo;
 	return (1);
 }
 

@@ -43,11 +43,13 @@ static void	draw_lines(t_fdf *fdf, t_img_param *img)
 		while (++j < fdf->map_width)
 		{
 			if (i != (fdf->map_height - 1))
-				draw_line(img, &point[i * fdf->map_width + j],
-					&point[(i + 1) * fdf->map_width + j]);
+				fdf->woo ? draw_woo(img, point, point + fdf->map_width) :
+				draw_line(img, point, point + fdf->map_width);
+
 			if (j != (fdf->map_width - 1))
-				draw_line(img, &point[i * fdf->map_width + j],
-					&point[i * fdf->map_width + j + 1]);
+				fdf->woo ? draw_woo(img, point, point + 1) :
+				draw_line(img, point, point + 1);
+			point++;
 		}
 	}
 }
@@ -68,10 +70,34 @@ void		redraw_image(t_fdf *fdf)
 	}
 }
 
-int			redraw_main_screen(t_fdf *fdf)
+void		print_text(t_fdf *fdf)
 {
 	char	buf[64];
 
+	ft_sprintf(buf, "scale: %d%%", (int)(fdf->scale * 100));
+	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 20, 0,
+				   WHITE_COLOR, buf);
+	ft_sprintf(buf, "z scale: %d%%", (int)(fdf->z_scale * 100));
+	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 20, 17,
+				   WHITE_COLOR, buf);
+	ft_sprintf(buf, "x angle: %d degree", get_x_offset(fdf) % 360);
+	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 180, 0,
+				   WHITE_COLOR, buf);
+	ft_sprintf(buf, "y angle: %d degree", get_y_offset(fdf) % 360);
+	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 180, 17,
+				   WHITE_COLOR, buf);
+	ft_sprintf(buf, "z angle: %d degree", get_z_offset(fdf) % 360);
+	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 400, 0,
+				   WHITE_COLOR, buf);
+	ft_sprintf(buf, "drawline algo: ", fdf->woo ? "Woo" : "Bresenham");
+	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 400, 0,
+				   WHITE_COLOR, buf);
+
+	//mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, WND_HEIGHT - 300, 20,
+	//			   WHITE_COLOR, fdf->str_out);
+}
+int			redraw_main_screen(t_fdf *fdf)
+{
 	mlx_clear_window(fdf->mlx_ptr, fdf->wnd_ptr);
 	if (fdf->upper_border)
 		mlx_put_image_to_window(fdf->mlx_ptr, fdf->wnd_ptr,
@@ -82,16 +108,6 @@ int			redraw_main_screen(t_fdf *fdf)
 	if (fdf->main_image)
 		mlx_put_image_to_window(fdf->mlx_ptr, fdf->wnd_ptr,
 			fdf->main_image, 0, MAIN_YPOS);
-	ft_sprintf(buf, "scale: %d%%", (int)(fdf->scale * 100));
-	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 20, 10,
-		WHITE_COLOR, buf);
-	ft_sprintf(buf, "z scale: %d%%", (int)(fdf->z_scale * 100));
-	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 20, 50,
-		WHITE_COLOR, buf);
-	ft_sprintf(buf, "z angle: %d degree", get_z_offset(fdf) % 360);
-	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, 200, 50,
-		WHITE_COLOR, buf);
-	mlx_string_put(fdf->mlx_ptr, fdf->wnd_ptr, WND_HEIGHT - 300, 20,
-		WHITE_COLOR, fdf->str_out);
+	print_text(fdf);
 	return (RET_OK);
 }

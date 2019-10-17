@@ -104,3 +104,4 @@ void	draw_line(t_img_param *img, t_point *p1, t_point *p2)
 		}
 	}
 }
+

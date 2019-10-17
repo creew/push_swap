@@ -33,6 +33,7 @@
 # define WHITE_COLOR		(0xFFFFFF)
 # define BLACK_COLOR		(0)
 # define GREEN_COLOR		(0x00FF00)
+# define BLUE_COLOR			(0x0000FF)
 # define BROWN_COLOR		(0x964B00)
 
 # ifdef __APPLE__
@@ -58,6 +59,8 @@
 #  define TWO_NUM_KEY		(84)
 #  define THREE_KEY			(20)
 #  define THREE_NUM_KEY		(85)
+#  define POINT_KEY			(47)
+#  define POINT_NUM_KEY		(65)
 #  define ESC_KEY			(53)
 #  define ZERO_KEY			(29)
 #  define ZERO_NUM_KEY		(82)
@@ -164,14 +167,17 @@ typedef struct	s_fdf
 	void		*wnd_ptr;
 
 	int			parallel;
+	int			woo;
 
 	double		scale;
 	double		z_scale;
 	long		z_rotate;
-	long		xy_rotate;
+	long		x_rotate;
+	long		y_rotate;
 
 	long		z_rotate_add;
-	long		xy_rotate_add;
+	long		x_rotate_add;
+	long		y_rotate_add;
 	int 		shift_x_add;
 	int 		shift_y_add;
 
@@ -212,7 +218,8 @@ void			set_iso(t_point *arr, int size);
 int				get_start_x(t_fdf *fdf);
 int 			get_start_y(t_fdf *fdf);
 long			get_z_offset(t_fdf *fdf);
-long			get_xy_offset(t_fdf *fdf);
+long			get_x_offset(t_fdf *fdf);
+long			get_y_offset(t_fdf *fdf);
 
 int				button_pressed(int button, int x, int y, void *param);
 int				button_released(int button, int x, int y, void *param);
@@ -222,7 +229,7 @@ int				key_hook(int key, void *param);
 
 void			set_point(t_img_param *img, int x, int y, int color);
 void			draw_line(t_img_param *img, t_point *p1, t_point *p2);
-
+void			draw_woo(t_img_param *img, t_point *p1, t_point *p2);
 void			do_transformations(t_fdf *fdf);
 
 void			calc_optimal_size(t_fdf *fdf);

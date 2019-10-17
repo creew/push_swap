@@ -18,7 +18,8 @@ SRCS =	fdf.c \
 		key_hook.c \
 		colorize_map.c \
 		normalize_map.c \
-		do_transform.c
+		do_transform.c \
+		draw_woo.c
 
 OBJS = $(SRCS:.c=.o)
 

@@ -10,7 +10,7 @@ endif()
 add_executable(fdf
         fdf.c
         fdf.h read_map.c draw_main.c init_images.c
-        mouse_moves.c getters.c transforms.c draw_line.c mouse_hook.c key_hook.c colorize_map.c normalize_map.c do_transform.c)
+        mouse_moves.c getters.c transforms.c draw_line.c mouse_hook.c key_hook.c colorize_map.c normalize_map.c do_transform.c libft/ft_abs.c libft/ft_min.c libft/ft_max.c draw_woo.c)
 
 include_directories(. ./libft ./ft_printf)
 if (LINUX)

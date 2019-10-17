@@ -50,8 +50,8 @@ void		do_transformations(t_fdf *fdf)
 	colorize_not(fdf->mapout, size);
 	set_size_transform(fdf->mapout, size, fdf->scale, fdf->z_scale);
 	set_z_transform(fdf->mapout, size, get_z_offset(fdf));
-	set_x_transform(fdf->mapout, size, get_xy_offset(fdf));
-	set_y_transform(fdf->mapout, size, get_xy_offset(fdf));
+	set_x_transform(fdf->mapout, size, get_x_offset(fdf));
+	set_y_transform(fdf->mapout, size, get_y_offset(fdf));
 	if (!fdf->parallel)
 		set_iso(fdf->mapout, size);
 	set_shift(fdf->mapout, size, get_start_x(fdf), get_start_y(fdf));
