@@ -31,7 +31,12 @@ SRCS = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		ft_strncmp.c ft_strncpy.c ft_strndup.c ft_strnequ.c ft_strnew.c \
 		ft_strnstr.c ft_strrchr.c ft_strrev.c ft_strsplit.c ft_strstr.c \
 		ft_strsub.c ft_strtrim.c ft_tolower.c ft_toupper.c ft_intmove.c \
-		ft_getc.c
+		ft_getc.c ft_lstaddsorted.c ft_lstnewblank.c ft_lstsize.c ft_lstget.c \
+		get_next_line.c ft_stack_init.c ft_stack_push.c ft_stack_pop.c \
+		ft_stack_delall.c ft_stack_size.c ft_queue_add.c ft_queue_poll.c \
+		ft_lstaddrevsorted.c ft_strtol.c ft_abs.c ft_min.c ft_max.c
+
+INCLUDES = libft.h get_next_line.h
 
 all: $(NAME)
 
@@ -39,7 +44,7 @@ $(NAME): $(OBJ)
 	ar -rc $@ $^
 	ranlib $@
 
-%.o: %.c ./libft.h
+%.o: %.c $(INCLUDES)
 	$(CC) $(CC_FLAGS) -c $< -o $@
 
 clean:
