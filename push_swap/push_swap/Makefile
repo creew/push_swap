@@ -18,7 +18,7 @@ CC_FLAGS = -Wall -Wextra $(CC_FERROR) -g
 
 CC_FERROR = #-Werror
 
-SRC = push_swap.c \
+SRC = new_pushswap.c \
 	../common/stack.c \
 	../common/sub_functions.c \
 	../common/stack_sec.c \

@@ -16,4 +16,9 @@
 #include "../common/common.h"
 #include "../libft/libft.h"
 
+typedef struct	s_bfs
+{
+	char			operation;
+	struct s_bfs	*children;
+}				t_bfs;
 #endif
