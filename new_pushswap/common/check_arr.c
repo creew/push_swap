@@ -14,9 +14,11 @@
 
 int is_arr_sorts(t_action_array *act, t_stack *st_orig, t_stack *st1, t_stack *st2)
 {
-	t_uint i;
-	t_uint action;
+	t_uint	i;
+	t_uint	action;
 
+	st1->pos = 0;
+	st2->pos = 0;
 	i = 0;
 	while (i < act->pos)
 	{

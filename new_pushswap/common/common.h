@@ -31,7 +31,7 @@ typedef unsigned int	t_uchar;
 # define	S_RRB					(10)
 # define	S_RRR					(11)
 
-# define	STACK_SIZE				(1024)
+
 
 
 # define	ERROR_ALLOCATING_STACK	(-1)
@@ -46,6 +46,8 @@ typedef unsigned int	t_uchar;
 # define	RET_ENDL				(1)
 # define	RET_OK					(0)
 
+# define	STACK_SIZE				(1024)
+
 typedef struct	s_stack
 {
 	int			*stack;
@@ -53,10 +55,12 @@ typedef struct	s_stack
 	size_t		pos;
 }				t_stack;
 
+# define	ACTIONS_SIZE			(512)
+
 typedef struct	s_action_array
 {
 	t_uchar		*array;
-	size_t		size;
+	size_t		cap;
 	size_t 		pos;
 }				t_action_array;
 

@@ -15,6 +15,7 @@ add_executable(checker
         ./../common/stack_sec.c
         ./../common/readarg.c
         ./../common/sub_functions.c
+        ./../common/actions.c
         )
 
 find_library(FT ft ./../libft)
