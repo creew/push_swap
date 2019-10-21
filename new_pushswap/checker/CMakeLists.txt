@@ -10,3 +10,6 @@ include_directories(.
 add_executable(checker
         checker.c
         checker.h)
+
+find_library(FT ft ./../libft)
+target_link_libraries(pushswap PUBLIC ${FT})
