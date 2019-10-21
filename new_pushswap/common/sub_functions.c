@@ -33,7 +33,7 @@ int		safe_atoi(char *arg, int *res)
 		if (*res > FT_INTMAX / 10 ||
 			(*res == FT_INTMAX / 10 && val > FT_INTMAX % 10))
 			return (ERROR_OVERFLOW_INTEGER);
-		if (*res < FT_INTMAX / 10 ||
+		if (*res < FT_INTMIN / 10 ||
 			(*res == FT_INTMIN / 10 && val < FT_INTMIN % 10))
 			return (ERROR_OVERFLOW_INTEGER);
 		*res = *res * 10;
