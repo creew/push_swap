@@ -42,25 +42,23 @@ t_bfs *list_bfs(void)
 	if (first)
 	{
 		cur = first;
-		while (i < (11 - 1))
+		cur->operation = S_SA;
+		i = 0;
+		while (++i < 11)
 		{
 			cur->next = ft_memalloc(sizeof(*cur));
 			if (!cur->next)
 			{
-
+				free_bfs(first);
 				return (0);
 			}
-
-			i++;
+			cur = cur->next;
+			cur->operation = i + S_SA;
 		}
-
 	}
-
-	i = 0;
-	while (i < 11)
-
-
+	return (first);
 }
+
 int big_bfs_deal(t_bfs *rbfs, t_bfs *pbfs, t_stack *st1, t_stack *st2)
 {
 	int i;
@@ -69,11 +67,7 @@ int big_bfs_deal(t_bfs *rbfs, t_bfs *pbfs, t_stack *st1, t_stack *st2)
 	i = 0;
 	if (is_stack_sorted(st1, st1.pos, 0))
 		return (1);
-	while (i < 11)
-	{
-
-
-	}
+	pbfs->children = list_bfs();
 }
 
 int		main(int ac, char *av[])
@@ -81,13 +75,14 @@ int		main(int ac, char *av[])
 	t_stack	st1;
 	t_stack	st2;
 	int		ops;
+	t_bfs	root;
 
 	ops = 0;
 	stack_init(&st1);
 	stack_init(&st2);
 	if (arg_read(ac, av, &st1) == RET_OK)
 	{
-		big_bfs_deal()
+		big_bfs_deal(&root, &root, &st1, &st2);
 
 
 	}
