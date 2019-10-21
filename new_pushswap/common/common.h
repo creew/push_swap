@@ -34,7 +34,7 @@ typedef unsigned int	t_uchar;
 
 
 
-# define	ERROR_ALLOCATING_STACK	(-1)
+# define	ERROR_ENOMEM			(-1)
 # define	ERROR_GETEMPTY_STACK	(-2)
 # define	ERROR_WRONG_INTEGER		(-3)
 # define	ERROR_OVERFLOW_INTEGER	(-4)
@@ -60,9 +60,15 @@ typedef struct	s_stack
 typedef struct	s_action_array
 {
 	t_uchar		*array;
-	size_t		cap;
 	size_t 		pos;
 }				t_action_array;
+
+typedef struct	s_dllist
+{
+	struct s_dllist	*next;
+	struct s_dllist	*prev;
+	t_action_array	data;
+}				t_dllist;
 
 int			stack_init(t_stack *st);
 int			stack_push(t_stack *st, int a);
@@ -81,4 +87,9 @@ int			run_commands(t_stack *st1, t_stack *st2, int cmd, int *count);
 int			safe_atoi(char *arg, int *res);
 
 int			arg_read(int n, char *av[], t_stack *st1);
+
+int 		is_arr_sorts(t_action_array *act, t_stack *st_orig, t_stack *st1, t_stack *st2);
+
+int		add_new_dllist(t_dllist **root, t_dllist **res);
+void	rm_dllist(t_dllist **root, t_dllist *dll);
 #endif

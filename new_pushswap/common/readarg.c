@@ -36,7 +36,7 @@ void	print_stack(t_stack *st1, t_stack *st2)
 	c1 = st1->pos;
 	c2 = st2->pos;
 	ft_putendl("st1      st2");
-	while (c1 || c2 )
+	while (c1 || c2)
 	{
 		c1 ? ft_putnbr(st1->stack[--c1]) : ft_putstr("     ");
 		ft_putstr("   ");

@@ -16,7 +16,7 @@ int		stack_init(t_stack *st)
 {
 	st->stack = NULL;
 	st->pos = 0;
-	st->max_size = 64;
+	st->max_size = 0;
 	return (RET_OK);
 }
 
@@ -29,7 +29,7 @@ int		stack_push(t_stack *st, int a)
 	{
 		newst = (int *)malloc(sizeof(int) * (STACK_SIZE + st->max_size));
 		if (!newst)
-			return (ERROR_ALLOCATING_STACK);
+			return (ERROR_ENOMEM);
 		if (st->stack)
 			ft_intmove(newst, st->stack, st->max_size);
 		st->stack = newst;
@@ -70,7 +70,7 @@ int		stack_add_first(t_stack *st, int a)
 	{
 		newst = (int *)malloc(sizeof(int) * (STACK_SIZE + st->max_size));
 		if (!newst)
-			return (ERROR_ALLOCATING_STACK);
+			return (ERROR_ENOMEM);
 		if (st->stack)
 			ft_intmove(newst + 1, st->stack, st->max_size);
 		st->stack = newst;

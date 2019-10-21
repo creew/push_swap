@@ -1,37 +1,41 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   actions.c                                          :+:      :+:    :+:   */
+/*   dllist.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/21 17:47:12 by eklompus          #+#    #+#             */
-/*   Updated: 2019/10/21 17:47:13 by eklompus         ###   ########.fr       */
+/*   Created: 2019/10/21 18:42:09 by eklompus          #+#    #+#             */
+/*   Updated: 2019/10/21 18:42:10 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "common.h"
 
-int		actions_clone_val(t_action_array *act, t_uint val)
+int		add_new_dllist(t_dllist **root, t_dllist **res)
 {
-	t_uchar		*arr;
+	t_dllist	*dll;
 
-	arr = ft_memalloc(sizeof(char) * ((act->pos + 1) / 2 + 1));
-	if (!arr)
+	dll = ft_memalloc(sizeof(*dll));
+	if (!dll)
 		return (ERROR_ENOMEM);
-	ft_memcpy(arr, act->array, (act->pos + 1) / 2);
-	act->array = arr;
-	if (!(act->pos & 1u))
-		act->array[act->pos / 2] = val << 4u;
-	else
-		act->array[act->pos / 2] |= val;
-	act->pos++;
+	dll->prev = NULL;
+	dll->next = *root;
+	if (*root)
+		(*root)->prev = dll;
+	*root = dll;
+	*res = dll;
 	return (RET_OK);
 }
 
-int 	add_possible_values()
+void	rm_dllist(t_dllist **root, t_dllist *dll)
 {
-
-
-
+	ft_memdel((void **)&(dll->data));
+	if (dll->prev)
+		dll->prev->next = dll->next;
+	if (dll->next)
+		dll->next->prev = dll->prev;
+	if (dll == *root)
+		*root = dll->next;
+	ft_memdel((void **)&dll);
 }

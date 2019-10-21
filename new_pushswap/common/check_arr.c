@@ -31,3 +31,4 @@ int is_arr_sorts(t_action_array *act, t_stack *st_orig, t_stack *st1, t_stack *s
 	}
 	return (is_stack_sorted(st1, st1->pos, 0) == RET_OK);
 }
+
