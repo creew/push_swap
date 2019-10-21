@@ -9,6 +9,8 @@ include_directories(.
 
 add_executable(pushswap
         push_swap.c
+        ./../common/check_arr.c
+        ./../common/stack_action.c
         )
 
 find_library(FT ft ./../libft)

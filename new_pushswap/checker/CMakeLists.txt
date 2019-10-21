@@ -9,7 +9,9 @@ include_directories(.
 
 add_executable(checker
         checker.c
-        checker.h)
+        ./../common/check_arr.c
+        ./../common/stack_action.c
+        )
 
 find_library(FT ft ./../libft)
 target_link_libraries(pushswap PUBLIC ${FT})
