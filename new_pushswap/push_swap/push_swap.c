@@ -38,12 +38,87 @@ int check_for_dup(t_dllist *dl)
 {
 	size_t	size;
 	t_uchar	*data;
+	size_t count;
+	t_uint values;
 
+	values = 0;
 	data = dl->data.array;
 	size = dl->data.pos;
-
-
-
+	count = 0;
+	while (count < size)
+	{
+		t_uint val = data[count / 2];
+		val		   = count & 1u ? val & 0xFu : val >> 4u;
+		if (val == S_SA)
+		{
+			if (values & (1u << S_SB) || values & (1u << S_SA))
+				return (1);
+			values &= ~(1u << S_SS | 1u << S_PA | 1 << S_PB | 1 << S_RA | 1 << S_RR | 1 << S_RRA | 1 << S_RRR);
+		}
+		else if (val == S_SB)
+		{
+			if (values & (1u << S_SB) || values & (1u << S_SA))
+				return (1);
+			values &= ~(1u << S_SS | 1u << S_PA | 1 << S_PB | 1 << S_RB | 1 << S_RR | 1 << S_RRB | 1 << S_RRR);
+		}
+		else if (val == S_SS)
+		{
+			if (values & (1u << S_SS))
+				return (1);
+			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_PA | 1 << S_PB | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
+		}
+		else if (val == S_PA)
+		{
+			if (values & (1u << S_PB))
+				return (1);
+			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1 << S_PB | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
+		}
+		else if (val == S_PB)
+		{
+			if (values & (1u << S_PA))
+				return (1);
+			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1u << S_PA | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
+		}
+		else if (val == S_RA)
+		{
+			if (values & (1u << S_RRA) || values & (1u << S_RB))
+				return (1);
+			values &= ~(1u << S_SA | 1u << S_SS | 1 << S_PA | 1 << S_PB | 1 << S_RA | 1 << S_RR | 1 << S_RRA | 1 << S_RRR);
+		}
+		else if (val == S_RB)
+		{
+			if (values & (1u << S_RRB) || values & (1u << S_RA))
+				return (1);
+			values &= ~(1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RB | 1 << S_RR | 1 << S_RRB | 1 << S_RRR);
+		}
+		else if (val == S_RR)
+		{
+			if (values & (1u << S_RRR))
+				return (1);
+			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
+		}
+		else if (val == S_RRA)
+		{
+			if (values & (1u << S_RA) || values & (1u << S_RRB))
+				return (1);
+			values &= ~(1u << S_SA  | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RA | 1 << S_RR | 1 << S_RRA | 1 << S_RRR);
+		}
+		else if (val == S_RRB)
+		{
+			if (values & (1u << S_RB) || values & (1u << S_RRA))
+				return (1);
+			values &= ~(1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RB | 1 << S_RR | 1 << S_RRB | 1 << S_RRR);
+		}
+		else if (val == S_RRR)
+		{
+			if (values & (1u << S_RR))
+				return (1);
+			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
+		}
+		values |= (1u << val);
+		count++;
+	}
+	return (0);
 }
 
 t_dllist	*check_step(t_dllist **root, t_stack *st)
@@ -116,6 +191,7 @@ int		main(int ac, char *av[])
 	t_dllist *ll;
 
 	ops = 0;
+	root = NULL;
 	stack_init(&st1);
 	if (arg_read(ac, av, &st1) == RET_OK)
 	{
