@@ -11,7 +11,11 @@ add_executable(checker
         checker.c
         ./../common/check_arr.c
         ./../common/stack_action.c
+        ./../common/stack.c
+        ./../common/stack_sec.c
+        ./../common/readarg.c
+        ./../common/sub_functions.c
         )
 
 find_library(FT ft ./../libft)
-target_link_libraries(pushswap PUBLIC ${FT})
+target_link_libraries(checker PUBLIC ${FT})

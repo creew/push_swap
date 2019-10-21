@@ -13,13 +13,20 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
-# include <string.h>
-# include "get_next_line.h"
+#include "get_next_line.h"
+
+#include <string.h>
 
 # define ABS(a) ((a) < 0 ? -(a) : (a))
 # define MIN(a, b) ((a) < (b) ? (a) : (b))
-# define FT_LMAX (9223372036854775807ul)
-# define FT_LMIN (9223372036854775808ul)
+
+# define FT_LONGMAX (9223372036854775807)
+# define FT_LONGMIN (-9223372036854775807-1)
+
+
+# define FT_INTMAX (2147483647)
+# define FT_INTMIN (-2147483648)
+
 # define FT_EOF (-2)
 
 typedef struct	s_list

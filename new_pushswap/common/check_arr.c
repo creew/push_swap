@@ -12,21 +12,20 @@
 
 #include "common.h"
 
-int is_arr_sorts(char *arr, int arr_size)
+int is_arr_sorts(t_action_array *act, t_stack *st_orig, t_stack *st1, t_stack *st2)
 {
-	int i;
+	t_uint i;
 	t_uint action;
 
-	i = -1;
-	while (++i < arr_size)
+	i = 0;
+	while (i < act->pos)
 	{
-		if (!(i & 1))
-			action = ((t_uint)*arr) >> 4u;
+		if (!(i & 1u))
+			action = (act->array[i >> 1u]) >> 4u;
 		else
-			action = ((t_uint)*arr++) & 0xFu;
-		do_action(action);
+			action = (act->array[i >> 1u]) & 0xFu;
+		run_commands(st1, st2, action, NULL);
+		i++;
 	}
-
-
-
+	return (is_stack_sorted(st1, st1->pos, 0) == RET_OK);
 }
