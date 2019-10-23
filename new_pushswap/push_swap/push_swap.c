@@ -21,12 +21,12 @@ int			add_one(t_dllist **root, t_action_array *arr, t_uint val)
 	if (res == RET_OK)
 	{
 		dll->data.pos = arr ? arr->pos + 1 : 1;
-		dll->data.array = ft_memalloc(dll->data.pos / 2 + 1);
+		dll->data.array = ft_memalloc((dll->data.pos + 1) / 2);
 		if (!dll->data.array)
 			return (ERROR_ENOMEM);
-		if (arr)
-			ft_memcpy(dll->data.array, arr->array, (arr->pos + 2) / 2);
-		if ((dll->data.pos & 1u))
+		if (arr && arr->pos)
+			ft_memcpy(dll->data.array, arr->array, (arr->pos + 1) / 2);
+		if (!((dll->data.pos - 1) & 1u))
 			dll->data.array[(dll->data.pos - 1) / 2] = val << 4u;
 		else
 			dll->data.array[(dll->data.pos - 1) / 2] |= val;
@@ -71,49 +71,49 @@ int check_for_dup(t_dllist *dl)
 		{
 			if (values & (1u << S_PB))
 				return (1);
-			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1 << S_PB | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
+			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
 		}
 		else if (val == S_PB)
 		{
 			if (values & (1u << S_PA))
 				return (1);
-			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1u << S_PA | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
+			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
 		}
 		else if (val == S_RA)
 		{
 			if (values & (1u << S_RRA) || values & (1u << S_RB))
 				return (1);
-			values &= ~(1u << S_SA | 1u << S_SS | 1 << S_PA | 1 << S_PB | 1 << S_RA | 1 << S_RR | 1 << S_RRA | 1 << S_RRR);
+			values &= ~(1u << S_SA | 1u << S_SS | 1 << S_PA | 1 << S_PB | 1 << S_RA | 1 << S_RR | 1 << S_RRR);
 		}
 		else if (val == S_RB)
 		{
 			if (values & (1u << S_RRB) || values & (1u << S_RA))
 				return (1);
-			values &= ~(1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RB | 1 << S_RR | 1 << S_RRB | 1 << S_RRR);
+			values &= ~(1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RB | 1 << S_RR | 1 << S_RRR);
 		}
 		else if (val == S_RR)
 		{
 			if (values & (1u << S_RRR))
 				return (1);
-			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
+			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB);
 		}
 		else if (val == S_RRA)
 		{
 			if (values & (1u << S_RA) || values & (1u << S_RRB))
 				return (1);
-			values &= ~(1u << S_SA  | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RA | 1 << S_RR | 1 << S_RRA | 1 << S_RRR);
+			values &= ~(1u << S_SA  | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RR | 1 << S_RRA | 1 << S_RRR);
 		}
 		else if (val == S_RRB)
 		{
 			if (values & (1u << S_RB) || values & (1u << S_RRA))
 				return (1);
-			values &= ~(1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RB | 1 << S_RR | 1 << S_RRB | 1 << S_RRR);
+			values &= ~(1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RR | 1 << S_RRB | 1 << S_RRR);
 		}
 		else if (val == S_RRR)
 		{
 			if (values & (1u << S_RR))
 				return (1);
-			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RA | 1 << S_RB | 1 << S_RR | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
+			values &= ~(1u << S_SA | 1u << S_SB | 1u << S_SS | 1u << S_PA | 1u << S_PB | 1 << S_RA | 1 << S_RB | 1 << S_RRA | 1 << S_RRB | 1 << S_RRR);
 		}
 		values |= (1u << val);
 		count++;
@@ -128,6 +128,7 @@ t_dllist	*check_step(t_dllist **root, t_stack *st)
 	t_stack st1;
 	t_stack st2;
 	int	iters;
+	int res;
 
 	iters = 0;
 
@@ -152,7 +153,12 @@ t_dllist	*check_step(t_dllist **root, t_stack *st)
 			int i = S_SA;
 			while (i <= S_RRR)
 			{
-				add_one(root, &dl->data, i);
+				res = add_one(root, &dl->data, i);
+				if (res != RET_OK)
+				{
+					ft_putstr("can't allocate memory");
+					return (0);
+				}
 				i++;
 			}
 			rm_dllist(root, dl);
@@ -186,11 +192,9 @@ char  *g_operations[] = {
 int		main(int ac, char *av[])
 {
 	t_stack	st1;
-	int		ops;
 	t_dllist *root;
 	t_dllist *ll;
 
-	ops = 0;
 	root = NULL;
 	stack_init(&st1);
 	if (arg_read(ac, av, &st1) == RET_OK)
@@ -214,8 +218,6 @@ int		main(int ac, char *av[])
 				}
 			}
 		}
-		ft_putnbr(ops);
-		ft_putendl("");
 		//print_stack(&st1, &st2);
 	}
 	return (0);
