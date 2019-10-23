@@ -3,3 +3,4 @@
 cmake-build-debug
 *.a
 .idea
+/push_swap/push_swap
