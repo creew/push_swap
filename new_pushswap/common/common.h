@@ -17,7 +17,7 @@
 #include "libft.h"
 
 typedef unsigned int	t_uint;
-typedef unsigned int	t_uchar;
+typedef unsigned char	t_uchar;
 
 # define	S_SA					(1)
 # define	S_SB					(2)

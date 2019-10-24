@@ -210,10 +210,11 @@ int		main(int ac, char *av[])
 			ll = check_step(&root, &st1);
 			if (ll)
 			{
-				for (int i = 0; i < ll->data.pos; i++)
+				t_uchar *chars = ll->data.array;
+				for (size_t cnt = 0; cnt < ll->data.pos; cnt++)
 				{
-					t_uchar data = ll->data.array[i / 2];
-					data = !(i & 1) ? data >> 4 : data & 0xF;
+					t_uchar data = chars[cnt / 2];
+					data = !(cnt & 1u) ? data >> 4u : data & 0xFu;
 					ft_putendl(g_operations[data - S_SA]);
 				}
 			}
