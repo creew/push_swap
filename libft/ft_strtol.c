@@ -50,12 +50,12 @@ static int	get_sign(const char **nptr)
 	int			isneg;
 	const char	*ptr;
 
-	isneg = 0;
+	isneg = 1;
 	ptr = *nptr;
 	if (*ptr == '+' || *ptr == '-')
 	{
 		if (*ptr == '-')
-			isneg = 1;
+			isneg = -1;
 		*nptr = ptr + 1;
 	}
 	return (isneg);
@@ -63,20 +63,22 @@ static int	get_sign(const char **nptr)
 
 static long	calc_val(long val, int num, int base, int *flow)
 {
-	long prev_val;
-
-	prev_val = val;
-	val *= base;
-	val += num;
-	if (prev_val > 0 && val < prev_val)
+	if (val > FT_LONGMAX / base ||
+		(val == FT_LONGMAX / base && num > FT_LONGMAX % base))
 	{
-		val = FT_LMAX;
+		val = FT_LONGMAX;
 		*flow = 1;
 	}
-	if (prev_val < 0 && val > prev_val)
+	else if (val < (FT_LONGMIN / base) ||
+		(val == (FT_LONGMIN / base) && num < (FT_LONGMIN % base)))
 	{
-		val = -FT_LMIN;
+		val = FT_LONGMIN;
 		*flow = 1;
+	}
+	else
+	{
+		val *= base;
+		val += num;
 	}
 	return (val);
 }
@@ -101,7 +103,7 @@ long		ft_strtol(const char *nptr, char **endptr, int base)
 	while (val != -1)
 	{
 		if (!flow)
-			res = calc_val(res, isneg ? -val : val, base, &flow);
+			res = calc_val(res, val * isneg, base, &flow);
 		val = get_char_in_range(*(++nptr), base);
 	}
 	if (endptr)

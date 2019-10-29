@@ -18,8 +18,13 @@
 
 # define ABS(a) ((a) < 0 ? -(a) : (a))
 # define MIN(a, b) ((a) < (b) ? (a) : (b))
-# define FT_LMAX (9223372036854775807ul)
-# define FT_LMIN (9223372036854775808ul)
+
+# define FT_INTMAX	(2147483647)
+# define FT_INTMIN	(-FT_INTMAX - 1)
+
+# define FT_LONGMAX	(9223372036854775807)
+# define FT_LONGMIN	(-FT_LONGMAX - 1)
+
 # define FT_EOF (-2)
 
 typedef struct	s_list
