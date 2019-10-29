@@ -18,7 +18,7 @@ CC_FLAGS = -Wall -Wextra $(CC_FERROR) -g
 
 CC_FERROR = #-Werror
 
-SRC = new_pushswap.c \
+SRC = push_swap.c \
 	../common/stack.c \
 	../common/sub_functions.c \
 	../common/stack_sec.c \
@@ -26,9 +26,12 @@ SRC = new_pushswap.c \
 
 OBJ = $(SRC:.c=.o)
 
-INC_DIR = ./../
+INC_DIR =	./../ \
+			./../libft
 
-INC = ./push_swap.h $(INC_DIR)/common/common.h $(INC_DIR)libft/libft.h
+INC_FLAG = $(addprefix -I,$(INC_DIR))
+
+HEADERS = ./push_swap.h ./../common/common.h ./../libft/libft.h
 
 all: $(NAME)
 
@@ -37,7 +40,7 @@ $(NAME): $(OBJ)
 	$(CC) $(CC_FLAGS) -L./../libft/ -lft $^ -o $@
 
 %.o: %.c $(INC)
-	 $(CC) $(CC_FLAGS) -I$(INC_DIR) -c $< -o $@
+	 $(CC) $(CC_FLAGS) $(INC_FLAG) -c $< -o $@
 
 clean:
 	make clean -C ../libft

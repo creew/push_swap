@@ -33,9 +33,6 @@ typedef unsigned char	t_uchar;
 # define	S_RRB					(10)
 # define	S_RRR					(11)
 
-
-
-
 # define	ERROR_ENOMEM			(-1)
 # define	ERROR_GETEMPTY_STACK	(-2)
 # define	ERROR_WRONG_INTEGER		(-3)
@@ -48,7 +45,7 @@ typedef unsigned char	t_uchar;
 # define	RET_ENDL				(1)
 # define	RET_OK					(0)
 
-# define	STACK_SIZE				(1024)
+# define	STACK_SIZE				(128)
 
 typedef struct	s_stack
 {
@@ -64,8 +61,6 @@ int				run_commands(t_stack *st1, t_stack *st2, int n, int *count);
 int				stack_push(t_stack *st, int a);
 int				stack_pop(t_stack *st, int *a);
 int				stack_init(t_stack *st);
-int				stack_get_first(t_stack *st, int *a);
-int				stack_add_first(t_stack *st, int a);
 int				stack_free(t_stack *st);
 int				stack_swap(t_stack *st);
 int				stack_rotate(t_stack *st);
