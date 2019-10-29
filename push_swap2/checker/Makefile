@@ -18,17 +18,21 @@ CC_FLAGS = -Wall -Wextra -g
 
 CC_FERROR = #-Werror
 
-SRC = checker.c \
-	../common/stack.c \
-	../common/sub_functions.c \
-	../common/stack_sec.c \
-	../common/readarg.c
+SRC =	checker.c \
+		../common/stack.c \
+		../common/sub_functions.c \
+		../common/stack_sec.c \
+		../common/readarg.c \
+		../common/stack_action.c
 
 OBJ = $(SRC:.c=.o)
 
-INC_DIR = ./../
+INC_DIR =	./../ \
+			./../libft
 
-INC = ./checker.h $(INC_DIR)/common/common.h $(INC_DIR)libft/libft.h
+INC_FLAG = $(addprefix -I,$(INC_DIR))
+
+HEADERS = ./checker.h ./../common/common.h ./../libft/libft.h
 
 all: $(NAME)
 
@@ -36,8 +40,8 @@ $(NAME): $(OBJ)
 	make -C ../libft
 	$(CC) $(CC_FLAGS) $(CC_FERROR) -L./../libft/ -lft $^ -o $@
 
-%.o: %.c $(INC)
-	$(CC) $(CC_FLAGS) $(CC_FERROR) -I$(INC_DIR) -c $< -o $@
+%.o: %.c $(HEADERS)
+	$(CC) $(CC_FLAGS) $(CC_FERROR) $(INC_FLAG) -c $< -o $@
 
 clean:
 	make clean -C ../libft

@@ -63,7 +63,7 @@ int main(int ac, char *av[])
 		{
 			if (ret == RET_ENDL)
 			{
-				ft_putendl(is_stack_sorted(&st1, st1.pos) == RET_OK && st2.pos == 0 ? "OK" : "KO");
+				ft_putendl(is_stack_sorted(&st1, st1.pos, 0) == RET_OK && st2.pos == 0 ? "OK" : "KO");
 				break;
 			}
 			run_commands(&st1, &st2, res, NULL);
