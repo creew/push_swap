@@ -35,7 +35,7 @@ int		is_stack_sorted(t_stack *st, size_t n, int backward)
 
 int 	stack_free(t_stack *st)
 {
-	free(st->stack);
+	ft_memdel((void **)&st->stack);
 	return (RET_OK);
 }
 

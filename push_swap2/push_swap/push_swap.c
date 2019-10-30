@@ -12,22 +12,22 @@
 
 #include "push_swap.h"
 
-int		find_optimal(t_stack *st1, t_stack *st2)
+int		find_optimal(t_stack *st1, t_stack *st2, int *count)
 {
+
 
 
 }
 
 int		calc_optimal(t_stack *st1, t_stack *st2)
 {
-	size_t size;
+	size_t	size;
 	int		count;
 
 	count = 0;
 	size = st1->pos;
-	while (size-- > 1)
+	while (size-- > 3)
 		run_commands(st1, st2, S_PB, &count);
-
 
 
 }

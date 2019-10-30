@@ -24,14 +24,14 @@ int		stack_push(t_stack *st, int a)
 {
 	int		*newst;
 
-
 	if ((st->pos + 1) >= st->max_size)
 	{
-		newst = (int *)malloc(sizeof(int) * (STACK_SIZE + st->max_size));
+		newst = (int *)ft_calloc(STACK_SIZE + st->max_size, sizeof(int));
 		if (!newst)
 			return (ERROR_ENOMEM);
 		if (st->stack)
 			ft_intmove(newst, st->stack, st->max_size);
+		free(st->stack);
 		st->stack = newst;
 		st->max_size += STACK_SIZE;
 	}
@@ -50,35 +50,3 @@ int		stack_pop(t_stack *st, int *a)
 	return (ERROR_GETEMPTY_STACK);
 }
 
-int		stack_get_first(t_stack *st, int *a)
-{
-	if (st->pos > 0)
-	{
-		*a = st->stack[0];
-		ft_intmove(st->stack, st->stack + 1, st->pos - 1);
-		st->pos--;
-		return (RET_OK);
-	}
-	return (ERROR_GETEMPTY_STACK);
-}
-
-int		stack_add_first(t_stack *st, int a)
-{
-	int		*newst;
-
-	if ((st->pos + 1) >= st->max_size)
-	{
-		newst = (int *)malloc(sizeof(int) * (STACK_SIZE + st->max_size));
-		if (!newst)
-			return (ERROR_ENOMEM);
-		if (st->stack)
-			ft_intmove(newst + 1, st->stack, st->max_size);
-		st->stack = newst;
-		st->max_size += STACK_SIZE;
-	}
-	else
-		ft_intmove(st->stack + 1, st->stack, st->max_size);
-	st->stack[0] = a;
-	st->pos++;
-	return (RET_OK);
-}
