@@ -149,4 +149,5 @@ int				ft_max(int a, int b);
 void			ft_bubble_sort(void *arr, size_t arr_size, size_t elem_size,
 						int (*cmp)(const void *, const void *));
 void			*ft_calloc(size_t count, size_t size);
+size_t			ft_strlcpy(char *dst, const char *src, size_t size);
 #endif
