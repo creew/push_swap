@@ -35,7 +35,7 @@ SRCS = ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 		get_next_line.c ft_stack_init.c ft_stack_push.c ft_stack_pop.c \
 		ft_stack_delall.c ft_stack_size.c ft_queue_add.c ft_queue_poll.c \
 		ft_lstaddrevsorted.c ft_strtol.c ft_abs.c ft_min.c ft_max.c \
-		ft_bubble_sort.c ft_calloc.c
+		ft_bubble_sort.c ft_calloc.c ft_strlcpy.c
 
 INCLUDES = libft.h get_next_line.h
 
