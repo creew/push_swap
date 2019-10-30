@@ -145,4 +145,7 @@ long			ft_strtol(const char *nptr, char **endptr, int base);
 int				ft_abs(int a);
 int				ft_min(int a, int b);
 int				ft_max(int a, int b);
+
+void			ft_bubble_sort(void *arr, size_t arr_size, size_t elem_size,
+						int (*cmp)(const void *, const void *));
 #endif
