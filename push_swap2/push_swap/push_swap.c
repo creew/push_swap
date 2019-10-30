@@ -12,88 +12,25 @@
 
 #include "push_swap.h"
 
-void	cp_stack(t_stack *dst, t_stack *src)
-{
-	int		size;
-
-	size = 0;
-	dst->pos = 0;
-	while (size < src->pos)
-	{
-		stack_push(dst, src->stack[size]);
-		size++;
-	}
-}
-
-int 	get_index_number(int n, t_stack *st1, t_stack *st2)
+int		find_optimal(t_stack *st1, t_stack *st2)
 {
 
 
 }
 
-int		get_sum_permutation(t_stack *st1, t_stack *st2)
+int		calc_optimal(t_stack *st1, t_stack *st2)
 {
-	int i;
+	size_t size;
+	int		count;
 
-	i = st1->pos;
-	while (i--)
-	{
-		get_index_number(st1->stack[i], st1, st2);
-	}
-	i = st2->pos;
-	while (i--)
-	{
-		get_index_number(st2->stack[i], st1, st2);
-	}
-}
-
-int		find_optimal_val(t_stack *st1, t_stack *st2, t_stack *t1, t_stack *t2, int *op)
-{
-	int i;
-	int min;
-	int val;
-
-	i = S_SA;
-	cp_stack(t1, st1);
-	cp_stack(t2, st2);
-	run_commands(t1, t2, i, NULL);
-	min = get_sum_permutation(t1, t2);
-	*op = i;
-	while (++i <= S_RRR)
-	{
-		cp_stack(t1, st1);
-		cp_stack(t2, st2);
-		run_commands(t1, t2, i, NULL);
-		val = get_sum_permutation(t1, t2);
-		if (val < min)
-		{
-			min = val;
-			*op = i;
-		}
-	}
-	return (min);
-}
-
-int 	calc_optimal(t_stack *st1, t_stack *st2)
-{
-	int val;
-	int	op;
-	int	count;
-	t_stack t1;
-	t_stack t2;
-
-	stack_init(&t1);
-	stack_init(&t2);
 	count = 0;
-	while ((val = find_optimal_val(st1, st2, &t1, &t2, &op)) != 0)
-	{
-		run_commands(st1, st2, op, &count);
-	}
-	stack_free(&t1);
-	stack_free(&t2);
-	return (count);
-}
+	size = st1->pos;
+	while (size-- > 1)
+		run_commands(st1, st2, S_PB, &count);
 
+
+
+}
 
 int		main(int ac, char *av[])
 {

@@ -22,7 +22,8 @@ SRC = push_swap.c \
 	../common/stack.c \
 	../common/sub_functions.c \
 	../common/stack_sec.c \
-	../common/readarg.c
+	../common/readarg.c \
+	../common/stack_action.c
 
 OBJ = $(SRC:.c=.o)
 
