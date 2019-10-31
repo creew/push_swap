@@ -3,3 +3,4 @@
 /checker/checker
 *.a
 *.o
+/push_swap/push_swap
