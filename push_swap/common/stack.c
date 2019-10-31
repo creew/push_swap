@@ -24,7 +24,6 @@ int		stack_push(t_stack *st, int a)
 {
 	int		*newst;
 
-
 	if ((st->pos + 1) >= st->max_size)
 	{
 		newst = (int *)malloc(sizeof(int) * (STACK_SIZE + st->max_size));

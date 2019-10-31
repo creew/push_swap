@@ -53,7 +53,7 @@
 
 typedef struct	s_stack
 {
-	int			stack[1024];
+	int			*stack;
 	size_t		max_size;
 	size_t		pos;
 }				t_stack;
