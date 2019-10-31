@@ -1,0 +1,2 @@
+#!/bin/sh
+sudo hostname $(NEW_NAME)
