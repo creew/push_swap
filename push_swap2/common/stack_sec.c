@@ -12,7 +12,7 @@
 
 #include "common.h"
 
-int		is_stack_sorted(t_stack *st, size_t n, int backward)
+int		is_stack_sorted(t_stack *st, size_t n)
 {
 	int		val;
 	int		count;
@@ -24,7 +24,7 @@ int		is_stack_sorted(t_stack *st, size_t n, int backward)
 		val = st->stack[--count];
 		while (n && count)
 		{
-			if (backward ? val < st->stack[--count] : val > st->stack[--count])
+			if (val > st->stack[--count])
 				return (ERROR_NOT_SORTED_STACK);
 			val = st->stack[count];
 			n--;

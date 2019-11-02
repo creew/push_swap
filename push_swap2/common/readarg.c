@@ -69,4 +69,5 @@ char	*get_action_str(int i)
 		return ("rrb");
 	if (i == S_RRR)
 		return ("rrr");
+	return ("");
 }

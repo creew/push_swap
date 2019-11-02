@@ -23,7 +23,7 @@ static int	arg_cmp(int *arg, size_t count, char *ch)
 		{
 			if (ft_strncmp(get_action_str(count_op), ch, count) == 0)
 			{
-				*arg = count_op + 1;
+				*arg = count_op;
 				return (RET_OK);
 			}
 		}
@@ -43,7 +43,7 @@ static int	readl(int *arg)
 	{
 		if (res == '\n')
 			break ;
-		ch[count++] = res;
+		ch[count++] = (char)res;
 	}
 	if (res == FT_EOF && count == 0)
 		return (RET_ENDL);
@@ -57,19 +57,19 @@ static int	process_arg(t_stack *st1, t_stack *st2)
 	int		ret;
 	int		res;
 
-	print_stack(st1, st2);
+	//print_stack(st1, st2);
 	while ((ret = readl(&res)) >= RET_OK)
 	{
 		if (ret == RET_ENDL)
 		{
-			ft_putendl(is_stack_sorted(st1, st1->pos, 0) == RET_OK
+			ft_putendl(is_stack_sorted(st1, st1->pos) == RET_OK
 				&& st2->pos == 0 ? "OK" : "KO");
 			break ;
 		}
 		run_commands(st1, st2, res, NULL);
 		//print_stack(st1, st2);
 	}
-	return (RET_OK);
+	return (ret);
 }
 
 int			main(int ac, char *av[])
@@ -83,8 +83,11 @@ int			main(int ac, char *av[])
 	ret = arg_read(ac, av, &st1);
 	if (ret == RET_OK)
 	{
-		process_arg(&st1, &st2);
+		if (process_arg(&st1, &st2) < RET_OK)
+			ft_putendl("Error");
 	}
+	else
+		ft_putendl("Error");
 	stack_free(&st1);
 	stack_free(&st2);
 	return (0);

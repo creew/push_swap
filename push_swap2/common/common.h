@@ -71,7 +71,7 @@ int				stack_free(t_stack *st);
 int				stack_swap(t_stack *st);
 int				stack_rotate(t_stack *st);
 int				stack_rrotate(t_stack *st);
-int				is_stack_sorted(t_stack *st, size_t n, int backward);
+int				is_stack_sorted(t_stack *st, size_t n);
 
 int				safe_atoi(char *arg, int *res);
 

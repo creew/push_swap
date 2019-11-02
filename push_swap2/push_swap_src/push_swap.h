@@ -13,7 +13,7 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-#include "../common/common.h"
+#include "common.h"
 
 int		calc_optimal(t_stack *st1, t_stack *st2);
 void	paste_optimal(t_stack *st1, t_stack *st2, t_diff *gres, int *count);

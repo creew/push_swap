@@ -16,7 +16,8 @@ int		run_commands(t_stack *st1, t_stack *st2, int cmd, int *count)
 {
 	int val;
 
-	ft_putendl(get_action_str(cmd));
+	if (count)
+		ft_putendl(get_action_str(cmd));
 	if ((cmd == S_SA || cmd == S_SS) && st1)
 		stack_swap(st1);
 	if ((cmd == S_SB || cmd == S_SS) && st2)
