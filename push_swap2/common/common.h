@@ -54,6 +54,12 @@ typedef struct	s_stack
 	size_t		pos;
 }				t_stack;
 
+typedef struct	s_diff
+{
+	int 		s1_diff;
+	int 		s2_diff;
+}				t_diff;
+
 int				arg_read(int n, char *av[], t_stack *st1);
 void			print_stack(t_stack *st1, t_stack *st2);
 int				run_commands(t_stack *st1, t_stack *st2, int n, int *count);
