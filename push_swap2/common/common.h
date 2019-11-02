@@ -74,4 +74,6 @@ int				stack_rrotate(t_stack *st);
 int				is_stack_sorted(t_stack *st, size_t n, int backward);
 
 int				safe_atoi(char *arg, int *res);
+
+char			*get_action_str(int i);
 #endif

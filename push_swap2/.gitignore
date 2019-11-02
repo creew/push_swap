@@ -4,3 +4,5 @@
 *.a
 *.o
 /push_swap/push_swap
+/checker
+/push_swap

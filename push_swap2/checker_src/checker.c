@@ -12,45 +12,70 @@
 
 #include "checker.h"
 
-const char *g_operations[] = {"sa", "sb", "ss",	 "pa",	"pb", "ra",
-							  "rb", "rr", "rra", "rrb", "rrr"};
-
-int readl(int *arg)
+static int	arg_cmp(int *arg, size_t count, char *ch)
 {
-	int	   res;
-	char   ch[4];
-	size_t count;
-	size_t count_op;
+	int		count_op;
 
-	count = 0;
-	while ((res = ft_getc(0)) >= 0 && count < 4)
+	count_op = S_SA;
+	while (count_op < S_RRR)
 	{
-		if (res == '\n')
-			break;
-		ch[count++] = res;
-	}
-	if (res == FT_EOF && count == 0)
-		return (RET_ENDL);
-	if (res != '\n' || count < 2)
-		return (ERROR_INCORRECT_ARGS);
-	count_op = 0;
-	while (count_op < ARRSIZE(g_operations))
-	{
-		if (ft_strlen(g_operations[count_op]) == count && ft_strncmp(g_operations[count_op], ch, count) == 0)
+		if (ft_strlen(get_action_str(count_op)) == count)
 		{
-			*arg = count_op + 1;
-			return (RET_OK);
+			if (ft_strncmp(get_action_str(count_op), ch, count) == 0)
+			{
+				*arg = count_op + 1;
+				return (RET_OK);
+			}
 		}
 		count_op++;
 	}
 	return (ERROR_INCORRECT_ARGS);
 }
 
-int main(int ac, char *av[])
+static int	readl(int *arg)
+{
+	int		res;
+	char	ch[4];
+	size_t	count;
+
+	count = 0;
+	while ((res = ft_getc(0)) >= 0 && count < 4)
+	{
+		if (res == '\n')
+			break ;
+		ch[count++] = res;
+	}
+	if (res == FT_EOF && count == 0)
+		return (RET_ENDL);
+	if (res != '\n' || count < 2)
+		return (ERROR_INCORRECT_ARGS);
+	return (arg_cmp(arg, count, ch));
+}
+
+static int	process_arg(t_stack *st1, t_stack *st2)
+{
+	int		ret;
+	int		res;
+
+	print_stack(st1, st2);
+	while ((ret = readl(&res)) >= RET_OK)
+	{
+		if (ret == RET_ENDL)
+		{
+			ft_putendl(is_stack_sorted(st1, st1->pos, 0) == RET_OK
+				&& st2->pos == 0 ? "OK" : "KO");
+			break ;
+		}
+		run_commands(st1, st2, res, NULL);
+		//print_stack(st1, st2);
+	}
+	return (RET_OK);
+}
+
+int			main(int ac, char *av[])
 {
 	t_stack		st1;
 	t_stack		st2;
-	int			res;
 	int			ret;
 
 	stack_init(&st1);
@@ -58,17 +83,7 @@ int main(int ac, char *av[])
 	ret = arg_read(ac, av, &st1);
 	if (ret == RET_OK)
 	{
-		print_stack(&st1, &st2);
-		while ((ret = readl(&res)) >= RET_OK)
-		{
-			if (ret == RET_ENDL)
-			{
-				ft_putendl(is_stack_sorted(&st1, st1.pos, 0) == RET_OK && st2.pos == 0 ? "OK" : "KO");
-				break;
-			}
-			run_commands(&st1, &st2, res, NULL);
-			print_stack(&st1, &st2);
-		}
+		process_arg(&st1, &st2);
 	}
 	stack_free(&st1);
 	stack_free(&st2);

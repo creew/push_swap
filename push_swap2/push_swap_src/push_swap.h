@@ -15,4 +15,17 @@
 
 #include "../common/common.h"
 
+int		calc_optimal(t_stack *st1, t_stack *st2);
+void	paste_optimal(t_stack *st1, t_stack *st2, t_diff *gres, int *count);
+
+int 	find_min_index(t_stack *st);
+int		is_cycle_sorted(t_stack *st, int start);
+void	sort3items(t_stack *st, int *count);
+int 	normalize_stack(t_stack *st, int *count);
+int		is_stack_sorted_index(t_stack *st);
+
+int		get_actual_diff(t_diff *d);
+void	set_tdiff(t_diff *d, int s1_diff, int s2_diff);
+int		find_min_diff(int s1[], int s2[], t_diff *d);
+int		get_prev_i(t_stack *st, int index);
 #endif

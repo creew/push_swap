@@ -19,6 +19,10 @@ CC_FLAGS = -Wall -Wextra $(CC_FERROR) -g
 CC_FERROR = #-Werror
 
 SRC = push_swap.c \
+	paste_values.c \
+	find_solution.c \
+	sort_stack.c \
+	diffs.c \
 	../common/stack.c \
 	../common/sub_functions.c \
 	../common/stack_sec.c \
