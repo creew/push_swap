@@ -24,7 +24,7 @@ CC = gcc
 
 CC_FLAGS = -Wall -Wextra -g
 
-CC_FERROR = #-Werror
+CC_FERROR = -Werror
 
 CHECKER_SRC = checker.c
 
@@ -40,7 +40,8 @@ COMMON_SRC = \
     	sub_functions.c \
    	 	stack_sec.c \
     	readarg.c \
-    	stack_action.c
+    	stack_action.c \
+    	print_stacks.c
 
 CHECKER_OBJ = $(addprefix $(CHECKER_DIR)/,$(CHECKER_SRC:.c=.o))
 
@@ -50,14 +51,15 @@ COMMON_OBJ = $(addprefix $(COMMON_DIR)/,$(COMMON_SRC:.c=.o))
 
 INC_DIR =	./libft \
 			./common \
+			./ft_printf
 
 INC_FLAG = $(addprefix -I,$(INC_DIR))
 
-CHECKER_HEADERS = $(CHECKER_DIR)/checker.h ./libft/libft.h
+CHECKER_HEADERS = $(CHECKER_DIR)/checker.h ./libft/libft.h ./ft_printf/ft_printf.h
 
-PUSHSWAP_HEADERS = $(PUSHSWAP_DIR)/push_swap.h ./libft/libft.h
+PUSHSWAP_HEADERS = $(PUSHSWAP_DIR)/push_swap.h ./libft/libft.h ./ft_printf/ft_printf.h
 
-COMMON_HEADERS = $(COMMON_DIR)/common.h ./libft/libft.h
+COMMON_HEADERS = $(COMMON_DIR)/common.h ./libft/libft.h ./ft_printf/ft_printf.h
 
 all: $(CHECKER) $(PUSHSWAP)
 
@@ -68,11 +70,13 @@ print:
 
 $(CHECKER): $(CHECKER_OBJ) $(COMMON_OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(CC_FLAGS) $(CC_FERROR) $^ -L./libft -lft -o $@
+	$(MAKE) -C ./ft_printf
+	$(CC) $(CC_FLAGS) $(CC_FERROR) $^ -L./libft -lft -L./ft_printf -lftprintf -o $@
 
 $(PUSHSWAP): $(PUSHSWAP_OBJ) $(COMMON_OBJ)
 	$(MAKE) -C ./libft
-	$(CC) $(CC_FLAGS) $(CC_FERROR) $^ -L./libft -lft -o $@
+	$(MAKE) -C ./ft_printf
+	$(CC) $(CC_FLAGS) $(CC_FERROR) $^ -L./libft -lft -L./ft_printf -lftprintf -o $@
 
 $(CHECKER_DIR)/%.o: $(CHECKER_DIR)/%.c $(CHECKER_HEADERS) $(COMMON_HEADERS)
 	$(CC) $(CC_FLAGS) $(CC_FERROR) $(INC_FLAG) -c $< -o $@
@@ -85,12 +89,14 @@ $(COMMON_DIR)/%.o: $(COMMON_DIR)/%.c $(COMMON_HEADERS)
 
 clean:
 	make clean -C ./libft
+	make clean -C ./ft_printf
 	rm -f $(CHECKER_OBJ)
 	rm -f $(PUSHSWAP_OBJ)
 	rm -f $(COMMON_OBJ)
 
 fclean: clean
 	rm -f ./libft/libft.a
+	rm -f ./ft_printf/libftprintf.a
 	rm -f $(CHECKER)
 	rm -f $(PUSHSWAP)
 

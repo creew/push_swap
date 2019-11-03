@@ -4,6 +4,7 @@ project(pushswap C)
 set(CMAKE_C_STANDARD 11)
 
 include_directories(.
+        ./../ft_printf
         ./../libft
         ./../common)
 
@@ -16,7 +17,7 @@ add_executable(pushswap
         ./../common/stack_sec.c
         ./../common/readarg.c
         ./../common/sub_functions.c
-        sort_stack.c diffs.c)
+        sort_stack.c diffs.c ../common/print_stacks.c)
 
 find_library(FT ft ./../libft)
 target_link_libraries(pushswap PUBLIC ${FT})

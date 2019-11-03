@@ -4,6 +4,7 @@ project(checker C)
 set(CMAKE_C_STANDARD 11)
 
 include_directories(.
+        ./../ft_printf
         ./../libft
         ./../common)
 
@@ -14,7 +15,7 @@ add_executable(checker
         ./../common/stack_sec.c
         ./../common/readarg.c
         ./../common/sub_functions.c
-        )
+        ../common/print_stacks.c)
 
 find_library(FT ft ./../libft)
 target_link_libraries(checker PUBLIC ${FT})

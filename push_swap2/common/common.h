@@ -79,4 +79,6 @@ int				is_stack_sorted(t_stack *st, size_t n);
 int				safe_atoi(char *arg, int *res);
 
 char			*get_action_str(int i);
+
+void			print_stacks(t_stack *st1, t_stack *st2);
 #endif

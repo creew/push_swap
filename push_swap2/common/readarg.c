@@ -25,7 +25,7 @@ static int	check_exist_val(t_stack *st, int val)
 	return (RET_OK);
 }
 
-int		arg_read(int n, char *av[], t_stack *st1)
+int			arg_read(int n, char *av[], t_stack *st1)
 {
 	int		res;
 	int		ret;
@@ -43,7 +43,7 @@ int		arg_read(int n, char *av[], t_stack *st1)
 	return (ret);
 }
 
-void	print_stack(t_stack *st1, t_stack *st2)
+void		print_stack(t_stack *st1, t_stack *st2)
 {
 	size_t c1;
 	size_t c2;
@@ -60,7 +60,7 @@ void	print_stack(t_stack *st1, t_stack *st2)
 	}
 }
 
-char	*get_action_str(int i)
+char		*get_action_str(int i)
 {
 	if (i == S_SA)
 		return ("sa");
