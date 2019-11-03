@@ -25,7 +25,6 @@ int		main(int ac, char *av[])
 		calc_optimal(&st1, &st2);
 	else if (ret != ERROR_NO_ARGUMENTS)
 		ft_putendl("Error");
-	print_stacks(&st1, &st2);
 	stack_free(&st1);
 	stack_free(&st2);
 	return (0);

@@ -43,23 +43,6 @@ int			arg_read(int n, char *av[], t_stack *st1)
 	return (ret);
 }
 
-void		print_stack(t_stack *st1, t_stack *st2)
-{
-	size_t c1;
-	size_t c2;
-
-	c1 = st1->pos;
-	c2 = st2->pos;
-	ft_putendl("st1      st2");
-	while (c1 || c2)
-	{
-		c1 ? ft_putnbr(st1->stack[--c1]) : ft_putstr("     ");
-		ft_putstr("   ");
-		c2 ? ft_putnbr(st2->stack[--c2]) : ft_putstr("     ");
-		ft_putendl("");
-	}
-}
-
 char		*get_action_str(int i)
 {
 	if (i == S_SA)
