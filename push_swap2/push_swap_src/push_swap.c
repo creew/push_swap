@@ -23,5 +23,7 @@ int		main(int ac, char *av[])
 	{
 		calc_optimal(&st1, &st2);
 	}
+	stack_free(&st1);
+	stack_free(&st2);
 	return (0);
 }

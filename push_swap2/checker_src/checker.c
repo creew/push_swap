@@ -12,19 +12,19 @@
 
 #include "checker.h"
 
-static int	arg_cmp(int *arg, size_t count, char *ch)
+static int	arg_cmp(int *arg, size_t count, char *ch, int ret)
 {
 	int		count_op;
 
 	count_op = S_SA;
-	while (count_op < S_RRR)
+	while (count_op <= S_RRR)
 	{
 		if (ft_strlen(get_action_str(count_op)) == count)
 		{
 			if (ft_strncmp(get_action_str(count_op), ch, count) == 0)
 			{
 				*arg = count_op;
-				return (RET_OK);
+				return (ret);
 			}
 		}
 		count_op++;
@@ -38,6 +38,7 @@ static int	readl(int *arg)
 	char	ch[4];
 	size_t	count;
 
+	*arg = S_ERROR;
 	count = 0;
 	while ((res = ft_getc(0)) >= 0 && count < 4)
 	{
@@ -47,9 +48,9 @@ static int	readl(int *arg)
 	}
 	if (res == FT_EOF && count == 0)
 		return (RET_ENDL);
-	if (res != '\n' || count < 2)
+	if ((res != '\n' && res != FT_EOF) || count < 2)
 		return (ERROR_INCORRECT_ARGS);
-	return (arg_cmp(arg, count, ch));
+	return (arg_cmp(arg, count, ch, res == FT_EOF ? RET_ENDL : RET_OK));
 }
 
 static int	process_arg(t_stack *st1, t_stack *st2)
@@ -57,17 +58,16 @@ static int	process_arg(t_stack *st1, t_stack *st2)
 	int		ret;
 	int		res;
 
-	//print_stack(st1, st2);
 	while ((ret = readl(&res)) >= RET_OK)
 	{
+		if (res != S_ERROR)
+			run_commands(st1, st2, res, NULL);
 		if (ret == RET_ENDL)
 		{
 			ft_putendl(is_stack_sorted(st1, st1->pos) == RET_OK
 				&& st2->pos == 0 ? "OK" : "KO");
 			break ;
 		}
-		run_commands(st1, st2, res, NULL);
-		//print_stack(st1, st2);
 	}
 	return (ret);
 }
@@ -86,7 +86,7 @@ int			main(int ac, char *av[])
 		if (process_arg(&st1, &st2) < RET_OK)
 			ft_putendl("Error");
 	}
-	else
+	else if (ret != ERROR_NO_ARGUMENTS)
 		ft_putendl("Error");
 	stack_free(&st1);
 	stack_free(&st2);

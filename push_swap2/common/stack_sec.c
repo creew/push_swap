@@ -33,13 +33,13 @@ int		is_stack_sorted(t_stack *st, size_t n)
 	return (RET_OK);
 }
 
-int 	stack_free(t_stack *st)
+int		stack_free(t_stack *st)
 {
 	ft_memdel((void **)&st->stack);
 	return (RET_OK);
 }
 
-int 	stack_swap(t_stack *st)
+int		stack_swap(t_stack *st)
 {
 	int		tmp;
 
@@ -53,11 +53,11 @@ int 	stack_swap(t_stack *st)
 	return (ERROR_INCORRECT_STACK_SIZE);
 }
 
-int 	stack_rotate(t_stack *st)
+int		stack_rotate(t_stack *st)
 {
 	int		tmp;
 
-	if	 (st->pos > 1)
+	if (st->pos > 1)
 	{
 		tmp = st->stack[st->pos - 1];
 		ft_intmove(st->stack + 1, st->stack, st->pos - 1);
@@ -67,7 +67,7 @@ int 	stack_rotate(t_stack *st)
 	return (ERROR_INCORRECT_STACK_SIZE);
 }
 
-int 	stack_rrotate(t_stack *st)
+int		stack_rrotate(t_stack *st)
 {
 	int		tmp;
 

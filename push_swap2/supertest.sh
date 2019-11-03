@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/sh
 quiet=0
 check=0
 sred=0

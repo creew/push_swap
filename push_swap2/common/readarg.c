@@ -12,6 +12,19 @@
 
 #include "common.h"
 
+static int	check_exist_val(t_stack *st, int val)
+{
+	size_t	size;
+
+	size = st->pos;
+	while (size--)
+	{
+		if (st->stack[size] == val)
+			return (ERROR_DUPL_VAL);
+	}
+	return (RET_OK);
+}
+
 int		arg_read(int n, char *av[], t_stack *st1)
 {
 	int		res;
@@ -21,6 +34,8 @@ int		arg_read(int n, char *av[], t_stack *st1)
 	while (n > 1)
 	{
 		if ((ret = safe_atoi(av[n - 1], &res)) != RET_OK)
+			break ;
+		if ((ret = check_exist_val(st1, res)) != RET_OK)
 			break ;
 		stack_push(st1, res);
 		n--;

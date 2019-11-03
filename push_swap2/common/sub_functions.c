@@ -12,19 +12,10 @@
 
 #include "common.h"
 
-int		safe_atoi(char *arg, int *res)
+static int	process_atoi(char *arg, int *res, int is_neg)
 {
-	int		is_neg;
-	int		val;
+	int val;
 
-	*res = 0;
-	is_neg = 1;
-	if (*arg == '+' || *arg == '-')
-	{
-		if (*arg == '-')
-			is_neg = -1;
-		arg++;
-	}
 	while ((val = *arg++))
 	{
 		if (val < '0' || val > '9')
@@ -40,4 +31,21 @@ int		safe_atoi(char *arg, int *res)
 		*res = *res + val;
 	}
 	return (RET_OK);
+}
+
+int			safe_atoi(char *arg, int *res)
+{
+	int		is_neg;
+
+	*res = 0;
+	is_neg = 1;
+	if (*arg == '+' || *arg == '-')
+	{
+		if (*arg == '-')
+			is_neg = -1;
+		arg++;
+	}
+	if (*arg == '\0')
+		return (ERROR_ARG_ONLY_PM);
+	return (process_atoi(arg, res, is_neg));
 }

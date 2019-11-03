@@ -49,4 +49,3 @@ int		stack_pop(t_stack *st, int *a)
 	}
 	return (ERROR_GETEMPTY_STACK);
 }
-

@@ -13,15 +13,15 @@
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
 
-#include "common.h"
+# include "common.h"
 
 int		calc_optimal(t_stack *st1, t_stack *st2);
 void	paste_optimal(t_stack *st1, t_stack *st2, t_diff *gres, int *count);
 
-int 	find_min_index(t_stack *st);
+int		find_min_index(t_stack *st);
 int		is_cycle_sorted(t_stack *st, int start);
 void	sort3items(t_stack *st, int *count);
-int 	normalize_stack(t_stack *st, int *count);
+int		normalize_stack(t_stack *st, int *count);
 int		is_stack_sorted_index(t_stack *st);
 
 int		get_actual_diff(t_diff *d);
