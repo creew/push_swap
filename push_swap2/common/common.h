@@ -86,5 +86,5 @@ int				safe_atoi(char *arg, int *res);
 
 char			*get_action_str(int i);
 
-void			print_stacks(t_stack *st1, t_stack *st2);
+void			print_stacks(t_stg *stg);
 #endif

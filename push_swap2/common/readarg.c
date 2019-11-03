@@ -33,11 +33,16 @@ int			arg_read(int n, char *av[], t_stg *stg)
 	ret = ERROR_NO_ARGUMENTS;
 	while (n > 1)
 	{
-		if ((ret = safe_atoi(av[n - 1], &res)) != RET_OK)
-			break ;
-		if ((ret = check_exist_val(&stg->st1, res)) != RET_OK)
-			break ;
-		stack_push(&stg->st1, res);
+		if (ft_strcmp(av[n - 1], "-v") == 0)
+			stg->is_show_stat = 1;
+		else
+		{
+			if ((ret = safe_atoi(av[n - 1], &res)) != RET_OK)
+				break ;
+			if ((ret = check_exist_val(&stg->st1, res)) != RET_OK)
+				break ;
+			stack_push(&stg->st1, res);
+		}
 		n--;
 	}
 	return (ret);

@@ -22,12 +22,10 @@ int		run_commands(t_stg *stg, int cmd, int *count)
 		stack_swap(&stg->st1);
 	if (cmd == S_SB || cmd == S_SS)
 		stack_swap(&stg->st2);
-	if (cmd == S_PA)
-		if (stack_pop(&stg->st2, &val) == RET_OK)
-			stack_push(&stg->st1, val);
-	if (cmd == S_PB)
-		if (stack_pop(&stg->st1, &val) == RET_OK)
-			stack_push(&stg->st2, val);
+	if (cmd == S_PA && (stack_pop(&stg->st2, &val) == RET_OK))
+		stack_push(&stg->st1, val);
+	if (cmd == S_PB && (stack_pop(&stg->st1, &val) == RET_OK))
+		stack_push(&stg->st2, val);
 	if (cmd == S_RA || cmd == S_RR)
 		stack_rotate(&stg->st1);
 	if (cmd == S_RB || cmd == S_RR)
@@ -38,5 +36,7 @@ int		run_commands(t_stg *stg, int cmd, int *count)
 		stack_rrotate(&stg->st2);
 	if (count)
 		*count = *count + 1;
+	if (stg->is_show_stat)
+		print_stacks(stg);
 	return (RET_OK);
 }
