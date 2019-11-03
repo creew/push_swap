@@ -61,6 +61,8 @@ int				ft_allprintf(const char *format, va_list *ptr,
 			format += parse_str(&print, format, ptr);
 			out += parse_format(&print, ptr);
 		}
+		else if (*format == '{')
+			out += parse_colors(&print, &format);
 		else
 			out += add_to_out(&print, *format++);
 	}

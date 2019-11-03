@@ -32,7 +32,8 @@ SRCS = 	ft_printf.c \
 		calc_double.c \
 		sub_functions.c \
 		long_ariph.c \
-		callbacks.c
+		callbacks.c \
+		parse_colors.c
 
 SRC_TEST = test.c
 

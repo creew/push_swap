@@ -28,4 +28,4 @@ add_executable(ftprintf
         parse_width.c
         sub_functions.c
         test.c
-        callbacks.c)
+        callbacks.c parse_colors.c)

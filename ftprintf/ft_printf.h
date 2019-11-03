@@ -50,6 +50,20 @@
 # define MANT_NAN	(3ull << 62)
 # define MANT_INF	(1ull << 63)
 
+# define ANSI_RESET			"\e[0m"
+# define ANSI_BLACK			"\e[30m"
+# define ANSI_RED			"\e[31m"
+# define ANSI_GREEN			"\e[32m"
+# define ANSI_YELLOW		"\e[33m"
+# define ANSI_BLUE			"\e[34m"
+# define ANSI_PURPLE		"\e[35m"
+# define ANSI_CYAN			"\e[36m"
+# define ANSI_WHITE			"\e[37m"
+
+# define ANSI_BG_GREEN		"\e[42m"
+# define ANSI_BG_YELLOW		"\e[43m"
+# define ANSI_BG_CYAN		"\e[46m"
+
 typedef unsigned long long	t_ullong;
 
 typedef unsigned long		t_ulong;
@@ -175,4 +189,6 @@ int				longb_cmpn(t_longb *a, t_longb *b, int n);
 
 void			fp_write_c(void **param, char *data, size_t len);
 void			s_write_c(void **param, char *data, size_t len);
+
+int				parse_colors(t_print *print, const char **format);
 #endif
