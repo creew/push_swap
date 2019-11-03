@@ -96,7 +96,11 @@ int			arg_read(int n, char *av[], t_stg *stg)
 	while (n > 1)
 	{
 		if (parse_option(av[n - 1], stg) == 0)
+		{
 			ret = parse_arr(stg, av[n - 1]);
+			if (ret != RET_OK)
+				return (ret);
+		}
 		n--;
 	}
 	return (ret);

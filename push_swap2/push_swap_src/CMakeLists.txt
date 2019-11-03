@@ -19,5 +19,6 @@ add_executable(pushswap
         ./../common/sub_functions.c
         sort_stack.c diffs.c ../common/print_stacks.c)
 
+find_library(FTPRINTF ftprintf ./../ft_printf)
 find_library(FT ft ./../libft)
-target_link_libraries(pushswap PUBLIC ${FT})
+target_link_libraries(pushswap PUBLIC ${FT} ${FTPRINTF})

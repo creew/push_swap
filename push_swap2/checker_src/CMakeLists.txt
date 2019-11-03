@@ -18,4 +18,5 @@ add_executable(checker
         ../common/print_stacks.c)
 
 find_library(FT ft ./../libft)
-target_link_libraries(checker PUBLIC ${FT})
+find_library(FTPRINTF ftprintf ./../ft_printf)
+target_link_libraries(checker PUBLIC ${FT} ${FTPRINTF})
