@@ -25,7 +25,7 @@ static int	check_exist_val(t_stack *st, int val)
 	return (RET_OK);
 }
 
-int			parse_option(char *arg, t_stg *stg)
+static int	parse_option(char *arg, t_stg *stg)
 {
 	t_uint	flags;
 
@@ -50,50 +50,54 @@ int			parse_option(char *arg, t_stg *stg)
 	return (0);
 }
 
+static int	read_check_val(t_stg *stg, char *s)
+{
+	int		ret;
+	int		res;
+
+	if ((ret = safe_atoi(s, &res)) != RET_OK)
+		return (ret);
+	if ((ret = check_exist_val(&stg->st1, res)) != RET_OK)
+		return (ret);
+	stack_push(&stg->st1, res);
+	return (ret);
+}
+
+int			parse_arr(t_stg *stg, char *str)
+{
+	char	*s;
+	size_t	len;
+	int		ret;
+
+	ret = ERROR_NO_ARGUMENTS;
+	while ((s = ft_strrchr(str, ' ')))
+	{
+		len = ft_strlen(str);
+		*s = '\0';
+		if (s != str + len - 1)
+		{
+			if ((ret = read_check_val(stg, s + 1)) != RET_OK)
+				return (ret);
+		}
+	}
+	if (*str)
+	{
+		if ((ret = read_check_val(stg, str)) != RET_OK)
+			return (ret);
+	}
+	return (ret);
+}
+
 int			arg_read(int n, char *av[], t_stg *stg)
 {
-	int		res;
 	int		ret;
 
 	ret = ERROR_NO_ARGUMENTS;
 	while (n > 1)
 	{
 		if (parse_option(av[n - 1], stg) == 0)
-		{
-			if ((ret = safe_atoi(av[n - 1], &res)) != RET_OK)
-				break ;
-			if ((ret = check_exist_val(&stg->st1, res)) != RET_OK)
-				break ;
-			stack_push(&stg->st1, res);
-		}
+			ret = parse_arr(stg, av[n - 1]);
 		n--;
 	}
 	return (ret);
-}
-
-char		*get_action_str(int i)
-{
-	if (i == S_SA)
-		return ("sa");
-	if (i == S_SB)
-		return ("sb");
-	if (i == S_SS)
-		return ("ss");
-	if (i == S_PA)
-		return ("pa");
-	if (i == S_PB)
-		return ("pb");
-	if (i == S_RA)
-		return ("ra");
-	if (i == S_RB)
-		return ("rb");
-	if (i == S_RR)
-		return ("rr");
-	if (i == S_RRA)
-		return ("rra");
-	if (i == S_RRB)
-		return ("rrb");
-	if (i == S_RRR)
-		return ("rrr");
-	return ("");
 }
