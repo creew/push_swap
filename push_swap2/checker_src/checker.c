@@ -53,7 +53,7 @@ static int	readl(int *arg)
 	return (arg_cmp(arg, count, ch, res == FT_EOF ? RET_ENDL : RET_OK));
 }
 
-static int	process_arg(t_stack *st1, t_stack *st2)
+static int	process_arg(t_stg *stg)
 {
 	int		ret;
 	int		res;
@@ -61,11 +61,11 @@ static int	process_arg(t_stack *st1, t_stack *st2)
 	while ((ret = readl(&res)) >= RET_OK)
 	{
 		if (res != S_ERROR)
-			run_commands(st1, st2, res, NULL);
+			run_commands(stg, res, NULL);
 		if (ret == RET_ENDL)
 		{
-			ft_putendl(is_stack_sorted(st1, st1->pos) == RET_OK
-				&& st2->pos == 0 ? "OK" : "KO");
+			ft_putendl(is_stack_sorted(&stg->st1, stg->st1.pos) == RET_OK
+				&& stg->st2.pos == 0 ? "OK" : "KO");
 			break ;
 		}
 	}
@@ -74,21 +74,21 @@ static int	process_arg(t_stack *st1, t_stack *st2)
 
 int			main(int ac, char *av[])
 {
-	t_stack		st1;
-	t_stack		st2;
+	t_stg		stg;
 	int			ret;
 
-	stack_init(&st1);
-	stack_init(&st2);
-	ret = arg_read(ac, av, &st1);
+	stack_init(&stg.st1);
+	stack_init(&stg.st2);
+	stg.is_show_stat = 0;
+	ret = arg_read(ac, av, &stg);
 	if (ret == RET_OK)
 	{
-		if (process_arg(&st1, &st2) < RET_OK)
+		if (process_arg(&stg) < RET_OK)
 			ft_putendl("Error");
 	}
 	else if (ret != ERROR_NO_ARGUMENTS)
 		ft_putendl("Error");
-	stack_free(&st1);
-	stack_free(&st2);
+	stack_free(&stg.st1);
+	stack_free(&stg.st2);
 	return (0);
 }

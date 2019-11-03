@@ -12,67 +12,67 @@
 
 #include "push_swap.h"
 
-static void	paste_positive(t_stack *st1, t_stack *st2, t_diff *gres, int *count)
+static void	paste_positive(t_stg *stg, t_diff *gres, int *count)
 {
 	while (gres->s1_diff && gres->s2_diff)
 	{
-		run_commands(st1, st2, S_RR, count);
+		run_commands(stg, S_RR, count);
 		gres->s1_diff--;
 		gres->s2_diff--;
 	}
 	while (gres->s1_diff--)
-		run_commands(st1, st2, S_RA, count);
+		run_commands(stg, S_RA, count);
 	while (gres->s2_diff--)
-		run_commands(st1, st2, S_RB, count);
+		run_commands(stg, S_RB, count);
 }
 
-static void	paste_negative(t_stack *st1, t_stack *st2, t_diff *gres, int *count)
+static void	paste_negative(t_stg *stg, t_diff *gres, int *count)
 {
 	while (gres->s1_diff && gres->s2_diff)
 	{
-		run_commands(st1, st2, S_RRR, count);
+		run_commands(stg, S_RRR, count);
 		gres->s1_diff++;
 		gres->s2_diff++;
 	}
 	while (gres->s1_diff++ < 0)
-		run_commands(st1, st2, S_RRA, count);
+		run_commands(stg, S_RRA, count);
 	while (gres->s2_diff++ < 0)
-		run_commands(st1, st2, S_RRB, count);
+		run_commands(stg, S_RRB, count);
 }
 
-static void	paste_both(t_stack *st1, t_stack *st2, t_diff *gres, int *count)
+static void	paste_both(t_stg *stg, t_diff *gres, int *count)
 {
 	while (gres->s1_diff < 0)
 	{
-		run_commands(st1, st2, S_RRA, count);
+		run_commands(stg, S_RRA, count);
 		gres->s1_diff++;
 	}
 	while (gres->s2_diff < 0)
 	{
-		run_commands(st1, st2, S_RRB, count);
+		run_commands(stg, S_RRB, count);
 		gres->s2_diff++;
 	}
 	while (gres->s1_diff > 0)
 	{
-		run_commands(st1, st2, S_RA, count);
+		run_commands(stg, S_RA, count);
 		gres->s1_diff--;
 	}
 	while (gres->s2_diff > 0)
 	{
-		run_commands(st1, st2, S_RB, count);
+		run_commands(stg, S_RB, count);
 		gres->s2_diff--;
 	}
 }
 
-void		paste_optimal(t_stack *st1, t_stack *st2, t_diff *gres, int *count)
+void		paste_optimal(t_stg *stg, t_diff *gres, int *count)
 {
 	if (gres->s1_diff >= 0 && gres->s2_diff >= 0)
-		paste_positive(st1, st2, gres, count);
+		paste_positive(stg, gres, count);
 	else if (gres->s1_diff <= 0 && gres->s2_diff <= 0)
-		paste_negative(st1, st2, gres, count);
+		paste_negative(stg, gres, count);
 	else
-		paste_both(st1, st2, gres, count);
-	run_commands(st1, st2, S_PA, count);
+		paste_both(stg, gres, count);
+	run_commands(stg, S_PA, count);
 }
 
 int			get_prev_i(t_stack *st, int index)

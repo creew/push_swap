@@ -57,39 +57,39 @@ int		is_cycle_sorted(t_stack *st, int start)
 	return (1);
 }
 
-void	sort3items(t_stack *st, int *count)
+void	sort3items(t_stg *stg, int *count)
 {
 	int	min_index;
 
-	if (st->pos == 3)
+	if (stg->st1.pos == 3)
 	{
-		if ((min_index = find_min_index(st)) != -1)
+		if ((min_index = find_min_index(&stg->st1)) != -1)
 		{
-			if (!is_cycle_sorted(st, min_index))
-				run_commands(st, NULL, S_SA, count);
+			if (!is_cycle_sorted(&stg->st1, min_index))
+				run_commands(stg, S_SA, count);
 		}
 	}
 }
 
-int		normalize_stack(t_stack *st, int *count)
+int		normalize_stack(t_stg *stg, int *count)
 {
 	int	min;
 	int	n;
 
-	min = find_min_index(st);
-	if (min != (int)st->pos - 1)
+	min = find_min_index(&stg->st1);
+	if (min != (int)stg->st1.pos - 1)
 	{
-		if ((int)st->pos - 1 - min < min + 1)
+		if ((int)stg->st1.pos - 1 - min < min + 1)
 		{
-			n = (int)st->pos - 1 - min;
+			n = (int)stg->st1.pos - 1 - min;
 			while (n--)
-				run_commands(st, NULL, S_RA, count);
+				run_commands(stg, S_RA, count);
 		}
 		else
 		{
 			n = min + 1;
 			while (n--)
-				run_commands(st, NULL, S_RRA, count);
+				run_commands(stg, S_RRA, count);
 		}
 	}
 	return (0);

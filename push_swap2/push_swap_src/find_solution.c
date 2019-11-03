@@ -85,25 +85,25 @@ static int	find_optimal(t_stack *st1, t_stack *st2, t_diff *gres)
 	return (0);
 }
 
-int			calc_optimal(t_stack *st1, t_stack *st2)
+int			calc_optimal(t_stg *stg)
 {
 	size_t	size;
 	int		count;
 	t_diff	gres;
 
 	count = 0;
-	if (!is_stack_sorted_index(st1))
+	if (!is_stack_sorted_index(&stg->st1))
 	{
-		size = st1->pos;
-		while (size-- > 3 && !is_stack_sorted_index(st1))
-			run_commands(st1, st2, S_PB, &count);
-		sort3items(st1, &count);
-		while (st2->pos)
+		size = stg->st1.pos;
+		while (size-- > 3 && !is_stack_sorted_index(&stg->st1))
+			run_commands(stg, S_PB, &count);
+		sort3items(stg, &count);
+		while (stg->st2.pos)
 		{
-			find_optimal(st1, st2, &gres);
-			paste_optimal(st1, st2, &gres, &count);
+			find_optimal(&stg->st1, &stg->st2, &gres);
+			paste_optimal(stg, &gres, &count);
 		}
 	}
-	normalize_stack(st1, &count);
+	normalize_stack(stg, &count);
 	return (count);
 }

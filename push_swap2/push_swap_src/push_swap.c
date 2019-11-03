@@ -14,18 +14,18 @@
 
 int		main(int ac, char *av[])
 {
-	t_stack	st1;
-	t_stack	st2;
+	t_stg	stg;
 	int		ret;
 
-	stack_init(&st1);
-	stack_init(&st2);
-	ret = arg_read(ac, av, &st1);
+	stg.is_show_stat = 0;
+	stack_init(&stg.st1);
+	stack_init(&stg.st2);
+	ret = arg_read(ac, av, &stg);
 	if (ret == RET_OK)
-		calc_optimal(&st1, &st2);
+		calc_optimal(&stg);
 	else if (ret != ERROR_NO_ARGUMENTS)
 		ft_putendl("Error");
-	stack_free(&st1);
-	stack_free(&st2);
+	stack_free(&stg.st1);
+	stack_free(&stg.st2);
 	return (0);
 }

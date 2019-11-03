@@ -25,7 +25,7 @@ static int	check_exist_val(t_stack *st, int val)
 	return (RET_OK);
 }
 
-int			arg_read(int n, char *av[], t_stack *st1)
+int			arg_read(int n, char *av[], t_stg *stg)
 {
 	int		res;
 	int		ret;
@@ -35,9 +35,9 @@ int			arg_read(int n, char *av[], t_stack *st1)
 	{
 		if ((ret = safe_atoi(av[n - 1], &res)) != RET_OK)
 			break ;
-		if ((ret = check_exist_val(st1, res)) != RET_OK)
+		if ((ret = check_exist_val(&stg->st1, res)) != RET_OK)
 			break ;
-		stack_push(st1, res);
+		stack_push(&stg->st1, res);
 		n--;
 	}
 	return (ret);
