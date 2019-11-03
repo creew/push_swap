@@ -68,6 +68,7 @@ typedef struct	s_stg
 	t_stack		st1;
 	t_stack		st2;
 	int			is_show_stat;
+	int			is_colorized;
 }				t_stg;
 
 int				arg_read(int n, char *av[], t_stg *stg);

@@ -11,13 +11,34 @@
 /* ************************************************************************** */
 
 #include "common.h"
+#include "ft_printf.h"
 
-int		run_commands(t_stg *stg, int cmd, int *count)
+static void	print_command(int cmd, int is_colorized)
+{
+	char	*str;
+
+	str = get_action_str(cmd);
+	if (is_colorized)
+	{
+		if (cmd == S_SA || cmd == S_RA || cmd == S_RRA)
+			ft_printf("{red}%s{eoc}\n", str);
+		if (cmd == S_SB || cmd == S_RB || cmd == S_RRB)
+			ft_printf("{blue}%s{eoc}\n", str);
+		if (cmd == S_SS || cmd == S_RR || cmd == S_RRR)
+			ft_printf("{green}%s{eoc}\n", str);
+		if (cmd == S_PA || cmd == S_PB)
+			ft_printf("{cyan}%s{eoc}\n", str);
+	}
+	else
+		ft_putendl(str);
+}
+
+int			run_commands(t_stg *stg, int cmd, int *count)
 {
 	int val;
 
 	if (count)
-		ft_putendl(get_action_str(cmd));
+		print_command(cmd, stg->is_colorized);
 	if (cmd == S_SA || cmd == S_SS)
 		stack_swap(&stg->st1);
 	if (cmd == S_SB || cmd == S_SS)

@@ -25,6 +25,31 @@ static int	check_exist_val(t_stack *st, int val)
 	return (RET_OK);
 }
 
+int			parse_option(char *arg, t_stg *stg)
+{
+	t_uint	flags;
+
+	flags = 0;
+	if (*arg == '-' && *(arg + 1) != '\0')
+	{
+		while (*++arg)
+		{
+			if (*arg == 'v')
+				flags |= 1u;
+			else if (*arg == 'c')
+				flags |= 2u;
+			else
+				return (0);
+		}
+		if (flags & 1u)
+			stg->is_show_stat = 1;
+		if (flags & 2u)
+			stg->is_colorized = 1;
+		return (1);
+	}
+	return (0);
+}
+
 int			arg_read(int n, char *av[], t_stg *stg)
 {
 	int		res;
@@ -33,9 +58,7 @@ int			arg_read(int n, char *av[], t_stg *stg)
 	ret = ERROR_NO_ARGUMENTS;
 	while (n > 1)
 	{
-		if (ft_strcmp(av[n - 1], "-v") == 0)
-			stg->is_show_stat = 1;
-		else
+		if (parse_option(av[n - 1], stg) == 0)
 		{
 			if ((ret = safe_atoi(av[n - 1], &res)) != RET_OK)
 				break ;
