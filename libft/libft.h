@@ -27,6 +27,11 @@
 
 # define FT_EOF (-2)
 
+# define FT_ATOI_OK			(0)
+# define FT_ATOI_OVERFLOW	(1)
+# define FT_ATOI_EMPTY_ARG	(2)
+# define FT_ATOI_WRONG_CHAR	(3)
+
 typedef struct	s_list
 {
 	void			*content;
@@ -150,4 +155,5 @@ void			ft_bubble_sort(void *arr, size_t arr_size, size_t elem_size,
 						int (*cmp)(const void *, const void *));
 void			*ft_calloc(size_t count, size_t size);
 size_t			ft_strlcpy(char *dst, const char *src, size_t size);
+int				ft_safe_atoi(char *arg, int *res);
 #endif
