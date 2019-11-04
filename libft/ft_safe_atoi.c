@@ -12,7 +12,7 @@
 
 #include "libft.h"
 
-static int	process_atoi(char *arg, int *res, int is_neg)
+static int	process_atoi(const char *arg, int *res, int is_neg)
 {
 	int val;
 
@@ -33,7 +33,7 @@ static int	process_atoi(char *arg, int *res, int is_neg)
 	return (FT_ATOI_OK);
 }
 
-int			ft_safe_atoi(char *arg, int *res)
+int			ft_safe_atoi(const char *arg, int *res)
 {
 	int		is_neg;
 
