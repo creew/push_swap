@@ -18,6 +18,7 @@ int		main(int ac, char *av[])
 	int		ret;
 
 	stg.is_show_stat = 0;
+	stg.is_colorized = 0;
 	stack_init(&stg.st1);
 	stack_init(&stg.st2);
 	ret = arg_read(ac, av, &stg);

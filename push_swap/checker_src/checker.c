@@ -80,6 +80,7 @@ int			main(int ac, char *av[])
 	stack_init(&stg.st1);
 	stack_init(&stg.st2);
 	stg.is_show_stat = 0;
+	stg.is_colorized = 0;
 	ret = arg_read(ac, av, &stg);
 	if (ret == RET_OK)
 	{
