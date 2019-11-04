@@ -15,8 +15,11 @@ add_executable(checker
         ./../common/stack_sec.c
         ./../common/readarg.c
         ./../common/sub_functions.c
-        ../common/print_stacks.c)
+        ../common/print_stacks.c
+        )
 
+add_dependencies(checker libft_target libftprintf_target)
 find_library(FT ft ./../libft)
 find_library(FTPRINTF ftprintf ./../ft_printf)
 target_link_libraries(checker PUBLIC ${FT} ${FTPRINTF})
+

@@ -12,13 +12,16 @@ add_executable(pushswap
         push_swap.c
         find_solution.c
         paste_values.c
+        sort_stack.c
+        diffs.c
         ./../common/stack_action.c
         ./../common/stack.c
         ./../common/stack_sec.c
         ./../common/readarg.c
         ./../common/sub_functions.c
-        sort_stack.c diffs.c ../common/print_stacks.c)
+        ./../common/print_stacks.c)
 
+add_dependencies(pushswap libft_target libftprintf_target)
 find_library(FTPRINTF ftprintf ./../ft_printf)
 find_library(FT ft ./../libft)
 target_link_libraries(pushswap PUBLIC ${FT} ${FTPRINTF})
