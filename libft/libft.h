@@ -157,4 +157,5 @@ void			*ft_calloc(size_t count, size_t size);
 size_t			ft_strlcpy(char *dst, const char *src, size_t size);
 int				ft_safe_atoi(const char *arg, int *res);
 char			*ft_strpbrk(const char *s, const char *charset);
+char			*ft_trim_spaces(char *str);
 #endif
