@@ -85,7 +85,7 @@ int			main(int ac, char *av[])
 	if (ret == RET_OK)
 	{
 		if (process_arg(&stg) < RET_OK)
-			ft_putendl("Error");
+			ft_putendl_fd("Error", 2);
 	}
 	else if (ret != ERROR_NO_ARGUMENTS)
 		ft_putendl("Error");
