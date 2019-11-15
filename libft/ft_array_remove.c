@@ -1,28 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_trim_spaces.c                                   :+:      :+:    :+:   */
+/*   ft_array_remove.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 11:12:51 by eklompus          #+#    #+#             */
-/*   Updated: 2019/11/05 11:12:52 by eklompus         ###   ########.fr       */
+/*   Created: 2019/11/14 11:46:17 by eklompus          #+#    #+#             */
+/*   Updated: 2019/11/14 11:46:18 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_trim_spaces(char *str)
+int		ft_array_remove(t_ftarray *arr, size_t index, void (*f)(void *))
 {
-	size_t	len;
-	char	*r;
+	void	*data;
 
-	r = str;
-	while (ft_isspace(*str))
-		str++;
-	len = ft_strlen(str);
-	while (ft_isspace(str[len - 1]))
-		str[--len] = '\0';
-	ft_memmove(r, str, len + 1);
-	return (r);
+	if (index < arr->num_elems)
+	{
+		data = arr->data[index];
+		arr->num_elems--;
+		if (arr->num_elems - index > 0)
+		{
+			ft_voidcpy(arr->data + index, arr->data + index + 1,
+				arr->num_elems - index);
+		}
+		f(data);
+		return (0);
+	}
+	return (1);
 }

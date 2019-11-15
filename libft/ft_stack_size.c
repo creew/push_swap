@@ -14,5 +14,5 @@
 
 size_t	ft_stack_size(t_ftstack *stack)
 {
-	return (stack->pos);
+	return (ft_array_size(stack));
 }

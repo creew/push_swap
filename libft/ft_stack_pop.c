@@ -14,10 +14,16 @@
 
 int		ft_stack_pop(t_ftstack *stack, void **data)
 {
-	if (stack->pos)
+	void	*d;
+
+	if (ft_array_size(stack))
 	{
-		*data = stack->data[--stack->pos];
-		return (0);
+		if (ft_array_get(stack, stack->num_elems - 1, &d) == 0)
+		{
+			stack->num_elems--;
+			*data = d;
+			return (0);
+		}
 	}
 	return (1);
 }

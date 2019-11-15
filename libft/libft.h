@@ -39,15 +39,17 @@ typedef struct	s_list
 	struct s_list	*next;
 }				t_list;
 
-typedef struct	s_ftstack
+typedef struct	s_ftarray
 {
 	void	**data;
-	size_t	size;
-	size_t	pos;
+	size_t	num_elems;
+	size_t	max_elems;
 	size_t	init_val;
-}				t_ftstack;
+}				t_ftarray;
 
-typedef	t_list	t_ftqueue;
+typedef t_ftarray	t_ftstack;
+
+typedef	t_list		t_ftqueue;
 
 void			*ft_memset(void *b, int c, size_t len);
 void			ft_bzero(void *s, size_t n);
@@ -139,7 +141,7 @@ t_list			*ft_lstget(t_list *lst, int	index);
 int				ft_stack_init(t_ftstack *stack, size_t init_val);
 int				ft_stack_pop(t_ftstack *stack, void **data);
 int				ft_stack_push(t_ftstack *stack, void *data);
-int				ft_stack_delall(t_ftstack *stack, void (*f)(void *));
+void			ft_stack_delall(t_ftstack *stack, void (*f)(void *));
 size_t			ft_stack_size(t_ftstack *stack);
 
 int				ft_queue_add(t_ftqueue **queue, void *data);
@@ -158,4 +160,15 @@ size_t			ft_strlcpy(char *dst, const char *src, size_t size);
 int				ft_safe_atoi(const char *arg, int *res);
 char			*ft_strpbrk(const char *s, const char *charset);
 char			*ft_trim_spaces(char *str);
+
+void			ft_voidcpy(void **dst, void **src, size_t size);
+
+int				ft_array_init(t_ftarray *ftarray, size_t init_val);
+int				ft_array_add(t_ftarray *arr, void *data);
+int				ft_array_get(t_ftarray *arr, size_t index, void **data);
+int				ft_array_remove(t_ftarray *arr, size_t index,
+						void (*f)(void *));
+void			ft_array_remove_all(t_ftarray *arr, void (*f)(void *));
+size_t			ft_array_size(t_ftarray *arr);
+int				ft_array_foreach(t_ftarray *arr, void (*f)(void *data));
 #endif

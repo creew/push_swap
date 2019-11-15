@@ -1,28 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_trim_spaces.c                                   :+:      :+:    :+:   */
+/*   ft_array_get.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/11/05 11:12:51 by eklompus          #+#    #+#             */
-/*   Updated: 2019/11/05 11:12:52 by eklompus         ###   ########.fr       */
+/*   Created: 2019/11/13 16:41:30 by eklompus          #+#    #+#             */
+/*   Updated: 2019/11/13 16:41:31 by eklompus         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_trim_spaces(char *str)
+int		ft_array_get(t_ftarray *arr, size_t index, void **data)
 {
-	size_t	len;
-	char	*r;
-
-	r = str;
-	while (ft_isspace(*str))
-		str++;
-	len = ft_strlen(str);
-	while (ft_isspace(str[len - 1]))
-		str[--len] = '\0';
-	ft_memmove(r, str, len + 1);
-	return (r);
+	if (index < arr->num_elems)
+	{
+		*data = arr->data[index];
+		return (0);
+	}
+	return (1);
 }
