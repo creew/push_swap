@@ -33,7 +33,8 @@ PUSHSWAP_SRC = \
 		paste_values.c \
 		find_solution.c \
 		sort_stack.c \
-		diffs.c
+		diffs.c \
+		find_max_seq.c
 
 COMMON_SRC = \
 		stack.c \

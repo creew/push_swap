@@ -90,14 +90,26 @@ int			calc_optimal(t_stg *stg)
 	size_t	size;
 	int		count;
 	t_diff	gres;
+	int 	len;
+	int 	*arr;
 
 	count = 0;
 	if (!is_stack_sorted_index(&stg->st1))
 	{
 		size = stg->st1.pos;
-		while (size-- > 3 && !is_stack_sorted_index(&stg->st1))
-			run_commands(stg, S_PB, &count);
-		sort3items(stg, &count);
+		arr = find_max_sorted(&stg->st1, &len);
+		if (arr && len >= 3)
+		{
+			while (size-- && !is_stack_sorted_index(&stg->st1))
+				run_commands(stg, arr[size] ? S_RA : S_PB, &count);
+		}
+		else
+		{
+			while (size-- > 3 && !is_stack_sorted_index(&stg->st1))
+				run_commands(stg, S_PB, &count);
+			sort3items(stg, &count);
+		}
+		ft_memdel((void **)&arr);
 		while (stg->st2.pos)
 		{
 			find_optimal(&stg->st1, &stg->st2, &gres);

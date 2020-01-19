@@ -28,4 +28,5 @@ int		get_actual_diff(t_diff *d);
 void	set_tdiff(t_diff *d, int s1_diff, int s2_diff);
 int		find_min_diff(int s1[], int s2[], t_diff *d);
 int		get_prev_i(t_stack *st, int index);
+int		*find_max_sorted(t_stack *stack, int *maxlen);
 #endif
