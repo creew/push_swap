@@ -24,7 +24,7 @@ CC = gcc
 
 CC_FLAGS = -Wall -Wextra -g
 
-CC_FERROR = -Werror
+CC_FERROR = #-Werror
 
 CHECKER_SRC = checker.c
 
@@ -34,7 +34,8 @@ PUSHSWAP_SRC = \
 		find_solution.c \
 		sort_stack.c \
 		diffs.c \
-		find_max_seq.c
+		find_max_seq.c \
+		find_median.c
 
 COMMON_SRC = \
 		stack.c \

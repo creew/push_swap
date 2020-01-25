@@ -92,6 +92,8 @@ int			calc_optimal(t_stg *stg)
 	t_diff	gres;
 	int 	len;
 	int 	*arr;
+	int 	med;
+	int		use_med;
 
 	count = 0;
 	if (!is_stack_sorted_index(&stg->st1))
@@ -100,8 +102,28 @@ int			calc_optimal(t_stg *stg)
 		arr = find_max_sorted(&stg->st1, &len);
 		if (arr && len >= 3)
 		{
+			use_med = find_med_val(&stg->st1, arr, &med);
 			while (size-- && !is_stack_sorted_index(&stg->st1))
-				run_commands(stg, arr[size] ? S_RA : S_PB, &count);
+			{
+				if (arr[size])
+					run_commands(stg, S_RA, &count);
+				else
+				{
+					run_commands(stg, S_PB, &count);
+					if (use_med) {
+						if (stg->st2.stack[stg->st2.pos - 1] < med)
+						{
+							if (size > 0 && !is_stack_sorted_index(&stg->st1) && arr[size - 1])
+							{
+								size--;
+								run_commands(stg, S_RR, &count);
+							}
+							else
+								run_commands(stg, S_RB, &count);
+						}
+					}
+				}
+			}
 		}
 		else
 		{

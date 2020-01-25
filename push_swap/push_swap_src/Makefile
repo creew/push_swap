@@ -23,6 +23,8 @@ SRC = push_swap.c \
 	find_solution.c \
 	sort_stack.c \
 	diffs.c \
+	find_max_seq.c \
+	find_median.c \
 	../common/stack.c \
 	../common/sub_functions.c \
 	../common/stack_sec.c \

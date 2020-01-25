@@ -11,7 +11,7 @@ static int	remove_unused(t_stack *stack, int *arr, size_t size, int max)
 	int		max_size;
 
 	(void)stack;
-	max_size = size;
+	max_size = max;
 	while (size--)
 	{
 		if (arr[size] != max)
