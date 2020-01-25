@@ -5,7 +5,7 @@ set(CMAKE_C_STANDARD 11)
 
 include_directories(.
         ./../ft_printf
-        ./../libft
+        ./../libft/includes
         ./../common)
 
 add_executable(checker

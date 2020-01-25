@@ -34,7 +34,7 @@ SRC = push_swap.c \
 OBJ = $(SRC:.c=.o)
 
 INC_DIR =	./../ \
-			./../libft
+			./../libft/includes
 
 INC_FLAG = $(addprefix -I,$(INC_DIR))
 
