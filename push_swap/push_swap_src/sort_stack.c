@@ -57,16 +57,16 @@ int		is_cycle_sorted(t_stack *st, int start)
 	return (1);
 }
 
-void	sort3items(t_stg *stg, int *count)
+void	sort3items(t_stack *st, int *count, t_stg *stg, int command)
 {
 	int	min_index;
 
-	if (stg->st1.pos == 3)
+	if (st->pos == 3)
 	{
-		if ((min_index = find_min_index(&stg->st1)) != -1)
+		if ((min_index = find_min_index(st)) != -1)
 		{
-			if (!is_cycle_sorted(&stg->st1, min_index))
-				run_commands(stg, S_SA, count);
+			if (!is_cycle_sorted(st, min_index))
+				run_commands(stg, command, count);
 		}
 	}
 }

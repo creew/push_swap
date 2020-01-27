@@ -27,7 +27,7 @@ void	paste_optimal(t_stg *stg, t_diff *gres, int *count);
 
 int		find_min_index(t_stack *st);
 int		is_cycle_sorted(t_stack *st, int start);
-void	sort3items(t_stg *stg, int *count);
+void	sort3items(t_stack *st, int *count, t_stg *stg, int command);
 int		normalize_stack(t_stg *stg, int *count);
 int		is_stack_sorted_index(t_stack *st);
 

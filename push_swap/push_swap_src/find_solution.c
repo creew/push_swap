@@ -56,7 +56,7 @@ int			calc_optimal(t_stg *stg)
 		{
 			while (size-- > 3 && !is_stack_sorted_index(&stg->st1))
 				run_commands(stg, S_PB, &count);
-			sort3items(stg, &count);
+			sort3items(&stg->st1, &count, stg, S_SA);
 		}
 		ft_memdel((void **)&arr);
 		while (stg->st2.pos)
