@@ -22,7 +22,7 @@ COMMON_DIR = ./common
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -g
+CC_FLAGS = -Wall -Wextra -g -fsanitize=address
 
 CC_FERROR = #-Werror
 
@@ -31,6 +31,7 @@ CHECKER_SRC = checker.c
 PUSHSWAP_SRC = \
 		push_swap.c \
 		paste_values.c \
+		find_optimal.c \
 		find_solution.c \
 		sort_stack.c \
 		diffs.c \

@@ -20,6 +20,7 @@ CC_FERROR = #-Werror
 
 SRC = push_swap.c \
 	paste_values.c \
+	find_optimal.c \
 	find_solution.c \
 	sort_stack.c \
 	diffs.c \

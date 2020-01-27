@@ -19,7 +19,7 @@ add_executable(pushswap
         ./../common/stack_sec.c
         ./../common/readarg.c
         ./../common/sub_functions.c
-        ./../common/print_stacks.c find_max_seq.c find_median.c)
+        ./../common/print_stacks.c find_max_seq.c find_median.c find_optimal.c)
 
 add_dependencies(pushswap libft_target libftprintf_target)
 find_library(FTPRINTF ftprintf ./../ft_printf)
