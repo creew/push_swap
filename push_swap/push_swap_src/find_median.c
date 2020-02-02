@@ -35,7 +35,7 @@ int				find_med_val(t_stack *stack, const int *max_sorted, int *res)
 		}
 		if (iindex != 0)
 		{
-			ft_bubble_sort(new_arr, iindex, sizeof(int), cmp_func);
+			ft_qsort(new_arr, iindex, sizeof(int), cmp_func);
 			*res = new_arr[iindex / 2];
 		}
 		ft_memdel((void **)&new_arr);

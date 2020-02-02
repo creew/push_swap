@@ -23,5 +23,5 @@ add_executable(pushswap
 
 add_dependencies(pushswap libft_target libftprintf_target)
 find_library(FTPRINTF ftprintf ./../ft_printf)
-find_library(FT ft ./../libft)
-target_link_libraries(pushswap PUBLIC ${FT} ${FTPRINTF})
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../libft ft)
+target_link_libraries(pushswap ft ${FTPRINTF})
