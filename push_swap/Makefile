@@ -22,9 +22,11 @@ COMMON_DIR = ./common
 
 CC = gcc
 
-CC_FLAGS = -Wall -Wextra -g -fsanitize=address
+CC_FLAGS = -Wall -Wextra -g $(CC_SANITIZE) $(CC_FERROR)
 
-CC_FERROR = #-Werror
+CC_SANITIZE = #-fsanitize=address
+
+CC_FERROR = -Werror
 
 CHECKER_SRC = checker.c
 
