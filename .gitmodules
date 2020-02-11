@@ -1,3 +1,12 @@
 [submodule "push_swap/libft"]
 	path = push_swap/libft
 	url = https://github.com/creew/libft.git
+[submodule "ft_ls/libft"]
+	path = ft_ls/libft
+	url = https://github.com/creew/libft.git
+[submodule "fdf/libft"]
+	path = fdf/libft
+	url = https://github.com/creew/libft.git
+[submodule "fdf/ft_printf"]
+	path = fdf/ft_printf
+	url = https://github.com/creew/ft_printf.git

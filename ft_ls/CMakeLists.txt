@@ -8,7 +8,7 @@ add_executable(ft_ls ft_ls.c ft_ls.h parse_args.c read_dir.c sub_funcs.c
         callbacks.c write_errors.c write_strings.c get_field_lengths.c print_short.c
         get_vals.c getset_format.c get_lst_params.c print_long.c)
 
-include_directories(./libft)
+include_directories(./libft/includes)
 
-find_library(FT ft ./libft)
-target_link_libraries(ft_ls PUBLIC ${FT})
+add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/libft ft)
+target_link_libraries(ft_ls ft)
