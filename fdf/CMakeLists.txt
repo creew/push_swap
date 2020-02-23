@@ -8,25 +8,26 @@ if(UNIX AND NOT APPLE)
 endif()
 
 add_executable(fdf
-        fdf.c
-        read_map.c
-        draw_main.c
-        init_images.c
-        mouse_moves.c
-        getters.c
-        transforms.c
-        draw_line.c
-        mouse_hook.c
-        key_hook.c
-        colorize_map.c
-        normalize_map.c
-        do_transform.c
-        draw_woo.c
-        other_hooks.c
-        setters.c
+        src/fdf.c
+        src/read_map.c
+        src/draw_main.c
+        src/init_images.c
+        src/mouse_moves.c
+        src/getters.c
+        src/transforms.c
+        src/draw_line.c
+        src/mouse_hook.c
+        src/key_hook.c
+        src/colorize_map.c
+        src/normalize_map.c
+        src/do_transform.c
+        src/draw_woo.c
+        src/other_hooks.c
+        src/setters.c
         )
 
 include_directories(.
+        ./includes
         ./libft/includes
         ./ft_printf/includes)
 if (LINUX)
