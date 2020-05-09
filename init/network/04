@@ -1,2 +1,0 @@
-#!/bin/sh
-netstat -nr | grep -E 'default.*[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | awk '{print $2}'

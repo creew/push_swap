@@ -56,21 +56,17 @@ COMMON_OBJ = $(addprefix $(COMMON_DIR)/,$(COMMON_SRC:.c=.o))
 
 INC_DIR =	./libft/includes \
 			./common \
-			./ft_printf
+			./ft_printf/includes
 
 INC_FLAG = $(addprefix -I,$(INC_DIR))
 
 CHECKER_HEADERS =	$(CHECKER_DIR)/checker.h \
- 					./libft/includes/libft.h \
- 					./ft_printf/ft_printf.h
 
 PUSHSWAP_HEADERS =	$(PUSHSWAP_DIR)/push_swap.h \
-					./libft/includes/libft.h \
-					./ft_printf/ft_printf.h
 
 COMMON_HEADERS = 	$(COMMON_DIR)/common.h \
 					./libft/includes/libft.h \
-					 ./ft_printf/ft_printf.h
+					 ./ft_printf/includes/ft_printf.h
 
 all: $(CHECKER) $(PUSHSWAP)
 

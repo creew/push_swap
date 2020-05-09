@@ -1,2 +1,0 @@
-#!/bin/sh
-ifconfig -L en0 | grep -o 'broadcast [0-9,.]*' | cut -d' ' -f2

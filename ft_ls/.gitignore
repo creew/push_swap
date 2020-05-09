@@ -1,8 +1,0 @@
-/ft_ls
-/cmake-build-debug/
-.idea
-*.o
-/libft.a
-/libft/libft.a
-/test/
-ft_ls.dSYM/
