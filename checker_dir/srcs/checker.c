@@ -10,18 +10,20 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "checker.h"
+#include "../includes/checker.h"
 
 static int	arg_cmp(int *arg, size_t count, char *ch, int ret)
 {
 	int		count_op;
+	char	*action;
 
 	count_op = S_SA;
 	while (count_op <= S_RRR)
 	{
-		if (ft_strlen(get_action_str(count_op)) == count)
+		action = get_action_str(count_op);
+		if (ft_strlen(action) == count)
 		{
-			if (ft_strncmp(get_action_str(count_op), ch, count) == 0)
+			if (ft_strncmp(action, ch, count) == 0)
 			{
 				*arg = count_op;
 				return (ret);

@@ -6,5 +6,7 @@
 /push_swap/push_swap
 /checker
 /push_swap
-/push_swap_src/cmake-build-debug/
-/checker_src/cmake-build-debug/
+/push_swap_dir/cmake-build-debug/
+/checker_dir/cmake-build-debug/
+/push_swap_dir/push_swap
+/checker_dir/checker

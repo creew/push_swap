@@ -10,8 +10,8 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "common.h"
 #include "ft_printf.h"
+#include "common.h"
 
 static void	print_command(int cmd, int is_colorized)
 {

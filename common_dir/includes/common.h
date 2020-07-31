@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   common.h                                           :+:      :+:    :+:   */
+/*   common_dir.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: eklompus <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -45,6 +45,8 @@ typedef unsigned char	t_uchar;
 # define ERROR_INVALID_VAL		(-9)
 # define ERROR_ARG_ONLY_PM		(-10)
 # define ERROR_DUPL_VAL			(-11)
+# define ERROR_UNKNOWN			(-12)
+
 # define RET_ENDL				(1)
 # define RET_OK					(0)
 
@@ -83,7 +85,7 @@ int				stack_rotate(t_stack *st);
 int				stack_rrotate(t_stack *st);
 int				is_stack_sorted(t_stack *st, size_t n);
 
-int				safe_atoi(char *arg, int *res);
+int				read_int_val(char *arg, int *res);
 
 char			*get_action_str(int i);
 

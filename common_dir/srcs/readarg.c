@@ -55,7 +55,7 @@ static int	read_check_val(t_stg *stg, char *s)
 	int		ret;
 	int		res;
 
-	if ((ret = safe_atoi(s, &res)) != RET_OK)
+	if ((ret = read_int_val(s, &res)) != RET_OK)
 		return (ret);
 	if ((ret = check_exist_val(&stg->st1, res)) != RET_OK)
 		return (ret);

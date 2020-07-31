@@ -225,9 +225,9 @@ then
     heap=$(valgrind ./push_swap $ARG 2>&1 | grep "heap usage" | cut -d ':' -f2 | cut -d ' ' -f2 | sed 's/,//')
 
 
-	if [ $heap -gt 0 ]
+	if [ "$heap" -gt 0 ]
 	then
-	if [ $leak -gt 0 ]
+	if [ "$leak" -gt 0 ]
 	then
 echo "Leaks: \033[31m$leak\033[m byte(s)   ❌   \033[33mUse: valgrind --leak-check=full ./push_swap <VALUES> to find all!\033[m"
 	else

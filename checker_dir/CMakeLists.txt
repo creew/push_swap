@@ -6,16 +6,16 @@ set(CMAKE_C_STANDARD 11)
 include_directories(.
         ../ft_printf/includes
         ../libft/includes
-        ../common)
+        ../common_dir/includes)
 
 add_executable(checker
-        checker.c
-        ../common/stack_action.c
-        ../common/stack.c
-        ../common/stack_sec.c
-        ../common/readarg.c
-        ../common/sub_functions.c
-        ../common/print_stacks.c
+        srcs/checker.c
+        ../common_dir/srcs/stack_action.c
+        ../common_dir/srcs/stack.c
+        ../common_dir/srcs/stack_sec.c
+        ../common_dir/srcs/readarg.c
+        ../common_dir/srcs/sub_functions.c
+        ../common_dir/srcs/print_stacks.c
         )
 
 #add_dependencies(checker libft_target libftprintf_target)
