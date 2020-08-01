@@ -20,7 +20,10 @@ add_executable(pushswap
         ../common_dir/srcs/stack_sec.c
         ../common_dir/srcs/readarg.c
         ../common_dir/srcs/sub_functions.c
-        ../common_dir/srcs/print_stacks.c srcs/find_max_seq.c srcs/find_median.c srcs/find_optimal.c)
+        ../common_dir/srcs/print_stacks.c
+        srcs/find_max_seq.c
+        srcs/find_median.c
+        srcs/find_optimal.c)
 
 #add_dependencies(pushswap libft_target libftprintf_target)
 add_subdirectory(${CMAKE_CURRENT_SOURCE_DIR}/../ft_printf ftprintf)

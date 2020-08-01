@@ -12,33 +12,34 @@
 
 #include "push_swap.h"
 
+/**
+ * Находит индекс минимального элемента в стэке
+ * @param st стэк
+ * @return индекс
+ */
 int		find_min_index(t_stack *st)
 {
 	size_t	count;
 	int		min;
-	int		blocked;
 
-	blocked = 0;
-	min = st->pos ? (int)st->pos - 1 : -1;
-	count = st->pos;
-	while (count--)
+	if (st->size == 0)
+		return -1;
+	min = (int)st->size - 1;
+	count = st->size - 1;
+	while (count-- > 0)
 	{
 		if (st->stack[count] < st->stack[min])
-		{
 			min = (int)count;
-			blocked = 1;
-		}
-		else if (st->stack[count] == st->stack[min])
-		{
-			if (!blocked && (blocked = 1))
-				min = (int)count;
-		}
-		else
-			blocked = 0;
 	}
 	return (min);
 }
 
+/**
+ * Проверяет отсортирован ли стэк с учетом начальной позиции
+ * @param st стэк
+ * @param start начальная позиция
+ * @return 1 - стэк отсортирован, 0 - нет
+ */
 int		is_cycle_sorted(t_stack *st, int start)
 {
 	int		end;
@@ -57,6 +58,14 @@ int		is_cycle_sorted(t_stack *st, int start)
 	return (1);
 }
 
+/**
+ * Предварительно сортирует стэк из 3 элементов
+ * @param st стэк
+ * @param count подсчет количетсва выполненных команд
+ * @param stg глобальная структура
+ * @param command команда которую выполнить если стэк не был
+ * 		предварительно отсоритрован
+ */
 void	sort3items(t_stack *st, int *count, t_stg *stg, int command)
 {
 	int	min_index;
@@ -71,6 +80,13 @@ void	sort3items(t_stack *st, int *count, t_stg *stg, int command)
 	}
 }
 
+/**
+ * Нормализует стэк преобразуя предварительно отсортированный стэк
+ * 		в отсортированный
+ * @param stack стэк
+ * @param count подсчет количетсва выполненных команд
+ * @return результат выполнения 0 - успешно
+ */
 int		normalize_stack(t_stg *stg, int *count)
 {
 	int	min;
@@ -95,6 +111,11 @@ int		normalize_stack(t_stg *stg, int *count)
 	return (0);
 }
 
+/**
+ * Проверяет отсортирован ли стэк без учета начальной позиции
+ * @param st стэк
+ * @return 1 - стэк отсортирован, 0 - нет
+ */
 int		is_stack_sorted_index(t_stack *st)
 {
 	int		min_index;

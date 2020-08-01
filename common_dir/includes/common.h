@@ -21,18 +21,20 @@ typedef unsigned char	t_uchar;
 
 # define ARRSIZE(x)				(sizeof(x)/sizeof(x[0]))
 
-# define S_SA					(1)
-# define S_SB					(2)
-# define S_SS					(3)
-# define S_PA					(4)
-# define S_PB					(5)
-# define S_RA					(6)
-# define S_RB					(7)
-# define S_RR					(8)
-# define S_RRA					(9)
-# define S_RRB					(10)
-# define S_RRR					(11)
-# define S_ERROR				(-1)
+enum {
+	S_SA,
+	S_SB,
+	S_SS,
+	S_PA,
+	S_PB,
+	S_RA,
+	S_RB,
+	S_RR,
+	S_RRA,
+	S_RRB,
+	S_RRR,
+	S_ERROR
+};
 
 # define ERROR_ENOMEM			(-1)
 # define ERROR_GETEMPTY_STACK	(-2)
@@ -56,7 +58,11 @@ typedef struct	s_stack
 {
 	int			*stack;
 	size_t		max_size;
-	size_t		pos;
+	union {
+		size_t		pos;
+		size_t		size;
+	};
+
 }				t_stack;
 
 typedef struct	s_diff

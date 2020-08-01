@@ -40,7 +40,10 @@ fclean: clean
 
 re: fclean all
 
-test:
+full_test:
 	zsh supertest.sh -full 0 499 10
+
+test:
+	zsh supertest.sh 0 499 30
 
 .PHONY: all clean fclean re test $(CHECKER) $(PUSHSWAP)

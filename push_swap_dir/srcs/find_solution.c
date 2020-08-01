@@ -12,24 +12,33 @@
 
 #include "push_swap.h"
 
+/**
+ * Перемещает из стэка а в стэк б все элементы кроме отсортированного подмассива
+ * @param stg глобальная структура
+ * @param size размер стэка а
+ * @param count подсчет количетсва выполненных команд
+ * @param arr отсортированный подмассив
+ */
 void transfer_not_sorted(t_stg* stg, size_t size, int* count, const int* arr)
 {
 	int use_med;
 	int med;
 
 	use_med = find_med_val(&stg->st1, arr, &med);
-	while (size-- && !is_stack_sorted_index(&stg->st1))
+	while (size--)
 	{
-		if (arr[size])
-			run_commands(stg, S_RA, count);
+		if (arr[size]) {
+			if (size != 0)
+				run_commands(stg, S_RA, count);
+		}
 		else
 		{
 			run_commands(stg, S_PB, count);
 			if (use_med)
 			{
-				if (stg->st2.stack[stg->st2.pos - 1] < med)
+				if (stg->st2.stack[stg->st2.size - 1] < med)
 				{
-					if (size > 0 && !is_stack_sorted_index(&stg->st1) && arr[size - 1])
+					if (size > 0 && arr[size - 1])
 					{
 						size--;
 						run_commands(stg, S_RR, count);
@@ -55,7 +64,7 @@ int			calc_optimal(t_stg *stg)
 	{
 		size = stg->st1.pos;
 		arr = find_max_sorted(&stg->st1, &len);
-		if (arr && len >= 3)
+		if (arr && len > 3)
 		{
 			transfer_not_sorted(stg, size, &count, arr);
 		}

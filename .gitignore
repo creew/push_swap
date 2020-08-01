@@ -1,9 +1,7 @@
 /cmake-build-debug/
 /.idea/
-/checker/checker
 *.a
 *.o
-/push_swap/push_swap
 /checker
 /push_swap
 /push_swap_dir/cmake-build-debug/

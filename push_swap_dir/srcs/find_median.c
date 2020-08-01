@@ -17,18 +17,26 @@ static int		cmp_func(const void *a, const void *b)
 	return (*(int *)a - *(int *)b);
 }
 
+/**
+ * Находит среднее значение в стеке с учетом количества элементов
+ * и отсортированного подмассива
+ * @param stack стэк
+ * @param max_sorted отсортированный подмассив
+ * @param res среднее значение
+ * @return результат выполнения 0 в случае неудачи
+ */
 int				find_med_val(t_stack *stack, const int *max_sorted, int *res)
 {
 	int		*new_arr;
 	size_t	index;
 	int 	iindex;
 
-	new_arr = (int *)ft_calloc(stack->pos, sizeof(int));
+	new_arr = (int *)ft_calloc(stack->size, sizeof(int));
 	if (new_arr)
 	{
 		index = -1;
 		iindex = -1;
-		while (++index < stack->pos)
+		while (++index < stack->size)
 		{
 			if (!max_sorted[index])
 				new_arr[++iindex] = stack->stack[index];

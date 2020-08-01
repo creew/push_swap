@@ -12,7 +12,13 @@
 
 #include "push_swap.h"
 
-static void	find_left_values(t_stack *st, int val, int *vals)
+/**
+ * Находит количество операций для вставки значения вращая стэк вверх
+ * @param st стэк
+ * @param val значение
+ * @param vals количество операций
+ */
+static void find_up_values(t_stack *st, int val, int *vals)
 {
 	int pos;
 
@@ -27,7 +33,13 @@ static void	find_left_values(t_stack *st, int val, int *vals)
 	}
 }
 
-static void	find_right_values(t_stack *st, int val, int *vals)
+/**
+ * Находит количество операций для вставки значения вращая стэк вниз
+ * @param st стэк
+ * @param val значение
+ * @param vals количество операций
+ */
+static void find_down_values(t_stack *st, int val, int *vals)
 {
 	int pos;
 
@@ -43,6 +55,14 @@ static void	find_right_values(t_stack *st, int val, int *vals)
 	}
 }
 
+/**
+ * Находит количество операция для вставки значения
+ * @param st стэк
+ * @param val значение
+ * @param vals структура хранящее количество операций для вставки вращая
+ * 			стэк вверх и вниз
+ * @return RET_OK - успешное завершение
+ */
 static int	find_place_to_paste(t_stack *st, int val, t_vals *vals)
 {
 	int		min_index;
@@ -52,12 +72,20 @@ static int	find_place_to_paste(t_stack *st, int val, t_vals *vals)
 	vals->down = -(min_index + 1);
 	if (min_index != -1)
 	{
-		find_left_values(st, val, &vals->up);
-		find_right_values(st, val, &vals->down);
+		find_up_values(st, val, &vals->up);
+		find_down_values(st, val, &vals->down);
 	}
-	return (0);
+	return (RET_OK);
 }
 
+/**
+ * Находит элемент из стека б для вставки в стек а с наименьшим количеством
+ * 		операций
+ * @param st1 стэк а
+ * @param st2 стэк б
+ * @param gres
+ * @return
+ */
 int			find_optimal(t_stack *st1, t_stack *st2, t_diff *gres)
 {
 	int		size;
@@ -81,7 +109,7 @@ int			find_optimal(t_stack *st1, t_stack *st2, t_diff *gres)
 			if (get_actual_diff(&res) < get_actual_diff(gres))
 				set_tdiff(gres, res.s1_diff, res.s2_diff);
 		}
-		return (1);
+		return (RET_OK);
 	}
-	return (0);
+	return (ERROR_GETEMPTY_STACK);
 }
